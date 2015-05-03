@@ -15,9 +15,9 @@ import dj_database_url
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-# ADMINS = (
-#     ('Daniel Micaletti', 'danielmicaletti@gmail.com'),
-# )
+ADMINS = (
+    ('Daniel Micaletti', 'danielmicaletti@gmail.com'),
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -164,3 +164,11 @@ if not DEBUG:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     S3_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
     STATIC_URL = S3_URL
+
+from .email_info import EMAIL_USE_TLS, EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT
+# For gmail and google apps
+EMAIL_USE_TLS = EMAIL_USE_TLS
+EMAIL_HOST= EMAIL_HOST
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_PORT = EMAIL_PORT
