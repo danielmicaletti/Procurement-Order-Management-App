@@ -2,12 +2,10 @@ from django.conf.urls import include, patterns, url
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_nested import routers
-
 from authentication.views import AccountViewSet, CompanyViewSet, AddressViewSet, LoginView, LogoutView
-# from posts.views import AccountPostsViewSet, PostViewSet
 from orders.views import OrderViewSet, GoodViewSet, DetailViewSet, RequestViewSet, ReqItemViewSet, ReqProductViewSet, ReqFileViewSet, OfferViewSet
 from wease.views import IndexView
-
+import settings
 from django.contrib import admin
 
 admin.autodiscover()

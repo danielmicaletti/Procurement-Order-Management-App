@@ -1,1 +1,1 @@
-web: gunicorn wease.wsgi --log-file -
+web: gunicorn wease.wsgi

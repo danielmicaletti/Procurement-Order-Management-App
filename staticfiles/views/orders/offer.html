@@ -1,0 +1,654 @@
+<div class="page page-single-order">
+
+  <!-- page header -->
+  <div class="pageheader">
+
+    <h2>{{page.title}} <span> for</span> {{ vm.order.order_company.name }}</h2>
+
+    <div class="page-bar">
+
+      <ul class="page-breadcrumb">
+        <li>
+          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+        </li>
+        <li>
+          <a ui-sref="app.orders.all">Orders</a>
+        </li>
+        <li>
+          <a ui-sref="app.orders.order">{{page.title}}</a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+  <!-- /page header -->
+
+  <!-- page content -->
+  <div class="pagecontent">
+
+
+    <div class="add-nav">
+      <div class="nav-heading">
+        <div class="row">
+          <div class="col-md-8">
+            <h3>Order # : <strong class="text-greensea"> {{ vm.order.order_number }}/v{{ vm.order.order_version }}</strong></h3>
+            <br/>
+            <br/>
+            <h4>Reference # : <strong > {{ vm.order.reference_number }}</strong></h4>
+          </div> 
+          <div class="col-md-4 ">
+            <span class="controls pull-right" ng-controller="OfferBlankItemModalCtrl">
+              <p class="text-uppercase text-strong mb-10 custom-font">Add Offer Item</p>
+              <a ng-click="open('lg')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="Add Offer Item"><i class="fa fa-plus"></i></a>
+              <a class="btn btn-ef btn-ef-1 btn-ef-1-lightred btn-ef-1a btn-rounded-20 mr-5" tooltip="Cancel offer"><i class="fa fa-times"></i></a>
+              <a href="javascript:window.print()" class="btn btn-ef btn-ef-1 btn-ef-1-default btn-ef-1a btn-rounded-20" tooltip="Print"><i class="fa fa-print"></i></a>
+            </span>
+          </div>
+        </div>
+        <hr/>
+        <!-- row -->
+        <div class="row">
+          <!-- col -->
+          <div class="col-md-7">
+            <p class="text-uppercase text-strong mb-10 custom-font">Customer</p>
+            <ul class="list-unstyled text-default lt mb-20">
+              <li><strong class="inline-block w-xs">Name:</strong> {{ vm.order.order_company.name }}</li>
+              <li><strong class="inline-block w-xs">Address 1:</strong> {{ vm.order.order_company.street_addr1 }}</li>
+              <li ng-show="vm.order.order_company.street_addr2"><strong class="inline-block w-xs">Address 2:</strong> {{ vm.order.order_company.street_addr2 }}</li>
+              <li><strong class="inline-block w-xs">City:</strong> {{ vm.order.order_company.city }}</li>
+              <li><strong class="inline-block w-xs">Country:</strong> {{ vm.order.order_company.country }}</li>
+              <li><strong class="inline-block w-xs">Phone:</strong> {{ vm.order.order_company.phone_main }}</li>
+            </ul>
+          </div>
+          <!-- /col -->
+          <!-- col -->
+          <div class="col-md-5">
+            <p class="text-uppercase text-strong mt-0 mb-0 custom-font">Status</p>
+            <h3 class="text-uppercase mt-10 mb-10" ng-class="stati[vm.order.order_status]">{{ vm.order.order_status_display }}</h3>
+            <p>Updated: {{ vm.order.order_status_change_date | date:'medium'}}</p>
+          </div>
+          <!-- /col -->
+
+        </div>
+        <!-- /row -->
+
+        <!-- row -->
+        <div class="row b-t pt-20">
+
+          <!-- col -->
+          <div class="col-md-3 b-r">
+            <p class="text-uppercase text-strong mb-10 custom-font">Order Details</p>
+            <ul class="list-unstyled text-default lt mb-20">
+              <li><strong>Created:</strong>{{ vm.order.order_created | date:'medium' }}</li>
+              <li><strong>By:</strong> <a ui-sref="app.pages.profile({ username: vm.order.order_created_by.username })">{{ vm.order.order_created_by.first_name }} {{ vm.order.order_created_by.last_name }}</a></li>
+              <li><strong>Assigned to:</strong> <a ui-sref="app.pages.profile({ username: optiz.username })" ng-repeat="optiz in vm.order.order_company.company_assigned_to">{{ optiz.first_name }} {{ optiz.last_name }}</a></li>
+              <li ng-show="vm.order.company_approval_by"><strong>Approved by:</strong> <a ui-sref="app.pages.profile({ username: vm.order.company_approval_by.username })">{{ vm.order.company_approval_by.first_name }} {{ vm.order.company_approval_by.last_name }}</a></li>
+              <li ng-show="!vm.order.company_approval_by"><strong>Approved by:</strong> Not approved</li>
+            </ul>
+          </div>
+          <!-- /col -->
+
+          <!-- col -->
+          <div class="col-md-3 b-r">
+            <p class="text-uppercase text-strong mb-10 custom-font" >
+              Delivery Address
+            </p>
+
+            <!-- col -->
+            <div class="col-md-12">
+              <ul class="list-unstyled text-default lt mb-20">
+                <li>{{ vm.order.delivery_address.addr_location }}</li>
+                <li>{{ vm.order.delivery_address.street_addr1 }}</li>
+                <li ng-hide="!vm.order.delivery_address.street_addr2">{{ vm.order.delivery_address.street_addr2 }}</li>
+                <li>{{ vm.order.delivery_address.city }}, {{ vm.order.delivery_address.country }}  {{ vm.order.delivery_address.post_code }}</li>
+                <li>{{ vm.order.delivery_address.phone_main }}</li>
+              </ul>
+            </div>
+            <!-- /col -->
+          </div>
+          <div class="col-md-3 b-r">
+            <p class="text-uppercase text-strong mb-10 custom-font" >
+             Notes & Contact
+            </p>
+            <!-- col -->
+            <div class="col-md-12">
+
+              <ul class="list-unstyled text-default lt mb-20">
+                <li ng-hide="!vm.order.delivery_address.email">{{ vm.order.delivery_address.email }}</li>
+                <li>{{ vm.order.delivery_address.addr_notes }}</li>
+              </ul>
+            </div>
+            <!-- /col -->
+
+          </div>
+          <!-- /col -->
+
+          <!-- col -->
+          <!-- <div class="col-md-3 b-r">
+            <div ng-show="vm.order.order_offer">
+              <p class="text-uppercase text-strong mb-10 custom-font">Approval</p>
+          <ul class="list-unstyled text-default lt mb-20">
+                <li><strong>Delivery:</strong> Pick-Up</li>
+                <li><strong>Payment:</strong> Cash</li>
+              </ul> 
+            </div>
+            <div ng-show="!vm.order.order_offer">
+              <p class="text-uppercase text-strong mb-10 custom-font">Add Item or Cancel Request</p>
+            </div>
+          </div> -->
+          <!-- /col -->
+          
+        </div>
+        <!-- /row -->
+      </div>
+
+      <tabset>
+
+        <tab heading="Current Offer" ng-show="vm.offer.offer_item.length > 0 || vm.offer.blank_item.length > 0">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-md-12">
+
+              <!-- tile -->
+              <section class="tile tile-simple">
+
+                <!-- tile body -->
+                <div class="tile-body p-0">
+                
+                  <div class="row">
+                    <div class="col-md-10">
+                      <h3 class="ml-20">Current Offer Items</h3>
+                    </div>
+                  </div>
+                  <hr>
+                  
+                  <div class="row">
+                    <div role="form" class="col-md-12" ng-repeat="offer_item in vm.offer.offer_item track by $index">
+                        <div class="well" >
+                            <div class="row">
+                                <div class="form-group col-md-4" ng-show="offer_item.item_name">
+                                    <label for="item_name"><strong>Offer Item</strong></label>
+                                    <p class="form-control-static">{{offer_item.item_name}}</p>
+                                </div>
+                                <div class="form-group col-md-4" ng-show="offer_item.item_details">
+                                    <label for="item_details">Description</label>
+                                    <p class="form-control-static">{{offer_item.item_details}}</p>
+                                </div>            
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4" ng-show="offer_item.quantity">
+                                    <label for="quantity">Quantity</label>
+                                    <p class="form-control-static">{{offer_item.quantity}}</p>
+                                </div>
+                                <div class="form-group col-md-4" ng-show="offer_item.price">
+                                    <label for="price">Rate</label>
+                                    <p class="form-control-static">{{offer_item.price | currency:"€ "}}</p>
+                                </div>
+                                <div class="form-group col-md-4" ng-show="offer_item.item_sub_total">
+                                    <label for="subtotal">SubTotal</label>
+                                    <p class="form-control-static">{{ vm.offer.offer_item[$index].quantity * vm.offer.offer_item[$index].price | currency:"€ "}}</p>
+                                </div>                                        
+                            </div>
+                            <div class="row" ng-controller="DatepickerDemoCtrl">
+                                <div class="form-group col-md-4" ng-show="offer_item.delivery_date">
+                                    <label for="delivery-date">Delivery Date</label>
+                                    <p class="form-control-static">{{offer_item.delivery_date | date: 'mediumDate'}}</p>
+                                </div>
+                                <div class="form-group col-md-4" ng-show="offer_item.date_start">
+                                    <label for="date_start">Start Date</label>
+                                    <p class="form-control-static">{{offer_item.date_start | date: 'mediumDate'}}</p>
+                                </div>
+                                <div class="form-group col-md-4" ng-show="offer_item.date_end">
+                                    <label for="date_end">End Date</label>
+                                    <p class="form-control-static">{{offer_item.date_end | date: 'mediumDate'}}</p>
+                                </div>                                        
+                            </div> 
+                        </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div role="form" class="col-md-12" ng-repeat="blank_item in vm.offer.blank_item track by $index">
+                        <div class="well" >
+                            <div class="row">
+                                <div class="form-group col-md-6" ng-show="blank_item.item_name">
+                                    <label for="item_name">Offer Item</label>
+                                    <p class="form-control-static">{{blank_item.item_name}}</p>
+                                </div>
+                                <div class="form-group col-md-7" ng-show="blank_item.item_details">
+                                    <label for="item_details">Description</label>
+                                    <p class="form-control-static">{{blank_item.item_details}}</p>
+                                </div>            
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-4" ng-show="blank_item.quantity">
+                                    <label for="quantity">Quantity</label>
+                                    <p class="form-control-static">{{blank_item.quantity}}</p>
+                                </div>
+                                <div class="form-group col-md-4" ng-show="blank_item.price">
+                                    <label for="price">Rate</label>
+                                    <p class="form-control-static">{{blank_item.price | currency:"€ "}}</p>
+                                </div>
+                                <div class="form-group col-md-4" ng-show="blank_item.item_sub_total">
+                                    <label for="subtotal">SubTotal</label>
+                                    <p class="form-control-static">{{ blank_item.item_sub_total | currency:"€ "}}</p>
+                                </div>                                        
+                            </div>
+                            <div class="row" ng-controller="DatepickerDemoCtrl">
+                                <div class="form-group col-md-4" ng-show="blank_item.delivery_date">
+                                    <label for="delivery-date">Delivery Date</label>
+                                    <p class="form-control-static">{{blank_item.delivery_date | date: 'mediumDate'}}</p>
+                                </div>
+                                <div class="form-group col-md-4" ng-show="blank_item.date_start">
+                                    <label for="date_start">Start Date</label>
+                                    <p class="form-control-static">{{blank_item.date_start | date: 'mediumDate'}}</p>
+                                </div>
+                                <div class="form-group col-md-4" ng-show="blank_item.date_end">
+                                    <label for="date_end">End Date</label>
+                                    <p class="form-control-static">{{blank_item.date_end | date: 'mediumDate'}}</p>
+                                </div>                                        
+                            </div> 
+                          </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <form role="form" class="col-md-12">
+                          <!-- <div class="row"> -->
+                              <div class="form-group col-md-6">
+                                  <label for="date_end"><strong>Offer Terms</strong></label>
+                                  <textarea class="form-control" rows="3" ng-model="vm.offer.offer_terms"></textarea>
+                              </div>
+                          <!-- </div> -->
+                          <div>
+                              <button type="submit" ng-click="vm.addOffer()" class="btn btn-rounded btn-success btn mr-20 pull-right" placeholder="Add terms for this offer">Submit Offer</button>
+                          </div>
+                        </form>
+                    <!-- </div> -->
+                  </div>
+                <!-- /tile body -->
+
+              </section>
+              <!-- /tile -->
+
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </tab>
+
+        <tab heading="Request Items" active="true">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-md-12">
+              <!-- tile -->
+              <section class="tile tile-simple">
+
+                <!-- tile body -->
+                <div class="tile-body p-0">
+
+                  <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                      <thead>
+                        <tr>
+                          <th>Family</th>
+                          <th>SubFamily</th>
+                          <th>Items</th>
+                          <th>Files</th>
+                          <th style="width: 260px">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="req in vm.order.req_order track by $index">
+                          <td>{{ req.item_fam }}</td>
+                          <td>{{ req.item_subfam }}</td>
+                          <td>{{ req.req_product.length }}</td>
+                          <td ng-show="req.req_item_file.length">{{ req.req_item_file.length }}</td>
+                          <td ng-show="!req.req_item_file.length">No files</td>
+                          <td ng-controller="OfferReqItemModalCtrl">
+                            <a ng-click="open('lg')" class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a>
+                            <a ui-sref="app.orders.edit({reqId:req.id})" class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+                <!-- /tile body -->
+
+              </section>
+              <!-- /tile -->
+
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </tab>
+
+        <tab heading="Offers">
+
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-md-12">
+              <!-- tile -->
+              <section class="tile tile-simple">
+
+                <!-- tile body -->
+                <div class="tile-body p-0">
+
+                  <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                      <thead>
+                        <tr>
+                          <th>Offer Date</th>
+                          <th>Offer Items</th>
+                          <th>Status</th>
+                          <th>Status By</th>
+                          <th>Status Date</th>
+                          <th>Total</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <tr ng-repeat="offer in vm.order.order_offer">
+                          <td>{{offer.offer_created}}</td>
+                          <td>{{offer.offer_items.length}}</td>
+                          <td ng-class="stati[vm.order.order_status]" ng-show="offer.offer_version === vm.order.offer_version">{{vm.order.order_status_display}}</td>
+                          <td class="text-lightred" ng-show="offer.offer_version !=== vm.order.offer_version">Refused</td>
+                          <td ng-show="offer.offer_approval_by"><a ui-sref="app.pages.profile({ username: offer.offer_approval_by })">{{offer.offer_approval_by}</a></td>
+                          <td ng-show="offer.offer_approval_by">{{ offer.offer_approval | date:"shortDate" }}</td>
+                          <td class="text-amythyst" colspan="2" ng-show="!offer.offer_approval_by">Waiting Approval</td>
+                          <td>{{ offer.offer_total | currency:"€ " }}</td>
+                          <td><a class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+                <!-- /tile body -->
+
+              </section>
+              <!-- /tile -->
+
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+
+        </tab>
+
+        <tab heading="Comments">
+
+          <!-- row -->
+          <div class="row">
+            <!-- right side -->
+            <div class="tcol">
+
+              <!-- right side header -->
+<!--               <div class="p-15 bg-white b-b">
+
+                <div class="btn-toolbar pull-right">
+                  <div class="btn-group">
+                    <button class="btn btn-default btn-sm br-2"><i class="fa fa-plus"></i> New Message</button>
+                  </div>
+                  <div class="btn-group">
+                    <button class="btn btn-default btn-sm br-2"><i class="fa fa-cog"></i> Settings</button>
+                  </div>
+                  <div class="btn-group">
+                    <button class="btn btn-default btn-sm br-2"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+
+
+                <h3 class="custom-font m-0 mr-5 inline-block">Wood Walton</h3>
+
+
+              </div> -->
+              <!-- /right side header -->
+
+
+
+              <div class="col-md-1"></div>
+
+
+
+              <!-- right side body -->
+              <div class="p-15 col-md-10">
+
+                <!-- chats -->
+                <ul class="chats p-0">
+                  <li class="in">
+                    <div class="media">
+                      <div class="pull-left thumb thumb-sm">
+                        <img class="media-object img-circle" src="static/images/random-avatar1.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <p class="media-heading"><a href="#" class="name">Wood Walton </a><span class="datetime">at 12.10.2014</span></p>
+                        <span class="body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.</span>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li class="out">
+                    <div class="media">
+                      <div class="pull-right thumb thumb-sm">
+                        <img class="media-object img-circle" src="static/images/profile-photo.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <p class="media-heading"><a href="#" class="name">You </a><span class="datetime">2 hours ago</span></p>
+                        <span class="body">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="in">
+                    <div class="media">
+                      <div class="pull-left thumb thumb-sm">
+                        <img class="media-object img-circle" src="static/images/random-avatar1.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <p class="media-heading"><a href="#" class="name">Wood Walton </a><span class="datetime">2 hours ago</span></p>
+                        <span class="body">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="out">
+                    <div class="media">
+                      <div class="pull-right thumb thumb-sm">
+                        <img class="media-object img-circle" src="static/images/profile-photo.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <p class="media-heading"><a href="#" class="name">You </a><span class="datetime">1 hours ago</span></p>
+                        <span class="body">Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="in">
+                    <div class="media">
+                      <div class="pull-left thumb thumb-sm">
+                        <img class="media-object img-circle" src="static/images/random-avatar1.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <p class="media-heading"><a href="#" class="name">Wood Walton </a><span class="datetime">53 minutes ago</span></p>
+                        <span class="body">Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue.</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="out">
+                    <div class="media">
+                      <div class="pull-right thumb thumb-sm">
+                        <img class="media-object img-circle" src="static/images/profile-photo.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <p class="media-heading"><a href="#" class="name">You </a><span class="datetime">40 minutes ago</span></p>
+                        <span class="body">Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="out">
+                    <div class="media">
+                      <div class="pull-right thumb thumb-sm">
+                        <img class="media-object img-circle" src="static/images/profile-photo.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <p class="media-heading"><a href="#" class="name">You </a><span class="datetime">39 minutes ago</span></p>
+                        <span class="body">Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante.</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="out">
+                    <div class="media">
+                      <div class="pull-right thumb thumb-sm">
+                        <img class="media-object img-circle" src="static/images/profile-photo.jpg" alt="">
+                      </div>
+                      <div class="media-body">
+                        <div class="mb-40" ng-hide="post">
+                          <a href="javascript:;" ng-click="post=!post">Post</a> new message</a>
+                        </div>
+                        <div ng-show="post">
+                          <div class="p-15 text-left bg-white text-md" contenteditable="true" style="min-height:100px"></div>
+                          <div class="panel-footer text-left">
+                            <button class="btn btn-link text-default pull-right" ng-click="post=!post"><i class="fa fa-trash-o"></i></button>
+                            <button class="btn btn-greensea btn-ef btn-ef-7 btn-ef-7b b-0 br-2" activate-button=""><i class="fa fa-envelope"></i> Send Message</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+
+                </ul>
+                <!-- / chats -->
+
+              </div>
+              <!-- /right side body -->
+
+
+            </div>
+            <!-- /right side -->
+             <div class="col-md-1"></div>
+          </div>
+          <!-- /row -->
+        </tab>
+
+        <tab heading="History">
+          <!-- row -->
+          <div class="row">
+            <!-- col -->
+            <div class="col-md-12">
+              <!-- tile -->
+              <section class="tile tile-simple">
+
+                <!-- tile body -->
+                <div class="tile-body p-0">
+
+                  <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                      <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Desription</th>
+                        <th>Date</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td><a href="javascript:;">1</a></td>
+                        <td>Order Created</td>
+                        <td>Jan 20, 2015</td>
+                      </tr>
+                      <tr>
+                        <td><a href="javascript:;">2</a></td>
+                        <td>Order Received</td>
+                        <td>Jan 20, 2015</td>
+                      </tr>
+                      <tr>
+                        <td><a href="javascript:;">2</a></td>
+                        <td>Order Shipped</td>
+                        <td>Jan 21, 2015</td>
+                      </tr>
+                      <tr>
+                        <td><a href="javascript:;">2</a></td>
+                        <td>Invoice Created</td>
+                        <td>Jan 21, 2015</td>
+                      </tr>
+                      <tr>
+                        <td><a href="javascript:;">2</a></td>
+                        <td>Invoice Sent</td>
+                        <td>Jan 21, 2015</td>
+                      </tr>
+                      <tr>
+                        <td><a href="javascript:;">2</a></td>
+                        <td>Payment Received</td>
+                        <td>Jan 23, 2015</td>
+                      </tr>
+                      <tr>
+                        <td><a href="javascript:;">2</a></td>
+                        <td>Order Completed</td>
+                        <td>Jan 23, 2015</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+                <!-- /tile body -->
+
+              </section>
+              <!-- /tile -->
+
+
+            </div>
+            <!-- /col -->
+          </div>
+          <!-- /row -->
+        </tab>
+
+      </tabset>
+
+    </div>
+        <!-- row -->
+    <div class="row" ng-show="vm.offer.offer_total">
+      <!-- col -->
+      <div class="col-md-3 col-md-offset-9 price-total">
+
+        <!-- tile -->
+        <section class="tile tile-simple bg-tr-black lter">
+
+          <!-- tile body -->
+          <div class="tile-body">
+
+            <ul class="list-unstyled">
+                <li><strong class="inline-block w-sm mb-5">Subtotal:</strong> {{vm.offer.offer_total | currency:"€ "}}</li>
+                <!-- <li><strong class="inline-block w-sm mb-5">Shipping:</strong> {{25 | currency}}</li>
+                <li><strong class="inline-block w-sm mb-5">Grand Total:</strong> {{vm.offer.offer_item[$index].item_sub_total + vm.offer.blank_item[$index].item_sub_total }}</li> -->
+<!--                 <li><strong class="inline-block w-sm mb-5">Total Paid:</strong> {{865.21 + 25 | currency}}</li> -->
+<!--                 <li><strong class="inline-block w-sm mb-5">Total Refunded:</strong> {{0 | currency}}</li> -->
+                <li><strong class="inline-block w-sm">Grand Total:</strong> <h3 class="inline-block text-success">{{vm.offer.offer_total | currency:"€ "}}</h3></li>
+              </ul>
+
+          </div>
+          <!-- /tile body -->
+
+        </section>
+        <!-- /tile -->
+
+      </div>
+      <!-- /col -->
+    </div>
+    <!-- /row -->
+
+  </div>
+  <!-- /page content -->
+
+
+
+
+</div>
