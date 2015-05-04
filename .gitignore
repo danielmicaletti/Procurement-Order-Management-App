@@ -46,6 +46,7 @@ docs/_build/
 *.komodotools
 
 venv
+staticfiles-2/
 *.pyc
 *local_settings.py
 local_settings.py
