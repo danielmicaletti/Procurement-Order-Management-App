@@ -47,8 +47,8 @@ docs/_build/
 
 venv
 *.pyc
-#staticfiles
 *local_settings.py
 local_settings.py
 local_settings
 *.db
+*db
