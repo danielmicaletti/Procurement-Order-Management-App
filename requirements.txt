@@ -14,5 +14,6 @@ paramiko==1.15.2
 psycopg2==2.6
 pycrypto==2.6.1
 pytz==2015.2
+requests==2.3.0
 static3==0.5.1
 wsgiref==0.1.2
