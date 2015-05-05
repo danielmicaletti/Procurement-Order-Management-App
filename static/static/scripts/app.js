@@ -113,7 +113,7 @@ angular
     .state('app', {
       abstract: true,
       url: '/app',
-      templateUrl: 'static/views/tmpl/app.html',
+      templateUrl: 'templates/views/tmpl/app.html',
       data: {
         requireLogin: true
       },
@@ -123,14 +123,14 @@ angular
       url: '/dashboard',
       controller: 'DashboardController',
       controllerAs: 'vm',
-      templateUrl: 'static/views/dashboard.html',
-      resolve: {
-        plugins: ['$ocLazyLoad', function($ocLazyLoad) {
-          return $ocLazyLoad.load([
-            'static/scripts/vendor/datatables/datatables.bootstrap.min.css'
-          ]);
-        }]
-      },
+      templateUrl: 'templates/views/dashboard.html',
+      // resolve: {
+      //   plugins: ['$ocLazyLoad', function($ocLazyLoad) {
+      //     return $ocLazyLoad.load([
+      //       'static/scripts/vendor/datatables/datatables.bootstrap.min.css'
+      //     ]);
+      //   }]
+      // },
       data: {
         requireLogin: true
       },
@@ -145,7 +145,7 @@ angular
       url: '/all',
       controller: 'OrdersController',
       controllerAs: 'vm',
-      templateUrl: 'static/views/orders/orders.html',
+      templateUrl: 'templates/views/orders/orders.html',
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
@@ -164,7 +164,7 @@ angular
       url: '/request/:goodId',
       controller: 'RequestController',
       controllerAs: 'vm',
-      templateUrl: 'static/views/orders/new-request.html',
+      templateUrl: 'templates/views/orders/new-request.html',
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
@@ -181,7 +181,7 @@ angular
       url: '/edit/:reqId',
       controller: 'EditRequestController',
       controllerAs: 'vm',
-      templateUrl: 'static/views/orders/edit-request.html',
+      templateUrl: 'templates/views/orders/edit-request.html',
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
@@ -198,7 +198,7 @@ angular
       url: '/:orderId/add/:goodId',
       controller: 'AddRequestController',
       controllerAs: 'vm',
-      templateUrl: 'static/views/orders/add-request.html',
+      templateUrl: 'templates/views/orders/add-request.html',
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
@@ -215,7 +215,7 @@ angular
       url: '/order/:orderId',
       controller: 'OrderController',
       controllerAs: 'vm',
-      templateUrl: 'static/views/orders/order.html',
+      templateUrl: 'templates/views/orders/order.html',
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
@@ -231,7 +231,7 @@ angular
       url: '/offer/:orderId',
       controller: 'OfferController',
       controllerAs: 'vm',
-      templateUrl: 'static/views/orders/offer.html',
+      templateUrl: 'templates/views/orders/offer.html',
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
@@ -252,7 +252,7 @@ angular
       url: '/profile/:username',
       controller: 'AccountSettingsController',
       controllerAs: 'vm',
-      templateUrl: 'static/views/authentication-views/profile.html',
+      templateUrl: 'templates/views/authentication-views/profile.html',
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
@@ -265,7 +265,7 @@ angular
       url: '/company/:companyId',
       controller: 'CompanySettingsController',
       controllerAs: 'vm',
-      templateUrl: 'static/views/authentication-views/company-profile.html',
+      templateUrl: 'templates/views/authentication-views/company-profile.html',
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
@@ -279,25 +279,25 @@ angular
       abstract: true,
       url: '/mail',
       controller: 'MailCtrl',
-      templateUrl: 'static/views/tmpl/mail/mail.html'
+      templateUrl: 'templates/views/tmpl/mail/mail.html'
     })
     //mail/inbox
     .state('app.mail.inbox', {
       url: '/inbox',
       controller: 'MailInboxCtrl',
-      templateUrl: 'static/views/tmpl/mail/inbox.html'
+      templateUrl: 'templates/views/tmpl/mail/inbox.html'
     })
     //mail/compose
     .state('app.mail.compose', {
       url: '/compose',
       controller: 'MailComposeCtrl',
-      templateUrl: 'static/views/tmpl/mail/compose.html'
+      templateUrl: 'templates/views/tmpl/mail/compose.html'
     })
     //mail/single
     .state('app.mail.single', {
       url: '/single',
       controller: 'MailSingleCtrl',
-      templateUrl: 'static/views/tmpl/mail/single.html'
+      templateUrl: 'templates/views/tmpl/mail/single.html'
     })
     //app core pages (errors, login,signup)
     .state('core', {
@@ -313,7 +313,7 @@ angular
       url: '/login',
       controller: 'LoginController',
       controllerAs: 'vm',
-      templateUrl: 'static/views/authentication-views/login.html',
+      templateUrl: 'templates/views/authentication-views/login.html',
       // data: {
       //   requireLogin: false
       // },
