@@ -108,11 +108,11 @@ SITE_ID = 1
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR,'static/')
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
 STATICFILES_DIRS = (
 
-    os.path.join(BASE_DIR, 'staticfiles/'),
+    os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'media'),
 )
 
@@ -121,9 +121,9 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-MEDIA_URL = '/media/'
+MEDIA_ROOT = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = ''
 
 UPLOAD_FILE_PATTERN = "uploads/%s_%s"
 
