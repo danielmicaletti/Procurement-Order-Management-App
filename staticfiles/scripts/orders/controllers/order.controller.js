@@ -6,10 +6,10 @@
     .controller('OrderController', OrderController);
 
   OrderController.$inject = [
-    '$scope', '$location', '$stateParams', '$log', 'Authentication', 'Account', 'Company', 'Order', 'toastr',
+    '$scope', '$location', '$stateParams', '$state', '$log', 'Authentication', 'Account', 'Company', 'Order', 'toastr',
   ];
 
-  function OrderController($scope, $location, $stateParams, $log, Authentication, Account, Company, Order, toastr) {
+  function OrderController($scope, $location, $stateParams, $state, $log, Authentication, Account, Company, Order, toastr) {
     var vm = this;
 
     activate();
@@ -55,10 +55,10 @@
       var authenticatedAccount = Authentication.getAuthenticatedAccount();
       var orderId = $stateParams.orderId;
 
-      if (!authenticatedAccount) {
-        $state.go('core.login');
-        toastr.error('You are not authorized to view this page.');
-      } 
+      // if (!authenticatedAccount) {
+      //   $state.go('core.login');
+      //   toastr.error('You are not authorized to view this page.');
+      // } 
       // else {
       //   // Redirect if logged in, but not the owner of this account.
       //   if (authenticatedAccount) {

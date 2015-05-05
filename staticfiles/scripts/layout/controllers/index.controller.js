@@ -1,7 +1,4 @@
-/**
- * IndexController
- * @namespace thinkster.layout.controllers
- */
+
 (function () {
   'use strict';
 
@@ -9,52 +6,40 @@
     .module('layout.controllers')
     .controller('IndexController', IndexController);
 
-  IndexController.$inject = ['$scope', 'Authentication', 'Posts', 'Snackbar'];
+  IndexController.$inject = ['$scope', '$state', 'Authentication'];
 
   /**
    * @namespace IndexController
    */
-  function IndexController($scope, Authentication, Posts, Snackbar) {
+  function IndexController($scope, $state, Authentication) {
     var vm = this;
-
+    // console.log($state.go('core.login'));
     vm.isAuthenticated = Authentication.isAuthenticated();
-    vm.posts = [];
+    console.log(vm.isAuthenticated);
+    // if (vm.isAuthenticated === false) {
+    //   console.log(vm.isAuthenticated);
+    //   console.log('here');
+    //   $state.go('core.login');
+    // } 
+    activate();
 
-    // activate();
+    $scope.main = {
+      title: 'WeASe',
+      settings: {
+        navbarHeaderColor: 'scheme-default',
+        sidebarColor: 'scheme-default',
+        brandingColor: 'scheme-default',
+        activeColor: 'default-scheme-color',
+        headerFixed: true,
+        asideFixed: true,
+        rightbarShow: false
+      }
+    };
 
-    /**
-     * @name activate
-     * @desc Actions to be performed when this controller is instantiated
-     * @memberOf thinkster.layout.controllers.IndexController
-     */
     function activate() {
-      // Posts.all().then(postsSuccessFn, postsErrorFn);
-
-      // $scope.$on('post.created', function (event, post) {
-      //   vm.posts.unshift(post);
-      // });
-
-      // $scope.$on('post.created.error', function () {
-      //   vm.posts.shift();
-      // });
-
-
-      /**
-       * @name postsSuccessFn
-       * @desc Update thoughts array on view
-       */
-      // function postsSuccessFn(data, status, headers, config) {
-      //   vm.posts = data.data;
-      // }
-
-
-      /**
-       * @name postsErrorFn
-       * @desc Show snackbar with error
-       */
-      // function postsErrorFn(data, status, headers, config) {
-      //   Snackbar.error(data.error);
-      // }
+      // if (!vm.isAuthenticated) {
+      //   $state.go('core.login');
+      // } 
     }
   }
 })();

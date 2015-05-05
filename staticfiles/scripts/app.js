@@ -70,6 +70,23 @@ angular
       $rootScope.containerClass = toState.containerClass;
     });
   }])
+  .run(['$rootScope', '$state', 'Authentication',function($rootScope, $state, Authentication) {
+
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
+      var requireLogin = toState.data.requireLogin;
+      var auth = Authentication.isAuthenticated();
+
+      if (requireLogin && !auth) {
+        event.preventDefault();
+        console.log('Here in app.js');
+        console.log(requireLogin);
+        console.log(auth);
+        console.log($state.go('core.login'));
+        $state.go('core.login');
+        return $rootScope;
+      }
+    });
+  }])
   .run(['$http', function ($http){
     $http.defaults.xsrfHeaderName = 'X-CSRFToken';
     $http.defaults.xsrfCookieName = 'csrftoken';
@@ -78,29 +95,45 @@ angular
   .config(['uiSelectConfig', function (uiSelectConfig) {
     uiSelectConfig.theme = 'bootstrap';
   }])
+  .config(function ($urlMatcherFactoryProvider) {
+    $urlMatcherFactoryProvider.caseInsensitive(true);
+    $urlMatcherFactoryProvider.strictMode(false);
+  })
   .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
-    $urlRouterProvider.otherwise('/app/dashboard');
+    // $urlRouterProvider.otherwise('/app/dashboard');
+
+    $urlRouterProvider.otherwise(function($injector) {
+      var $state = $injector.get('$state');
+      $state.go('app.dashboard');
+    });
 
     $stateProvider
 
     .state('app', {
       abstract: true,
       url: '/app',
-      templateUrl: 'static/views/tmpl/app.html'
+      templateUrl: 'static/views/tmpl/app.html',
+      data: {
+        requireLogin: true
+      },
     })
     //dashboard
     .state('app.dashboard', {
       url: '/dashboard',
-      controller: 'DashboardCtrl',
-      templateUrl: 'static/views/tmpl/dashboard.html',
+      controller: 'DashboardController',
+      controllerAs: 'vm',
+      templateUrl: 'static/views/dashboard.html',
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
             'static/scripts/vendor/datatables/datatables.bootstrap.min.css'
           ]);
         }]
-      }
+      },
+      data: {
+        requireLogin: true
+      },
     })
     // requests/orders/offers
     .state('app.orders', {
@@ -122,6 +155,9 @@ angular
           ]);
         }]
       }
+      // data: {
+      //   requireLogin: true
+      // },
     })    
     //request
     .state('app.orders.request', {
@@ -267,14 +303,20 @@ angular
     .state('core', {
       abstract: true,
       url: '/core',
-      template: '<div ui-view></div>'
+      template: '<div ui-view></div>',
+      data: {
+        requireLogin: false
+      }
     })
     //login
     .state('core.login', {
       url: '/login',
       controller: 'LoginController',
       controllerAs: 'vm',
-      templateUrl: 'static/views/authentication-views/login.html'
+      templateUrl: 'static/views/authentication-views/login.html',
+      // data: {
+      //   requireLogin: false
+      // },
     })
   }]);
   //   //ui

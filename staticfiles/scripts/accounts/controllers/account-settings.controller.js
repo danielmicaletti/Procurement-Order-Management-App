@@ -36,7 +36,6 @@
       // Redirect if not logged in
       if (!authenticatedAccount) {
         $location.url('/login');
-        toastr.error('You are not authorized to view this page.');
       } 
       // else {
       //   // Redirect if logged in, but not the owner of this account.
