@@ -113,7 +113,7 @@ angular
     .state('app', {
       abstract: true,
       url: '/app',
-      templateUrl: 'templates/views/tmpl/app.html',
+      templateUrl: static_path('views/tmpl/app.html'),
       data: {
         requireLogin: true
       },
@@ -123,11 +123,11 @@ angular
       url: '/dashboard',
       controller: 'DashboardController',
       controllerAs: 'vm',
-      templateUrl: 'templates/views/dashboard.html',
+      templateUrl: static_path('views/dashboard.html'),
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
-            'static/scripts/vendor/datatables/datatables.bootstrap.min.css'
+            static_path('scripts/vendor/datatables/datatables.bootstrap.min.css')
           ]);
         }]
       },
@@ -145,33 +145,30 @@ angular
       url: '/all',
       controller: 'OrdersController',
       controllerAs: 'vm',
-      templateUrl: 'templates/views/orders/orders.html',
+      templateUrl: static_path('views/orders/orders.html'),
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
-            'static/scripts/vendor/datatables/datatables.bootstrap.min.css',
-            'static/scripts/vendor/datatables/Pagination/input.js',
-            'static/scripts/vendor/datatables/ColumnFilter/jquery.dataTables.columnFilter.js'
+            static_path('scripts/vendor/datatables/datatables.bootstrap.min.css'),
+            static_path('scripts/vendor/datatables/Pagination/input.js'),
+            static_path('scripts/vendor/datatables/ColumnFilter/jquery.dataTables.columnFilter.js')
           ]);
         }]
       }
-      // data: {
-      //   requireLogin: true
-      // },
     })    
     //request
     .state('app.orders.request', {
       url: '/request/:goodId',
       controller: 'RequestController',
       controllerAs: 'vm',
-      templateUrl: 'templates/views/orders/new-request.html',
+      templateUrl: static_path('views/orders/new-request.html'),
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
-            'static/scripts/vendor/slider/bootstrap-slider.js',
-            'static/scripts/vendor/touchspin/jquery.bootstrap-touchspin.js',
-            'static/scripts/vendor/touchspin/jquery.bootstrap-touchspin.css',
-            'static/scripts/vendor/filestyle/bootstrap-filestyle.min.js'
+            static_path('scripts/vendor/slider/bootstrap-slider.js'),
+            static_path('scripts/vendor/touchspin/jquery.bootstrap-touchspin.js'),
+            static_path('scripts/vendor/touchspin/jquery.bootstrap-touchspin.css'),
+            static_path('scripts/vendor/filestyle/bootstrap-filestyle.min.js')
           ]);
         }]
       }
@@ -181,14 +178,14 @@ angular
       url: '/edit/:reqId',
       controller: 'EditRequestController',
       controllerAs: 'vm',
-      templateUrl: 'templates/views/orders/edit-request.html',
+      templateUrl: static_path('views/orders/edit-request.html'),
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
-            'static/scripts/vendor/slider/bootstrap-slider.js',
-            'static/scripts/vendor/touchspin/jquery.bootstrap-touchspin.js',
-            'static/scripts/vendor/touchspin/jquery.bootstrap-touchspin.css',
-            'static/scripts/vendor/filestyle/bootstrap-filestyle.min.js'
+            static_path('scripts/vendor/slider/bootstrap-slider.js'),
+            static_path('scripts/vendor/touchspin/jquery.bootstrap-touchspin.js'),
+            static_path('scripts/vendor/touchspin/jquery.bootstrap-touchspin.css'),
+            static_path('scripts/vendor/filestyle/bootstrap-filestyle.min.js')
           ]);
         }]
       }
@@ -198,14 +195,14 @@ angular
       url: '/:orderId/add/:goodId',
       controller: 'AddRequestController',
       controllerAs: 'vm',
-      templateUrl: 'templates/views/orders/add-request.html',
+      templateUrl: static_path('views/orders/add-request.html'),
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
-            'static/scripts/vendor/slider/bootstrap-slider.js',
-            'static/scripts/vendor/touchspin/jquery.bootstrap-touchspin.js',
-            'static/scripts/vendor/touchspin/jquery.bootstrap-touchspin.css',
-            'static/scripts/vendor/filestyle/bootstrap-filestyle.min.js'
+            static_path('scripts/vendor/slider/bootstrap-slider.js'),
+            static_path('scripts/vendor/touchspin/jquery.bootstrap-touchspin.js'),
+            static_path('scripts/vendor/touchspin/jquery.bootstrap-touchspin.css'),
+            static_path('scripts/vendor/filestyle/bootstrap-filestyle.min.js')
           ]);
         }]
       }
@@ -215,13 +212,13 @@ angular
       url: '/order/:orderId',
       controller: 'OrderController',
       controllerAs: 'vm',
-      templateUrl: 'templates/views/orders/order.html',
+      templateUrl: static_path('views/orders/order.html'),
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
-            'static/scripts/vendor/datatables/datatables.bootstrap.min.css',
-            'static/scripts/vendor/datatables/Pagination/input.js',
-            'static/scripts/vendor/datatables/ColumnFilter/jquery.dataTables.columnFilter.js'
+            static_path('scripts/vendor/datatables/datatables.bootstrap.min.css'),
+            static_path('scripts/vendor/datatables/Pagination/input.js'),
+            static_path('scripts/vendor/datatables/ColumnFilter/jquery.dataTables.columnFilter.js')
           ]);
         }]
       }
@@ -231,13 +228,13 @@ angular
       url: '/offer/:orderId',
       controller: 'OfferController',
       controllerAs: 'vm',
-      templateUrl: 'templates/views/orders/offer.html',
+      templateUrl: static_path('views/orders/offer.html'),
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
-            'static/scripts/vendor/datatables/datatables.bootstrap.min.css',
-            'static/scripts/vendor/datatables/Pagination/input.js',
-            'static/scripts/vendor/datatables/ColumnFilter/jquery.dataTables.columnFilter.js'
+            static_path('scripts/vendor/datatables/datatables.bootstrap.min.css'),
+            static_path('scripts/vendor/datatables/Pagination/input.js'),
+            static_path('scripts/vendor/datatables/ColumnFilter/jquery.dataTables.columnFilter.js')
           ]);
         }]
       }
@@ -252,11 +249,11 @@ angular
       url: '/profile/:username',
       controller: 'AccountSettingsController',
       controllerAs: 'vm',
-      templateUrl: 'templates/views/authentication-views/profile.html',
+      templateUrl: static_path('views/authentication-views/profile.html'),
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
-            'static/scripts/vendor/filestyle/bootstrap-filestyle.min.js'
+            static_path('scripts/vendor/filestyle/bootstrap-filestyle.min.js')
           ]);
         }]
       }
@@ -265,11 +262,11 @@ angular
       url: '/company/:companyId',
       controller: 'CompanySettingsController',
       controllerAs: 'vm',
-      templateUrl: 'templates/views/authentication-views/company-profile.html',
+      templateUrl: static_path('views/authentication-views/company-profile.html'),
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
-            'static/scripts/vendor/filestyle/bootstrap-filestyle.min.js'
+            static_path('scripts/vendor/filestyle/bootstrap-filestyle.min.js')
           ]);
         }]
       }
@@ -279,25 +276,25 @@ angular
       abstract: true,
       url: '/mail',
       controller: 'MailCtrl',
-      templateUrl: 'templates/views/tmpl/mail/mail.html'
+      templateUrl: static_path('views/tmpl/mail/mail.html')
     })
     //mail/inbox
     .state('app.mail.inbox', {
       url: '/inbox',
       controller: 'MailInboxCtrl',
-      templateUrl: 'templates/views/tmpl/mail/inbox.html'
+      templateUrl: static_path('views/tmpl/mail/inbox.html')
     })
     //mail/compose
     .state('app.mail.compose', {
       url: '/compose',
       controller: 'MailComposeCtrl',
-      templateUrl: 'templates/views/tmpl/mail/compose.html'
+      templateUrl: static_path('views/tmpl/mail/compose.html')
     })
     //mail/single
     .state('app.mail.single', {
       url: '/single',
       controller: 'MailSingleCtrl',
-      templateUrl: 'templates/views/tmpl/mail/single.html'
+      templateUrl: static_path('views/tmpl/mail/single.html')
     })
     //app core pages (errors, login,signup)
     .state('core', {
@@ -313,7 +310,7 @@ angular
       url: '/login',
       controller: 'LoginController',
       controllerAs: 'vm',
-      templateUrl: 'templates/views/authentication-views/login.html',
+      templateUrl: static_path('views/authentication-views/login.html'),
       // data: {
       //   requireLogin: false
       // },

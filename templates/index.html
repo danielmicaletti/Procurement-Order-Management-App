@@ -48,7 +48,21 @@
     <!-- endbuild -->
 
     <!-- build:js(.) static/scripts/vendor.js -->
+  <script>
+      var STATIC_URL = '{{ STATIC_URL|escapejs }}';
+      console.log(STATIC_URL);
+      var MEDIA_URL  = '{{ MEDIA_URL|escapejs }}';
 
+      function static_path(path) {
+
+          return STATIC_URL + path;
+      }
+
+      function static_media(path) {
+
+          return MEDIA_URL + path;
+      }
+  </script>
     {% include 'javascripts.html' %}
 </body>
 </html>

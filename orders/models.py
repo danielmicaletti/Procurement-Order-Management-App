@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-# from django.contrib.auth.models import User
+from django.utils import timezone
 from django.utils.encoding import smart_unicode
 from authentication.models import Account, Company, Address
 from django.core.files.storage import default_storage
@@ -182,7 +182,7 @@ class OfferItem(models.Model):
     item_sub_total = models.CharField(max_length=50, null=True, blank=True)
     frequency = models.CharField(max_length=50, null=True, blank=True)
     quantity = models.SmallIntegerField(null=True, blank=True)
-    delivery_date = models.DateTimeField(null=True, blank=True)
+    # delivery_date = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
     date_start = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
     date_end = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
 
