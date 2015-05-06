@@ -54,7 +54,7 @@
       var MEDIA_URL  = '{{ MEDIA_URL|escapejs }}';
 
       function static_path(path) {
-
+          console.log(STATIC_URL + path);
           return STATIC_URL + path;
       }
 
