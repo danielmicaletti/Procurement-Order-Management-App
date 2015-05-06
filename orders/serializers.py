@@ -38,16 +38,10 @@ class OfferSerializer(serializers.ModelSerializer):
             'offer_created', 'offer_created_by', 'offer_created_by_name', 'offer_approval', 'offer_approval_by', 'offer_approval_by_name', 'offer_item',)
 
     def create(self, validated_data):
-        print "SELF === %s" % self
-        print "VAL DATA === %s" % validated_data
-        print "VAL DATA ORDER === %s" % validated_data['order']
         order = Order.objects.get(id=validated_data['order'])
-        print "Ord version == %s" % order.offer_version
         order.offer_version = order.offer_version+1
-        print "Ord version 2== %s" % order.offer_version
         order.order_offer = True
         order.order_total = validated_data['offer_total']
-        print "Ord Total === %s" % order.order_total
         user = validated_data['user']
         order.modified_by = user
         order.order_status_change_by = user
@@ -57,7 +51,6 @@ class OfferSerializer(serializers.ModelSerializer):
         offer.save()
         for item in validated_data['offer_item']:
             offer_item = OfferItem(offer=offer, **item)
-            print "ITEM === %s" % item
             offer_item.save()
         return offer
 
@@ -76,6 +69,7 @@ class ReqProductSerializer(serializers.ModelSerializer):
         model = ReqProduct
         fields = ('id', 'req_item', 'prod_fam', 'prod_subfam', 'prod_title', 'prod_details', 'prod_description',)
 
+
 class ReqItemSerializer(serializers.ModelSerializer):
     good = serializers.CharField(source='good.id', required=False)
     order = serializers.CharField(required=False)
@@ -91,60 +85,38 @@ class ReqItemSerializer(serializers.ModelSerializer):
         fields = ('id', 'good', 'order', 'order_draft', 'order_description', 'delivery_address', 'order_reference', 'req_domain', 'item_fam', 'item_subfam', 'req_product', 'req_item_file',)
 
     def create(self, validated_data):
-        print "SELF == =%s" % self
-        print "VAL_DATA === %s" % validated_data
         order = validated_data.pop('order')
-        print "Order === %s" % order
         goods = validated_data.pop('good')
         good = Good.objects.get(id=validated_data['good_id'])
-        print "GOOD === %s" % good
         addr = Address.objects.get(id=validated_data['delivery_address'])
         order.delivery_address = addr
         order.reference_number = validated_data['order_reference']
         order.description = validated_data['order_description'] 
         order.order_draft = validated_data['order_draft']
-        print "ORDER DA == %s" % order.delivery_address
         order.save()
-        print "ORDER SV 2 == %s" % order
         req_item = ReqItem.objects.create(order=order, good=good, req_domain=goods[0], item_fam=goods[1], item_subfam=goods[2])
         req_item.save()
         for k, v in validated_data['prod_details'].iteritems():
-            print "K === %s" % k
-            print "V === %s" % v
             req_product = ReqProduct(req_item=req_item, prod_fam=goods[1], prod_subfam=goods[2], prod_title=k, prod_details=v)
-            print "REQ PRODUCT 1 === %s" % req_product
             req_product.save()
-        print "req_item === %s " % req_item
         return req_item
 
     def update(self, instance, validated_data):
-        print "UPD RQ SELF=== %s" % self
-        print "UPD RQ INST === %s" % instance
-        print "UPD RQ VAL ==== %s" % validated_data
         val_data = validated_data.pop('data')
-        print "VAL DATA === %s" % val_data
         order = validated_data.pop('order')
-        print "Order === %s" % order
         addr = val_data['delivery_address']
-        print "ADDR === %s " % addr
         del_address = Address.objects.get(id=addr)
-        print "del_address === %s "% del_address
         order.delivery_address = del_address
         order.reference_number = val_data['order_reference']
         order.description = val_data['order_description'] 
         order.order_draft = val_data['order_draft'] 
         order.save()      
         for item in val_data['req_product']:
-            print "ITEM === %s" % item
             req_product = ReqProduct(id=item['id'], prod_title=item['prod_title'], prod_details=item['prod_details'], req_item=instance)
-            print "REQ PRODUCT 1 === %s" % req_product
             req_product.save()
-            print "REQ PRODUCT 2 === %s" % req_product
-        print "UPD SELF 2 === %s" % self
-        print "UPD instance 2 === %s" % instance
-        print "UPD validated_data 2 ==== %s" % validated_data
         instance.save()
         return instance
+
 
 class OrderSerializer(serializers.ModelSerializer):
     order_company = CompanySerializer(read_only=True)
@@ -168,9 +140,6 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only_fields = ('order_created', 'modified_date', 'company_approval_by', 'optiz_status_change_by', 'order_status_change_by', 'modified_by',)
     
     def update(self, instance, validated_data):
-        print "SER UPD SELF === %s" % self
-        print "SER UPD INST === %s" % instance
-        print "SER UPD VAL DATA === %s" % validated_data
         instance.order_status = validated_data['order_status']
         instance.order_status_change_by = validated_data['user']
         instance.order_status_change_date = timezone.now()
@@ -186,12 +155,14 @@ class OrderSerializer(serializers.ModelSerializer):
             offer.save()
         return instance
 
+
 class DetailSerializer(serializers.ModelSerializer):
     good = serializers.CharField()
 
     class Meta:
         model = Detail
         fields = ('id', 'good', 'good_info', 'good_description',)
+
 
 class GoodSerializer(serializers.ModelSerializer):
     good_detail = DetailSerializer(many=True)
