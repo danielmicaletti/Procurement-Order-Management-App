@@ -55,9 +55,9 @@ class Account(AbstractBaseUser):
 
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=40, unique=True)
-    first_name = models.CharField(max_length=40, blank=True)
-    last_name = models.CharField(max_length=40, blank=True)
-    tagline = models.CharField(max_length=140, blank=True)
+    first_name = models.CharField(max_length=40, blank=True, null=True)
+    last_name = models.CharField(max_length=40, blank=True, null=True)
+    tagline = models.CharField(max_length=140, blank=True, null=True)
     is_admin = models.BooleanField(default=False)
     optiz = models.BooleanField(default=False)
     lang = models.CharField(max_length=3, null=True, blank=True, default=lang_def.lower())
