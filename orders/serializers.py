@@ -21,7 +21,7 @@ class OfferItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OfferItem
         fields = ('id', 'offer', 'item_name', 'item_details', 'price', 'item_sub_total', 'frequency', 'quantity',
-            'delivery_date', 'date_start', 'date_end',)
+             'date_start', 'date_end',)
 
 
 class OfferSerializer(serializers.ModelSerializer):
