@@ -182,7 +182,7 @@ class OfferItem(models.Model):
     item_sub_total = models.CharField(max_length=50, null=True, blank=True)
     frequency = models.CharField(max_length=50, null=True, blank=True)
     quantity = models.SmallIntegerField(null=True, blank=True)
-    delivery_date = models.CharField(max_length=50, null=True, blank=True)
+    # delivery_date = models.CharField(max_length=50, null=True, blank=True)
     date_start = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
     date_end = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
 
