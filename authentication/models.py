@@ -28,7 +28,8 @@ class AccountManager(BaseUserManager):
 
     def create_superuser(self, email, password, **kwargs):
         account = self.create_user(email, password, **kwargs)
-
+        account.first_name = 'Daniel'
+        account.last_name = 'Mic'
         account.is_admin = True
         account.save()
 
@@ -55,8 +56,8 @@ class Account(AbstractBaseUser):
 
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=40, unique=True)
-    first_name = models.CharField(max_length=50, null=True, blank=True, default='Daniel')
-    last_name = models.CharField(max_length=50, null=True, blank=True, default='Mic')
+    first_name = models.CharField(max_length=50, null=True, blank=True)
+    last_name = models.CharField(max_length=50, null=True, blank=True)
     tagline = models.CharField(max_length=140, null=True, blank=True)
     is_admin = models.BooleanField(default=False)
     optiz = models.BooleanField(default=False)
