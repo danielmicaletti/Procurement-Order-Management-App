@@ -22,7 +22,7 @@ module.exports = function(grunt) {
     concat: {
       dist:{}
     },
-    ngmin: {
+    ngAnnotate: {
       dist: {}
     },
     uglify: {
@@ -35,7 +35,7 @@ module.exports = function(grunt) {
         },
         banner: '/*\n  <%= pkg.name %> - v<%= pkg.version %> \n  ' +
           '<%= grunt.template.today("yyyy-mm-dd") %>\n*/\n'+
-        '',
+        ''
       },
       dist: {
         options: {
@@ -136,7 +136,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'concat',
-    'ngmin',
+    'ngAnnotate',
     'uglify'
   ]);
 

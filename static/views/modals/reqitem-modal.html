@@ -19,7 +19,7 @@
         <div class="col-md-12">
             <h5 custom-font>Attached <strong>Files</strong></h5>
             <div ng-repeat="file in req.req_item_file" class="col-md-12">
-                <p><a href="static/{{ file.req_file }}" target="_blank">{{ file.req_file }}</a></p>
+                <p><a href="{{path.media}}{{ file.req_file }}" target="_blank">{{ file.req_file }}</a></p>
             </div>
         </div>
     </div>    

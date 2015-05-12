@@ -1,7 +1,3 @@
-/**
-* AccountController
-* @namespace thinkster.accounts.controllers
-*/
 (function () {
   'use strict';
 
@@ -9,66 +5,90 @@
     .module('accounts.controllers')
     .controller('AccountController', AccountController);
 
-  AccountController.$inject = ['$location', '$routeParams', 'Posts', 'Account', 'toastr'];
+  AccountController.$inject = [
+    '$scope', '$state', '$stateParams', 'Authentication', 'Account', 'Company','toastr',
+  ];
 
-  /**
-  * @namespace AccountController
-  */
-  function AccountController($location, $routeParams, Posts, Account, toastr) {
-    
+  function AccountController($scope, $state, $stateParams, Authentication, Account, Company, toastr) {
     var vm = this;
 
-    vm.account = undefined;
-    vm.posts = [];
+    vm.destroy = destroy;
+    vm.update = update;
+
+    vm.username = $stateParams.username;
 
     activate();
 
-    /**
-    * @name activate
-    * @desc Actions to be performed when this controller is instantiated
-    * @memberOf thinkster.accounts.controllers.AccountController
-    */
+    $scope.page = {
+      title: 'Profile Page',
+    };
+
+    // activate function to initialize on page/controller load
     function activate() {
-      var username = $routeParams.username.substr(1);
 
-      Account.get(username).then(accountSuccessFn, accountErrorFn);
-      Posts.get(username).then(postsSuccessFn, postsErrorFn);
+      // GET Account with success/error callbacks
+      Account.get(vm.username)
+        .then(accountSuccessFn)
+        .catch(accountErrorFn);
 
-      /**
-      * @name accountSuccessAccount
-      * @desc Update `account` on viewmodel
-      */
       function accountSuccessFn(data, status, headers, config) {
-        vm.account = data.data;
+        vm.account = data.data;  
+        console.log(vm.account); 
+        // GET company details of user with success/error callbacks
+        Company.get(vm.account.user_company)
+          .then(companySuccessFn)
+          .catch(companyErrorFn);   
       }
 
-
-      /**
-      * @name accountErrorFn
-      * @desc Redirect to index and show error Snackbar
-      */
       function accountErrorFn(data, status, headers, config) {
-        $location.url('#/app/dashboard');
+        $state.go('app.dashboard');
         toastr.error('That user does not exist.');
       }
 
-
-      /**
-        * @name postsSucessFn
-        * @desc Update `posts` on viewmodel
-        */
-      function postsSuccessFn(data, status, headers, config) {
-        vm.posts = data.data;
+      // GET company details success/error callbacks
+      function companySuccessFn(data, status, headers, config) {
+        console.log(data.data);
+        vm.company = data.data;
       }
 
-
-      /**
-        * @name postsErrorFn
-        * @desc Show error snackbar
-        */
-      function postsErrorFn(data, status, headers, config) {
-        toastr.error(data.data.error);
+      function companyErrorFn(data, status, headers, config) {
+        console.log(data.data);
+        $state.go('app.dashboard');
+        toastr.error('That company does not exist.');
       }
     }
-  }
+
+    // Destroy Account with success/error callbacks
+    function destroy() {
+      Account.destroy(vm.account.username)
+        .then(destroySuccessFn)
+        .catch(destroyErrorFn);
+
+      function destroySuccessFn(data, status, headers, config) {
+        Authentication.unauthenticate();
+        $state.go('app.dashboard');
+        toastr.warning('Your account has been deleted.');
+      }
+
+      function destroyErrorFn(data, status, headers, config) {
+        toastr.error(data.error);
+      }
+    }
+
+    // Update Account with success/error callbacks
+    function update() {
+      
+      Account.update(vm.username, vm.account)
+        .then(updateSuccessFn)
+        .catch(updateErrorFn);
+
+      function updateSuccessFn(data, status, headers, config) {
+        toastr.success('Your account has been updated.');
+      }
+
+      function updateErrorFn(data, status, headers, config) {
+        toastr.error(data.error);
+      }
+    }
+  };
 })();

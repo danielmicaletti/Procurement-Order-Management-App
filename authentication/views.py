@@ -23,8 +23,6 @@ class AccountViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             acct = Account.objects.create_user(**serializer.validated_data)
-            acct.first_name = 'Daniel'
-            acct.last_name = 'Mic'
             acct.user_company = request.user.user_company
             acct.user_created_by = request.user
             acct.save()

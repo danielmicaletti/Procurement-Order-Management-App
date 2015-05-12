@@ -4,11 +4,11 @@
 
   angular
     .module('layout.controllers')
-    .controller('NavCtrl', NavCtrl);
+    .controller('NavController', NavController);
 
-  NavCtrl.$inject = ['$scope', '$localStorage', 'Authentication', 'Goods'];
+  NavController.$inject = ['$scope', '$localStorage', 'Authentication', 'Goods'];
 
-  function NavCtrl($scope, $localStorage, Authentication, Goods) {  
+  function NavController($scope, $localStorage, Authentication, Goods) {  
     var vm = this;
     vm.icon = ['file-o','building','table','desktop','th-large','plus-square-o']
     vm.user = Authentication.getAuthenticatedAccount();
@@ -16,8 +16,9 @@
     Goods.get().then(getGoodsSuccess).catch(getGoodsError);
     
     function getGoodsSuccess (goods){
-    	vm.allGoods = goods.data;
-      $localStorage.goods = goods.data;
+      console.log(goods);
+    	vm.allGoods = goods;
+      $localStorage.goods = goods;
     	console.log(vm.allGoods);
     };
 

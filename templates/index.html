@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html ng-app="minovateApp" ng-controller="IndexController" class="no-js {{containerClass}}">
+<html ng-app="minovateApp" ng-controller="IndexController as app" class="no-js {{containerClass}}">
   <head>
     <meta charset="utf-8">
     <title>WeASe</title>
@@ -50,15 +50,14 @@
     <!-- build:js(.) static/scripts/vendor.js -->
   <script>
       var STATIC_URL = '{{ STATIC_URL|escapejs }}';
-      console.log(STATIC_URL);
       var MEDIA_URL  = '{{ MEDIA_URL|escapejs }}';
-
+      
       function static_path(path) {
           console.log(STATIC_URL + path);
           return STATIC_URL + path;
       }
 
-      function static_media(path) {
+      function media_path(path) {
 
           return MEDIA_URL + path;
       }

@@ -6,7 +6,7 @@
   <!-- page header -->
   <div class="pageheader">
 
-    <h2>{{ vm.company.name }}'s {{page.title}}</h2>
+    <h2>{{page.title}} <span>for</span> {{ vm.company.name }}</h2>
 
     <div class="page-bar">
 
@@ -15,7 +15,7 @@
           <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
         </li>
         <li>
-          <a ui-sref="app.pages.company-profile">{{ vm.company.name }}'s {{page.title}}</a>
+          <a ui-sref="app.pages.company-profile">{{ vm.company.name }} {{page.title}}</a>
         </li>
       </ul>
 
@@ -51,7 +51,7 @@
           <div class="tile-widget p-30 text-center">
 
             <div class="thumb thumb-xl">
-              <img class="img-circle" ng-src="{{ vm.company.company_logo }}" alt=""/>
+              <img class="img-circle" ng-src="{{path.media}}{{ vm.company.company_logo }}" alt=""/>
             </div>
             <h4 class="mb-0"><strong>{{ vm.company.name }}</strong></h4>
             <span class="text-muted">{{ vm.account.position }}</span>
@@ -127,7 +127,7 @@
             <div class="media" ng-repeat="user in vm.company.wease_company">
               
               <div class="pull-left thumb">
-                <img class="media-object img-circle" ng-src="{{ user.user_pic }}" alt="">
+                <img class="media-object img-circle" ng-src="{{path.media}}{{ user.user_pic }}" alt="">
               </div>
               <div class="pull-right mt-10">
                 <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><a ui-sref="app.pages.profile({username:user.username})"><i class="fa fa-eye" style="margin-left: -2px;"></i></a></button>

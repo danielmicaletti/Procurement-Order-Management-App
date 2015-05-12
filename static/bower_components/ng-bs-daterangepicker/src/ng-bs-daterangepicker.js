@@ -60,7 +60,7 @@ angular.module('ngBootstrap', []).directive('input', function ($compile, $parse)
 					ngModel.$setViewValue({ startDate: start, endDate: end });
 					ngModel.$render();
 				});
-			});
+			});			
 		}
 	};
 });

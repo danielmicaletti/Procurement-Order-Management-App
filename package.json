@@ -1,0 +1,18 @@
+{
+  "name": "WeASe",
+  "version": "0.0.1",
+  "author": "Daniel Micaletti",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-compass": "^2.0.4",
+    "gulp-concat": "^2.5.2",
+    "gulp-connect": "^2.2.0",
+    "gulp-if": "^1.2.5",
+    "gulp-imagemin": "^2.2.1",
+    "gulp-ng-annotate": "^0.5.3",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.4",
+    "imagemin-pngquant": "^4.1.0"
+  }
+}

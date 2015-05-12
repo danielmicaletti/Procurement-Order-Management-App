@@ -120,7 +120,7 @@ class Order(models.Model):
     modified_by_date = models.DateTimeField(auto_now_add=True, auto_now=False, null=True, blank=True)
     order_status = models.CharField(max_length=3, choices=ORDER_STATUS, default=WAITING_REQUEST)
     order_status_change_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='order_status_changed_by', null=True, blank=True)
-    order_status_change_date = models.DateTimeField(auto_now_add=False, auto_now=False)
+    order_status_change_date = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
     company_approval_status = models.CharField(max_length=3, choices=COMP_STATUS, default=PENDING)    
     company_approval_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='order_approved_by', null=True, blank=True)
     company_approval_date = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)

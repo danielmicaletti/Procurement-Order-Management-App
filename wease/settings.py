@@ -121,8 +121,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-MEDIA_ROOT = '/media/'
-
 MEDIA_URL = ''
 
 UPLOAD_FILE_PATTERN = "uploads/%s_%s"

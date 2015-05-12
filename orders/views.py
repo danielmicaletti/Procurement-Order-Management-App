@@ -21,7 +21,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         print 'SeLF == %s' % self
-        instance = serializer.save(order_created_by=self.request.user, order_company=self.request.user.user_company)
+        instance = serializer.save(order_created_by=self.request.user, order_company=self.request.user.user_company, order_status_change_date=timezone.now())
         print "SER === %s" % serializer.data
         print "instance == %s" % instance
         return super(OrderViewSet, self).perform_create(serializer)
@@ -58,7 +58,7 @@ class ReqItemViewSet(viewsets.ModelViewSet):
                 print "ORDER ID === %s " % order_id
                 order = Order.objects.get(id=order_id)
             else:
-                order = Order.objects.create(order_created_by=self.request.user, order_company=self.request.user.user_company)
+                order = Order.objects.create(order_created_by=self.request.user, order_company=self.request.user.user_company, order_status_change_date=timezone.now())
                 print "orderid 1 === %s" %order.id
                 yr = str(date.today().year)[2:]
                 order.order_number = ''.join(["0",yr,str(order.id)])

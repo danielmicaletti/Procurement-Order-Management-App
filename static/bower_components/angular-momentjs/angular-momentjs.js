@@ -1,6 +1,6 @@
 /*
-  angular-momentjs - v0.1.6 
-  2014-01-28
+  angular-momentjs - v0.1.9 
+  2015-02-05
 */
 (function(window, angular, undefined) {
     angular.module("angular-moment", [ "gdi2290.moment" ]);
@@ -13,7 +13,7 @@
     angular.module("gdi2290.moment-service", []);
     angular.module("gdi2290.moment", [ "gdi2290.moment-service", "gdi2290.amDateFormat", "gdi2290.amTimeAgo" ]);
     "use strict";
-    angular.module("gdi2290.amDateFormat").filter("amDateFormat", function($moment) {
+    angular.module("gdi2290.amDateFormat").filter("amDateFormat", [ "$moment", function($moment) {
         return function(value, format) {
             if (typeof value === "undefined" || value === null) {
                 return "";
@@ -29,9 +29,9 @@
                 return $moment(value).format(format);
             }
         };
-    });
+    } ]);
     "use strict";
-    angular.module("gdi2290.amTimeAgo").directive("amTimeAgo", function($moment, $timeout) {
+    angular.module("gdi2290.amTimeAgo").directive("amTimeAgo", [ "$moment", "$timeout", function($moment, $timeout) {
         function isUndefined(value) {
             return typeof value === "undefined" || value === null || value === "";
         }
@@ -102,11 +102,11 @@
                 cancelTimer();
             });
         };
-    });
+    } ]);
     "use strict";
     angular.module("gdi2290.moment-service").provider("$moment", function() {
         var _asyncLoading = false;
-        var _scriptUrl = "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.0/moment.min.js";
+        var _scriptUrl = "//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.js";
         this.asyncLoading = function(config) {
             _asyncLoading = config || _asyncLoading;
             return this;
@@ -115,8 +115,11 @@
             _scriptUrl = url || _scriptUrl;
             return this;
         };
-        function createScript($document, callback) {
-            var scriptTag = $document.createElement("script");
+        function createScript(callback) {
+            if (!document) {
+                return;
+            }
+            var scriptTag = document.createElement("script");
             scriptTag.type = "text/javascript";
             scriptTag.async = true;
             scriptTag.src = _scriptUrl;
@@ -126,10 +129,10 @@
                 }
             };
             scriptTag.onload = callback;
-            var s = $document.getElementsByTagName("body")[0];
+            var s = document.getElementsByTagName("head")[0];
             s.appendChild(scriptTag);
         }
-        this.$get = ['$timeout', '$document', '$q', '$window', function($timeout, $document, $q, $window) {
+        this.$get = [ "$timeout", "$q", "$window", function($timeout, $q, $window) {
             var deferred = $q.defer();
             var _moment = $window.moment;
             if (_asyncLoading) {
@@ -138,9 +141,9 @@
                         deferred.resolve($window.moment);
                     });
                 };
-                createScript($document[0], onScriptLoad);
+                createScript(onScriptLoad);
             }
             return _asyncLoading ? deferred.promise : _moment;
-        }];
+        } ];
     });
 })(this, this.angular, void 0);

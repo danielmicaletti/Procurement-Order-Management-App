@@ -1266,9 +1266,8 @@ module
     .directive('nvFileSelect', ['$parse', 'FileUploader', function($parse, FileUploader) {
         return {
             link: function(scope, element, attributes) {
-
                 var uploader = scope.$eval(attributes.uploader);
-                
+
                 if (!(uploader instanceof FileUploader)) {
                     throw new TypeError('"Uploader" must be an instance of FileUploader');
                 }
@@ -1289,7 +1288,7 @@ module
         return {
             link: function(scope, element, attributes) {
                 var uploader = scope.$eval(attributes.uploader);
-                
+
                 if (!(uploader instanceof FileUploader)) {
                     throw new TypeError('"Uploader" must be an instance of FileUploader');
                 }
@@ -1312,7 +1311,7 @@ module
         return {
             link: function(scope, element, attributes) {
                 var uploader = scope.$eval(attributes.uploader);
-                
+
                 if (!(uploader instanceof FileUploader)) {
                     throw new TypeError('"Uploader" must be an instance of FileUploader');
                 }

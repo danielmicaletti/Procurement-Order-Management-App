@@ -102,17 +102,17 @@ angular
   .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
     // $urlRouterProvider.otherwise('/app/dashboard');
-
+    
     $urlRouterProvider.otherwise(function($injector) {
       var $state = $injector.get('$state');
       $state.go('app.dashboard');
     });
 
     $stateProvider
-
+    //app page
     .state('app', {
       abstract: true,
-      url: '/app',
+      url: '/app',     
       templateUrl: static_path('views/tmpl/app.html'),
       data: {
         requireLogin: true
@@ -247,7 +247,7 @@ angular
     //profile page
     .state('app.pages.profile', {
       url: '/profile/:username',
-      controller: 'AccountSettingsController',
+      controller: 'AccountController',
       controllerAs: 'vm',
       templateUrl: static_path('views/authentication-views/profile.html'),
       resolve: {

@@ -159,4 +159,4 @@ angular.module('minovateApp')
       });
     };
 
-  })  
+  });  

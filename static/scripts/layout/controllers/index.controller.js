@@ -6,22 +6,18 @@
     .module('layout.controllers')
     .controller('IndexController', IndexController);
 
-  IndexController.$inject = ['$scope', '$state', 'Authentication'];
+  IndexController.$inject = ['$scope', '$sce', '$state', 'Authentication'];
 
   /**
    * @namespace IndexController
    */
-  function IndexController($scope, $state, Authentication) {
+  function IndexController($scope, $sce, $state, Authentication) {
     var vm = this;
-    // console.log($state.go('core.login'));
+
     vm.isAuthenticated = Authentication.isAuthenticated();
-    console.log(vm.isAuthenticated);
-    // if (vm.isAuthenticated === false) {
-    //   console.log(vm.isAuthenticated);
-    //   console.log('here');
-    //   $state.go('core.login');
-    // } 
-    activate();
+
+    $scope.au = Authentication.getAuthenticatedAccount();
+    console.log($scope.au);
 
     $scope.main = {
       title: 'WeASe',
@@ -36,10 +32,20 @@
       }
     };
 
-    function activate() {
-      // if (!vm.isAuthenticated) {
-      //   $state.go('core.login');
-      // } 
-    }
+    var mediaPath = media_path('');
+    console.log(mediaPath);
+    var staticPath = static_path('');
+    console.log(staticPath);
+    var headerPath = static_path('views/header.html');
+    var navPath = static_path('views/nav.html');
+    var rbPath = static_path('views/rightbar.html');
+
+    $scope.path = { 
+      static_files: $sce.trustAsResourceUrl(staticPath),
+      media: $sce.trustAsResourceUrl(mediaPath),
+      nav: $sce.trustAsResourceUrl(navPath),
+      header: $sce.trustAsResourceUrl(headerPath),
+      rb: $sce.trustAsResourceUrl(rbPath)
+    };
   }
 })();

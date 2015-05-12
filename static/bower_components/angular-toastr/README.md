@@ -35,12 +35,6 @@ You can also install `angular-toastr` from bower:
 $ bower install angular-toastr
 ```
 
-**NOTE**: Angular-toastr 1.0.0-beta.1 is out, check it out with:
-
-```
-$ bower install angular-toastr#1.0.0-beta.1
-```
-
 ## Usage
 
 ### Basic usage
@@ -99,6 +93,16 @@ app.controller('foo', function($scope, toastr) {
 
 ![No Title](http://i.imgur.com/GnwWFo4.png)
 
+#### Closing toasts programmatically:
+
+```javascript
+app.controller('foo', function($scope, toastr) {
+  toastr.clear([toast]);
+});
+```
+
+If no toast is passed in, all toasts will be closed.
+
 ### Toastr customization
 
 You can customize the entire library like:
@@ -124,6 +128,7 @@ app.config(function(toastrConfig) {
     onShown: null,
     positionClass: 'toast-top-right',
     tapToDismiss: true,
+    target: 'body',
     timeOut: 5000,
     titleClass: 'toast-title',
     toastClass: 'toast'
@@ -146,6 +151,7 @@ Those are the default values, you can pick what you need from it and override wi
 * **onShown**: A callback function called when a toast is shown.
 * **positionClass**: The position where the toasts are added.
 * **tapToDismiss**: Whether the toast should be dismissed when it is clicked.
+* **target**: The element to put the toastr container.
 * **timeOut**: The timeout before the toasts disappear.
 * **titleClass**: The class for the toast's title.
 * **toastClass**: Base class for toasts.
@@ -270,6 +276,10 @@ $ testem -f config/testem.json
 ```
 
 Then you can see if you have your new tests pass.
+
+Try to avoid generating the `/dist` files on a patch because sometimes they don't want to merge nicely and it is a pain to merge by hand.
+
+----------
 
 ## Credits
 

@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 
 /**
  * @ngdoc function
@@ -7,13 +7,13 @@
  * # NavCtrl
  * Controller of the minovateApp
  */
-angular.module('minovateApp')
-  .controller('NavCtrl', function ($scope) {
-    $scope.oneAtATime = false;
+// angular.module('minovateApp')
+//   .controller('NavCtrl', function ($scope) {
+//     $scope.oneAtATime = false;
 
-    $scope.status = {
-      isFirstOpen: true,
-      isSecondOpen: true,
-      isThirdOpen: true
-    };
-  });
+//     $scope.status = {
+//       isFirstOpen: true,
+//       isSecondOpen: true,
+//       isThirdOpen: true
+//     };
+//   });

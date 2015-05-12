@@ -6,7 +6,7 @@
   <!-- page header -->
   <div class="pageheader">
 
-    <h2>{{ vm.account.first_name }}'s {{page.title}}</h2>
+    <h2>{{page.title}} <span>for</span> {{ vm.account.first_name }}</h2>
 
     <div class="page-bar">
 
@@ -49,7 +49,7 @@
           <div class="tile-widget p-30 text-center">
 
             <div class="thumb thumb-xl">
-              <img class="img-circle" ng-src="{{ vm.account.user_pic }}" alt=""/>
+              <img class="img-circle" ng-src="{{path.media}}{{ vm.account.user_pic }}" alt=""/>
             </div>
             <h4 class="mb-0"><strong>{{ vm.account.first_name }}</strong> {{ vm.account.last_name }}</h4>
             <span class="text-muted">{{ vm.account.position }}</span>
@@ -125,7 +125,7 @@
             <div class="media" ng-repeat="user in vm.company.wease_company">
               
               <div class="pull-left thumb">
-                <img class="media-object img-circle" ng-src="{{ user.user_pic }}" alt="">
+                <img class="media-object img-circle" ng-src="{{path.media}}{{ user.user_pic }}" alt="">
               </div>
               <div class="pull-right mt-10">
                 <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><a ui-sref="app.pages.profile({username:user.username})"><i class="fa fa-eye" style="margin-left: -2px;"></i></a></button>

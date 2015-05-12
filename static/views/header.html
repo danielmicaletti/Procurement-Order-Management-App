@@ -294,14 +294,14 @@
     <li class="dropdown nav-profile" dropdown on-toggle="toggled(open)">
 
       <a href="javascript:void(0)" class="dropdown-toggle" dropdown-toggle>
-        <img ng-src="{{ vm.user.user_pic }}" alt="" class="img-circle size-30x30">
-        <span>{{ vm.user.first_name }} {{ vm.user.last_name }}<fa name="angle-down"></fa></span>
+        <img ng-src="{{path.media}}{{au.user_pic}}" alt="" class="img-circle size-30x30">
+        <span>{{ au.first_name }} {{ au.last_name }}<fa name="angle-down"></fa></span>
       </a>
 
       <ul class="dropdown-menu animated littleFadeInRight">
 
         <li>
-          <a ui-sref="app.pages.profile({username:vm.user.username})">
+          <a ui-sref="app.pages.profile({username:au.username})">
             <!-- <span class="badge bg-greensea pull-right">86%</span> -->
             <fa name="user"></fa>Profile
           </a>
