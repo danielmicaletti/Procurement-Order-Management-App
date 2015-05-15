@@ -12,8 +12,8 @@ def backup():
     
 def deploy():
     local('pip freeze > requirements.txt')
-    local('git pull')
-    local('git add .')
+    local('git pull heroku master')
+    local('git add -A')
     
     print("enter your commit comments:")
     comment = raw_input()
