@@ -51,6 +51,7 @@ docs/_build/
 *.komodotools
 
 venv
+static/
 media/
 uploads/
 *.pyc

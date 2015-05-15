@@ -19,7 +19,7 @@ def deploy():
     comment = raw_input()
     local("git commit -m '%s'" % comment)
     
-    local('git push')
+    # local('git push')
     
     local('./manage.py collectstatic')
     
