@@ -48,11 +48,7 @@ class ReqItemViewSet(viewsets.ModelViewSet):
         print 'Self reqit data == %s' % self.request.data
         print 'SERial ==== %s' % serializer
         if serializer.is_valid():
-            print 'SERial 2 ==== %s' % serializer
-            print 'SERial val_data ==== %s' % serializer.validated_data
             user = self.request.user
-            print "USER == %s" % user
-            print "USER PROF === %s" % self.request.user.access_level
             if self.request.data['add']:
                 order_id = int(self.request.data['order_id'])
                 print "ORDER ID === %s " % order_id
