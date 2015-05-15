@@ -33,9 +33,9 @@
     };
 
     var mediaPath = media_path('');
-    console.log(mediaPath);
+    console.log('media path'+mediaPath);
     var staticPath = static_path('');
-    console.log(staticPath);
+    console.log('static path'+staticPath);
     var headerPath = static_path('views/header.html');
     var navPath = static_path('views/nav.html');
     var rbPath = static_path('views/rightbar.html');

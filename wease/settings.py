@@ -113,7 +113,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATICFILES_DIRS = (
 
     os.path.join(BASE_DIR, 'static/build/production'),
-    os.path.join(BASE_DIR, 'media'),
+    # os.path.join(BASE_DIR, 'media'),
 )
 
 STATICFILES_FINDERS = (
@@ -121,11 +121,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-MEDIA_URL = ''
-
-MEDIA_ROOT = '/uploads/'
-
-UPLOAD_FILE_PATTERN = "uploads/%s_%s"
+UPLOAD_FILE_PATTERN = "%s_%s"
 
 TEMPLATE_DIRS = (
     
@@ -164,6 +160,7 @@ if not DEBUG:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
     S3_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
     STATIC_URL = S3_URL
+    MEDIA_URL = S3_URL + 'uploads/'
 
 from .email_info import EMAIL_USE_TLS, EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT
 # For gmail and google apps
