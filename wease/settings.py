@@ -123,6 +123,8 @@ STATICFILES_FINDERS = (
 
 MEDIA_URL = ''
 
+MEDIA_ROOT = '/uploads/'
+
 UPLOAD_FILE_PATTERN = "uploads/%s_%s"
 
 TEMPLATE_DIRS = (
