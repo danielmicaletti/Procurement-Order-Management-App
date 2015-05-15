@@ -196,8 +196,6 @@ class OfferViewSet(viewsets.ModelViewSet):
             serializer.save(user=self.request.user, **self.request.data)
             # return super(OrderViewSet, self).perform_create(serializer)
 
-
-
 class GoodViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     queryset = Good.objects.all()
