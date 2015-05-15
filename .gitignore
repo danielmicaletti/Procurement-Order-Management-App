@@ -51,9 +51,8 @@ docs/_build/
 *.komodotools
 
 venv
-staticfiles-2/
 staticfiles/
-static/
+media/
 uploads/
 *.pyc
 *local_settings.py
