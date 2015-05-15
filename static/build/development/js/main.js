@@ -44,7 +44,7 @@ angular
     'uiGmapgoogle-maps',
     'ui.calendar',
     'angular.filter',
-    'ui.utils.masks',
+    // 'ui.utils.masks',
     'authentication',
     'layout',
     'accounts',
@@ -1740,6 +1740,120 @@ angular
   'use strict';
 
   angular
+    .module('orders.directives')
+    .directive('addReq', addReq);
+
+  function addReq() {
+
+	var directive = {
+		// replace: true,
+		// transclude:true,
+    controller: 'AddRequestController',
+    controllerAs: 'vm',
+		restrict: 'E',
+		scope: {
+			req: '=',
+      comp: '=',
+		},
+        templateUrl: '/static/views/directives/addreq-directive.html',
+	}
+
+    return directive;
+  }
+
+})();
+
+'use strict';
+
+angular.module('minovateApp')
+    .directive('format', ['$filter', function ($filter) {
+    return {
+        require: 'ngModel',
+  
+        link: function (scope, elem, attrs, ctrl) {
+            if (!ctrl) return;
+
+            ctrl.$formatters.unshift(function (a) {
+                return $filter(attrs.format)(ctrl.$modelValue);
+            });
+
+            ctrl.$parsers.unshift(function (viewValue) {
+                var plainNumber = viewValue.replace(/[^\d|\-+]/g, '');
+                elem.val($filter('number')(plainNumber/100,2));
+                return plainNumber;
+            });
+        }
+    };
+}]);
+'use strict';
+
+angular.module('minovateApp')
+	.directive('datepickerPopup', function (){
+	  return {
+	    restrict: 'EAC',
+	    require: 'ngModel',
+	    link: function(scope, element, attr, controller) {
+	      //remove the default formatter from the input directive to prevent conflict
+	      controller.$formatters.shift();
+	    }
+	  }
+	});
+(function () {
+  'use strict';
+
+  angular
+    .module('orders.directives')
+    .directive('editReq', editReq);
+
+  function editReq() {
+
+	var directive = {
+		// replace: true,
+		// transclude:true,
+    controller: 'EditRequestController',
+    controllerAs: 'vm',
+		restrict: 'E',
+		scope: {
+			req: '=',
+      comp: '=',
+		},
+        templateUrl: '/static/views/directives/editreq-directive.html',
+	}
+
+    return directive;
+  }
+
+})();
+(function () {
+  'use strict';
+
+  angular
+    .module('orders.directives')
+    .directive('newReq', newReq);
+
+  function newReq() {
+
+	var directive = {
+		// replace: true,
+		// transclude:true,
+    controller: 'RequestController',
+    controllerAs: 'vm',
+		restrict: 'E',
+		scope: {
+			req: '=',
+      comp: '=',
+		},
+        templateUrl: '/static/views/directives/newreq-directive.html',
+	}
+
+    return directive;
+  }
+
+})();
+(function () {
+  'use strict';
+
+  angular
     .module('orders.controllers')
     .controller('OfferController', OfferController);
 
@@ -3148,120 +3262,6 @@ angular.module('minovateApp')
   'use strict';
 
   angular
-    .module('orders.directives')
-    .directive('addReq', addReq);
-
-  function addReq() {
-
-	var directive = {
-		// replace: true,
-		// transclude:true,
-    controller: 'AddRequestController',
-    controllerAs: 'vm',
-		restrict: 'E',
-		scope: {
-			req: '=',
-      comp: '=',
-		},
-        templateUrl: '/static/views/directives/addreq-directive.html',
-	}
-
-    return directive;
-  }
-
-})();
-
-'use strict';
-
-angular.module('minovateApp')
-    .directive('format', ['$filter', function ($filter) {
-    return {
-        require: 'ngModel',
-  
-        link: function (scope, elem, attrs, ctrl) {
-            if (!ctrl) return;
-
-            ctrl.$formatters.unshift(function (a) {
-                return $filter(attrs.format)(ctrl.$modelValue);
-            });
-
-            ctrl.$parsers.unshift(function (viewValue) {
-                var plainNumber = viewValue.replace(/[^\d|\-+]/g, '');
-                elem.val($filter('number')(plainNumber/100,2));
-                return plainNumber;
-            });
-        }
-    };
-}]);
-'use strict';
-
-angular.module('minovateApp')
-	.directive('datepickerPopup', function (){
-	  return {
-	    restrict: 'EAC',
-	    require: 'ngModel',
-	    link: function(scope, element, attr, controller) {
-	      //remove the default formatter from the input directive to prevent conflict
-	      controller.$formatters.shift();
-	    }
-	  }
-	});
-(function () {
-  'use strict';
-
-  angular
-    .module('orders.directives')
-    .directive('editReq', editReq);
-
-  function editReq() {
-
-	var directive = {
-		// replace: true,
-		// transclude:true,
-    controller: 'EditRequestController',
-    controllerAs: 'vm',
-		restrict: 'E',
-		scope: {
-			req: '=',
-      comp: '=',
-		},
-        templateUrl: '/static/views/directives/editreq-directive.html',
-	}
-
-    return directive;
-  }
-
-})();
-(function () {
-  'use strict';
-
-  angular
-    .module('orders.directives')
-    .directive('newReq', newReq);
-
-  function newReq() {
-
-	var directive = {
-		// replace: true,
-		// transclude:true,
-    controller: 'RequestController',
-    controllerAs: 'vm',
-		restrict: 'E',
-		scope: {
-			req: '=',
-      comp: '=',
-		},
-        templateUrl: '/static/views/directives/newreq-directive.html',
-	}
-
-    return directive;
-  }
-
-})();
-(function () {
-  'use strict';
-
-  angular
     .module('orders.services')
     .factory('Offer', Offer);
 
@@ -3686,6 +3686,46 @@ angular.module('minovateApp')
 
   }
 })();
+
+(function () {
+  'use strict';
+
+  angular
+    .module('layout.services')
+    .factory('Goods', Goods);
+
+  Goods.$inject = ['$http'];
+
+  function Goods($http) {
+
+    var Goods = {
+
+      get: get,
+
+    };
+
+    return Goods;
+
+    function get() {
+      return $http.get('/api/v1/goods/')
+        .then(getGoodSuccess)
+        .catch(getGoodError);
+    }
+
+    function getGoodSuccess(response) {
+      console.log(response);
+      console.log(response.data);
+      return response.data;
+    }
+
+    function getGoodError(response) {
+      console.log(response);
+      console.log(response.data);
+      return response.status
+    }
+
+  }
+})();
 (function () {
   'use strict';
 
@@ -3778,46 +3818,6 @@ angular.module('minovateApp')
     return directive;
   }
 
-})();
-
-(function () {
-  'use strict';
-
-  angular
-    .module('layout.services')
-    .factory('Goods', Goods);
-
-  Goods.$inject = ['$http'];
-
-  function Goods($http) {
-
-    var Goods = {
-
-      get: get,
-
-    };
-
-    return Goods;
-
-    function get() {
-      return $http.get('/api/v1/goods/')
-        .then(getGoodSuccess)
-        .catch(getGoodError);
-    }
-
-    function getGoodSuccess(response) {
-      console.log(response);
-      console.log(response.data);
-      return response.data;
-    }
-
-    function getGoodError(response) {
-      console.log(response);
-      console.log(response.data);
-      return response.status
-    }
-
-  }
 })();
 'use strict';
 

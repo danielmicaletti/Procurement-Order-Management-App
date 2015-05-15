@@ -53,6 +53,7 @@ docs/_build/
 venv
 staticfiles-2/
 staticfiles/
+static/
 uploads/
 *.pyc
 *local_settings.py
