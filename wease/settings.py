@@ -121,7 +121,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-UPLOAD_FILE_PATTERN = "%s_%s"
+UPLOAD_FILE_PATTERN = "uploads/%s_%s"
 
 TEMPLATE_DIRS = (
     
