@@ -78,7 +78,7 @@ angular
 
       if (requireLogin && !auth) {
         event.preventDefault();
-        console.log('Here in app.js');
+        console.log('Here in app.js hehe');
         console.log(requireLogin);
         console.log(auth);
         console.log($state.go('core.login'));
