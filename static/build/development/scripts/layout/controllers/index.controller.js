@@ -15,7 +15,7 @@
     var vm = this;
 
     vm.isAuthenticated = Authentication.isAuthenticated();
-    console.log(vm.isAuthenticated);
+    // console.log(vm.isAuthenticated);
     $scope.au = Authentication.getAuthenticatedAccount();
     console.log($scope.au);
 
@@ -41,6 +41,7 @@
     var headerPath = static_path('views/header.html');
     var navPath = static_path('views/nav.html');
     var rbPath = static_path('views/rightbar.html');
+    console.log(rbPath);
 
     $scope.path = { 
       static_files: $sce.trustAsResourceUrl(staticPath),

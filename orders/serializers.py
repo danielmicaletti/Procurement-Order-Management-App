@@ -74,27 +74,29 @@ class ReqItemSerializer(serializers.ModelSerializer):
     good = serializers.CharField(source='good.id', required=False)
     order = serializers.CharField(required=False)
     order_draft = serializers.BooleanField(source='order.order_draft', required=False)
-    order_description = serializers.CharField(source='order.description', read_only=True, required=False)
-    order_reference = serializers.CharField(source='order.reference_number', read_only=True, required=False)
-    delivery_address = serializers.IntegerField(source='order.delivery_address.id', read_only=True, required=False)
+    item_details = serializers.CharField(required=False)
+    # order_description = serializers.CharField(source='order.description', read_only=True, required=False)
+    # order_reference = serializers.CharField(source='order.reference_number', read_only=True, required=False)
+    # delivery_address = serializers.IntegerField(source='order.delivery_address.id', read_only=True, required=False)
     req_product = ReqProductSerializer(many=True, required=False)
     req_item_file = ReqFileSerializer(many=True, required=False)
 
     class Meta:
         model = ReqItem
-        fields = ('id', 'good', 'order', 'order_draft', 'order_description', 'delivery_address', 'order_reference', 'req_domain', 'item_fam', 'item_subfam', 'req_product', 'req_item_file',)
+        fields = ('id', 'good', 'order', 'order_draft', 'req_domain', 'item_fam', 'item_subfam', 'item_details', 'req_product', 'req_item_file',)
 
     def create(self, validated_data):
         order = validated_data.pop('order')
         goods = validated_data.pop('good')
         good = Good.objects.get(id=validated_data['good_id'])
-        addr = Address.objects.get(id=validated_data['delivery_address'])
-        order.delivery_address = addr
-        order.reference_number = validated_data['order_reference']
-        order.description = validated_data['order_description'] 
+        item_details = validated_data.pop('item_details')
+        # addr = Address.objects.get(id=validated_data['delivery_address'])
+        # order.delivery_address = addr
+        # order.reference_number = validated_data['order_reference']
+        # order.description = validated_data['order_description'] 
         order.order_draft = validated_data['order_draft']
         order.save()
-        req_item = ReqItem.objects.create(order=order, good=good, req_domain=goods[0], item_fam=goods[1], item_subfam=goods[2])
+        req_item = ReqItem.objects.create(order=order, good=good, req_domain=goods[0], item_fam=goods[1], item_subfam=goods[2], item_details=item_details)
         req_item.save()
         for k, v in validated_data['prod_details'].iteritems():
             req_product = ReqProduct(req_item=req_item, prod_fam=goods[1], prod_subfam=goods[2], prod_title=k, prod_details=v)
@@ -102,15 +104,20 @@ class ReqItemSerializer(serializers.ModelSerializer):
         return req_item
 
     def update(self, instance, validated_data):
+        print "SELF --- %s" % self
+        print "INST === %s" % instance
+        print "Val_data === %s" % validated_data
         val_data = validated_data.pop('data')
         order = validated_data.pop('order')
-        addr = val_data['delivery_address']
-        del_address = Address.objects.get(id=addr)
-        order.delivery_address = del_address
-        order.reference_number = val_data['order_reference']
-        order.description = val_data['order_description'] 
+        # addr = val_data['delivery_address']
+        # del_address = Address.objects.get(id=addr)
+        # order.delivery_address = del_address
+        # order.reference_number = val_data['order_reference']
+        # order.description = val_data['order_description'] 
         order.order_draft = val_data['order_draft'] 
-        order.save()      
+        order.save()   
+        # instance.item_details = validated_data['item_details']  
+        instance.item_details = val_data.get('item_details', instance.item_details) 
         for item in val_data['req_product']:
             req_product = ReqProduct(id=item['id'], prod_title=item['prod_title'], prod_details=item['prod_details'], req_item=instance)
             req_product.save()

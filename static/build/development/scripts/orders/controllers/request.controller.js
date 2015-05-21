@@ -109,7 +109,6 @@
     }
 
     vm.isDraft = function (){
-        console.log("here");
         if(vm.newReq.order_draft){
             vm.addReq();
         }

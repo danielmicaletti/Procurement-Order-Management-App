@@ -53,33 +53,24 @@
 
     function activate() {
       var authenticatedAccount = Authentication.getAuthenticatedAccount();
+      console.log(authenticatedAccount);
       var orderId = $stateParams.orderId;
-
-      // if (!authenticatedAccount) {
-      //   $state.go('core.login');
-      //   toastr.error('You are not authorized to view this page.');
-      // } 
-      // else {
-      //   // Redirect if logged in, but not the owner of this account.
-      //   if (authenticatedAccount) {
-      //       // debugger;
-      //       $location.url('/');
-      //     // toastr.error('You are not authorized to view this page.');
-      //     // console.log("2");
-      //   }
-      // }
 
       Order.getOrder(orderId).then(getOrderSuccess, getOrderError);
 
       function getOrderSuccess(data, status, headers, config) {
         vm.order = data;
-        console.log(vm.order);      
+        console.log(vm.order); 
+        if(authenticatedAccount.optiz && vm.order.order_status === 'PEN'){
+          toastr.info('Offer needed for this order');
+        }     
       }
 
       function getOrderError(errorMsg) {
         $state.go('app.dashboard');
         toastr.error('Your request can not be processed '+errorMsg+'');
       }
+    
     }
 
     vm.offerApvl = function(status){

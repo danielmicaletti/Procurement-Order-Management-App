@@ -4,6 +4,7 @@ from django.db import models
 from time import time
 from wease import settings
 from django.core.files.storage import default_storage
+from django.utils.encoding import smart_unicode
 
 def get_upload_file_name(instance, filename):
     return settings.UPLOAD_FILE_PATTERN % (str(time()).replace('.','_'), filename)
@@ -132,8 +133,10 @@ class Company(models.Model):
     company_assigned_to = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='assigned_to', null=True, blank=True)
 
     def __unicode__(self):
-      return self.name
+      return smart_unicode(self.name)
 
+    def get_name(self):
+        return smart_unicode(self.name)
 
 class Address(models.Model):
     OFFICE = 'OFF'

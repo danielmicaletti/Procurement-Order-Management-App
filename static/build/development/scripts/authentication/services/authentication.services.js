@@ -25,7 +25,7 @@
             if (!$cookies.authenticatedAccount) {
                 return;
             }
-            console.log($cookies.authenticatedAccount);
+            // console.log($cookies.authenticatedAccount);
             return JSON.parse($cookies.authenticatedAccount);
         }
 
@@ -42,8 +42,9 @@
         }
 
         function loginSuccessFn(data, status, headers, config) {
+            // console.log('authacct data');
+            // console.log(data.data);
             Authentication.setAuthenticatedAccount(data.data);
-            // window.location = '#/dashboard';
             $state.go('app.dashboard');
         }
 
@@ -84,12 +85,12 @@
 
         function registerErrorFn(data, status, headers, config) {
             toastr.error('There was an issue creating this user');
-            console.error('Epic failure!');
+            console.error('Epic failure!'+data);
         }
 
         function setAuthenticatedAccount(account) {
             $cookies.authenticatedAccount = JSON.stringify(account);
-            console.log($cookies.authenticatedAccount);
+            // console.log($cookies.authenticatedAccount);
         }
 
         function unauthenticate() {
@@ -97,3 +98,13 @@
         }
   }
 })();
+
+
+
+
+
+
+
+
+
+

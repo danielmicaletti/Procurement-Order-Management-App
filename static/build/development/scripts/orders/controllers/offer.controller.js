@@ -123,10 +123,11 @@
         // })
         // vm.offer.offer_item.item_name = req_item.item_name,
         // vm.offer.offer_item.item_details = req_item.item_details,
-        console.log(req_item);
+        console.log(req_item.item_name);
         console.log(vm.offer);
         getTotal(req_item.item_sub_total);
-        // vm.req_item = {};
+        toastr.success(req_item.item_name+' has been added to Current Offer');
+
     };
 
     vm.addBlankItem = function (blank_item){
@@ -155,6 +156,7 @@
         vm.blank_item = {};
         console.log(vm.offer);
         getTotal(blank_item.item_sub_total);
+        toastr.success(blank_item.item_name+' has been added to Current Offer');
     }
 
     function getTotal(item){

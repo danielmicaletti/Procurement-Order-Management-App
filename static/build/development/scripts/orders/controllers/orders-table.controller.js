@@ -62,7 +62,6 @@
 
     function getAllSuccess(data, status, headers, config) {
       vm.orders = data;
-      console.log("Orderz Info");
       console.log(vm.orders);      
     }
 
@@ -71,10 +70,9 @@
       toastr.error('Your request can not be processed '+errorMsg+'');
     }
 
-    // vm.orders = [];
     vm.dtOptions = DTOptionsBuilder.newOptions()
       .withBootstrap()
-      .withOption('order', [[1, 'asc']])
+      .withOption('order', [[0, 'desc']])
       .withDOM('<"row"<"col-md-8 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"pull-right"f>>>t<"row"<"col-md-4 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"inline-controls text-center"i>><"col-md-4 col-sm-12"p>>')
       .withLanguage({
         "sLengthMenu": 'View _MENU_ records',
@@ -92,7 +90,7 @@
 
 
     vm.dtColumnDefs = [
-      DTColumnDefBuilder.newColumnDef(0).notSortable(),
+      // DTColumnDefBuilder.newColumnDef(0).notSortable(),
       DTColumnDefBuilder.newColumnDef(8).notSortable()
     ];
 

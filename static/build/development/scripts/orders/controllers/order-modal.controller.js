@@ -9,7 +9,7 @@ angular.module('minovateApp')
     $scope.open = function(size) {
 
       var modalInstance = $modal.open({
-        templateUrl: 'static/views/modals/addreq-modal.html',
+        templateUrl: static_path('views/modals/addreq-modal.html'),
         controller: 'ModalInstanceCtrl',
         scope: $scope,
         size: size,
@@ -55,7 +55,7 @@ angular.module('minovateApp')
     $scope.open = function(size) {
 
       var modalInstance = $modal.open({
-        templateUrl: 'static/views/modals/reqitem-modal.html',
+        templateUrl: static_path('views/modals/reqitem-modal.html'),
         controller: 'ModalInstanceCtrl',
         scope: $scope,
         size: size,
@@ -83,7 +83,7 @@ angular.module('minovateApp')
     $scope.open = function(size) {
 
       var modalInstance = $modal.open({
-        templateUrl: 'static/views/modals/offeritem-modal.html',
+        templateUrl: static_path('views/modals/offeritem-modal.html'),
         controller: 'ModalInstanceCtrl',
         scope: $scope,
         size: size,
@@ -111,7 +111,7 @@ angular.module('minovateApp')
     $scope.open = function(size) {
 
       var modalInstance = $modal.open({
-        templateUrl: 'static/views/modals/offeritem-blank-modal.html',
+        templateUrl: static_path('views/modals/offeritem-blank-modal.html'),
         controller: 'ModalInstanceCtrl',
         scope: $scope,
         size: size,
@@ -141,7 +141,7 @@ angular.module('minovateApp')
       $scope.type = type;
 
       var modalInstance = $modal.open({
-        templateUrl: 'static/views/modals/offerapvl-modal.html',
+        templateUrl: static_path('views/modals/offerapvl-modal.html'),
         controller: 'ModalInstanceCtrl',
         scope: $scope,
         size: size,

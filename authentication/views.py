@@ -33,6 +33,12 @@ class AccountViewSet(viewsets.ModelViewSet):
             'message': 'Account could not be created with received data.'
         }, status=status.HTTP_400_BAD_REQUEST)
 
+    def perform_update(self, serializer):
+        print "VIEW SELF == %s" % self
+        print "VIEW SER === %s" % serializer
+        if serializer.is_valid():
+            serializer.save(user=self.request.user, **self.request.data)
+
 class CompanyViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     queryset = Company.objects.all()

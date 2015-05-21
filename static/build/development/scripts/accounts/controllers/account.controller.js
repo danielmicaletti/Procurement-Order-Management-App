@@ -25,7 +25,9 @@
 
     // activate function to initialize on page/controller load
     function activate() {
-
+      // Get Auth user
+      vm.authAcct = Authentication.getAuthenticatedAccount();
+      console.log(vm.authAcct);
       // GET Account with success/error callbacks
       Account.get(vm.username)
         .then(accountSuccessFn)
@@ -83,6 +85,13 @@
         .catch(updateErrorFn);
 
       function updateSuccessFn(data, status, headers, config) {
+        console.log(data);
+        console.log(data.data);
+        if(vm.account.id === vm.authAcct.id){
+          
+            Authentication.setAuthenticatedAccount(data.data)
+       
+        }
         toastr.success('Your account has been updated.');
       }
 

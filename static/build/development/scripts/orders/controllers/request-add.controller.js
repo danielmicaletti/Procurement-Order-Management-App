@@ -72,10 +72,7 @@
           vm.order = data;
           console.log(vm.order);
           vm.addReq.order_id = vm.order.id;
-          vm.addReq.order_reference = vm.order.reference_number;
-          vm.addReq.order_description = vm.order.description;
           vm.addReq.order_draft = vm.order.order_draft;
-          vm.addReq.delivery_address = vm.order.delivery_address.id;
           console.log(vm.order);
           console.log(vm.addReq);
         }

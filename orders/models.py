@@ -136,7 +136,8 @@ class ReqItem(models.Model):
     good = models.ForeignKey(Good, related_name='req_good')
     req_domain = models.CharField(max_length=250, null=True, blank=True)
     item_fam = models.CharField(max_length=250, null=True, blank=True)
-    item_subfam = models.CharField(max_length=250, null=True, blank=True)  
+    item_subfam = models.CharField(max_length=250, null=True, blank=True)
+    item_details = models.TextField(null=True, blank=True) 
 
     def __unicode__(self):
         return smart_unicode(self.order.order_number)
