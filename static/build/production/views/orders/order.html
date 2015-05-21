@@ -139,15 +139,13 @@
 
           <!-- col -->
           <div class="col-md-3 b-r">
-            <div ng-show="vm.order.order_offer">
-              <p class="text-uppercase text-strong mb-10 custom-font">Approval</p>
-          <!--<ul class="list-unstyled text-default lt mb-20">
-                <li><strong>Delivery:</strong> Pick-Up</li>
-                <li><strong>Payment:</strong> Cash</li>
-              </ul> -->
+            <div ng-show="vm.order.order_status === 'PEN' && au.optiz">
+              <p class="text-uppercase text-strong mb-10 custom-font">Add Offer</p>
+              <button class="btn btn-primary" ui-sref="app.orders.offer({ orderId: vm.order.id})">Create Offer</button>
             </div>
-            <div ng-show="!vm.order.order_offer">
+            <div ng-show="vm.order.order_status === 'OFR'">
               <p class="text-uppercase text-strong mb-10 custom-font">Add Item or Cancel Request</p>
+              <p>{{au.optiz}}</p>
             </div>
           </div>
           <!-- /col -->
@@ -506,7 +504,7 @@
                   <li class="in">
                     <div class="media">
                       <div class="pull-left thumb thumb-sm">
-                        <img class="media-object img-circle" src="{{path.static_files}}images/random-avatar1.jpg" alt="">
+                        <img class="media-object img-circle" ng-src="{{path.static_files}}images/random-avatar1.jpg" alt="">
                       </div>
                       <div class="media-body">
                         <p class="media-heading"><a href="#" class="name">Wood Walton </a><span class="datetime">at 12.10.2014</span></p>
@@ -518,7 +516,7 @@
                   <li class="out">
                     <div class="media">
                       <div class="pull-right thumb thumb-sm">
-                        <img class="media-object img-circle" src="{{path.static_files}}images/profile-photo.jpg" alt="">
+                        <img class="media-object img-circle" ng-src="{{path.static_files}}images/profile-photo.jpg" alt="">
                       </div>
                       <div class="media-body">
                         <p class="media-heading"><a href="#" class="name">You </a><span class="datetime">2 hours ago</span></p>
@@ -529,7 +527,7 @@
                   <li class="in">
                     <div class="media">
                       <div class="pull-left thumb thumb-sm">
-                        <img class="media-object img-circle" src="{{path.static_files}}images/random-avatar1.jpg" alt="">
+                        <img class="media-object img-circle" ng-src="{{path.static_files}}images/random-avatar1.jpg" alt="">
                       </div>
                       <div class="media-body">
                         <p class="media-heading"><a href="#" class="name">Wood Walton </a><span class="datetime">2 hours ago</span></p>
@@ -540,7 +538,7 @@
                   <li class="out">
                     <div class="media">
                       <div class="pull-right thumb thumb-sm">
-                        <img class="media-object img-circle" src="{{path.static_files}}images/profile-photo.jpg" alt="">
+                        <img class="media-object img-circle" ng-src="{{path.static_files}}images/profile-photo.jpg" alt="">
                       </div>
                       <div class="media-body">
                         <p class="media-heading"><a href="#" class="name">You </a><span class="datetime">1 hours ago</span></p>
@@ -551,7 +549,7 @@
                   <li class="in">
                     <div class="media">
                       <div class="pull-left thumb thumb-sm">
-                        <img class="media-object img-circle" src="{{path.static_files}}images/random-avatar1.jpg" alt="">
+                        <img class="media-object img-circle" ng-src="{{path.static_files}}images/random-avatar1.jpg" alt="">
                       </div>
                       <div class="media-body">
                         <p class="media-heading"><a href="#" class="name">Wood Walton </a><span class="datetime">53 minutes ago</span></p>
@@ -562,7 +560,7 @@
                   <li class="out">
                     <div class="media">
                       <div class="pull-right thumb thumb-sm">
-                        <img class="media-object img-circle" src="{{path.static_files}}images/profile-photo.jpg" alt="">
+                        <img class="media-object img-circle" ng-src="{{path.static_files}}images/profile-photo.jpg" alt="">
                       </div>
                       <div class="media-body">
                         <p class="media-heading"><a href="#" class="name">You </a><span class="datetime">40 minutes ago</span></p>
@@ -573,7 +571,7 @@
                   <li class="out">
                     <div class="media">
                       <div class="pull-right thumb thumb-sm">
-                        <img class="media-object img-circle" src="{{path.static_files}}images/profile-photo.jpg" alt="">
+                        <img class="media-object img-circle" ng-src="{{path.static_files}}images/profile-photo.jpg" alt="">
                       </div>
                       <div class="media-body">
                         <p class="media-heading"><a href="#" class="name">You </a><span class="datetime">39 minutes ago</span></p>
@@ -584,7 +582,7 @@
                   <li class="out">
                     <div class="media">
                       <div class="pull-right thumb thumb-sm">
-                        <img class="media-object img-circle" src="{{path.static_files}}images/profile-photo.jpg" alt="">
+                        <img class="media-object img-circle" ng-src="{{path.static_files}}images/profile-photo.jpg" alt="">
                       </div>
                       <div class="media-body">
                         <div class="mb-40" ng-hide="post">
