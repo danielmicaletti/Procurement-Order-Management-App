@@ -17,7 +17,7 @@
 			req: '=',
       comp: '=',
 		},
-        templateUrl: static_path('/views/directives/newreq-directive.html'),
+        templateUrl: static_path('views/directives/newreq-directive.html'),
 	}
 
     return directive;
