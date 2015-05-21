@@ -1,10 +1,11 @@
-<div class="modal-header row">
-    <div class="col-md-9">
-        <h3 class="modal-title custom-font">Create Offer Item</h3>
+<div class="modal-header row ml-0 mr-0">
+    <div class="col-md-12">
+        <p class="pull-right"><a href ng-click="cancel()"> X </a></p>
+        <h3 class="modal-title custom-font">Create Offer <strong>Item</strong></h3>
     </div>
 </div>
 <div class="modal-body">
-    <div>
+   <!--  <div> -->
         <form role="form">
             <div class="row">
                 <div class="form-group col-md-6">
@@ -92,7 +93,7 @@
                 <button type="submit" ng-click="vm.addBlankItem(vm.blank_item); cancel()" class="btn btn-rounded btn-success btn-sm mr-20 pull-right">Add to Offer</button>
             </div>
         </form>         
-    </div>
+    <!-- </div> -->
 </div>
 <div class="modal-footer">
     <button class="btn btn-slategray btn-ef btn-ef-4 btn-ef-4c" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Close</button>

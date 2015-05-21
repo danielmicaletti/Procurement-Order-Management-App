@@ -102,11 +102,11 @@
               <table datatable="ng" dt-options="showCase.dtOptions" dt-column-defs="showCase.dtColumnDefs" class="table table-striped table-hover table-custom" style="min-width: 1000px;">
                 <thead>
                   <tr>
-                    <th style="width:40px;">
+<!--                     <th style="width:40px;">
                       <label class="checkbox checkbox-custom checkbox-custom-sm m-0">
                         <input type="checkbox" ng-model="showCase.selectedAll" ng-click="showCase.selectAll()"><i></i>
                       </label>
-                    </th>
+                    </th> -->
                     <th style="width:100px;">Date</th>
                     <th style="width:90px;">Order #</th>
                     <th style="width:80px;">Reference #</th>
@@ -114,13 +114,13 @@
                     <th>Delivery Address</th>
                     <th style="width:100px;">Type</th>
                     <th style="width:70px;">Items</th>
-                    <th style="width:100px;">Status</th>
+                    <th style="width:100px;">Statuses</th>
                     <th style="width:90px;">Actions</th>
                   </tr>
                   </thead>
                   <tfoot>
                   <tr>
-                    <th></th>
+              <!--       <th></th> -->
                     <th>Date</th>
                     <th>Order #</th>
                     <th>Reference #</th>
@@ -134,7 +134,7 @@
                   </tfoot>
                   <tbody>
                   <tr ng-repeat="order in showCase.orders">
-                    <td><label class="checkbox checkbox-custom checkbox-custom-sm m-0"><input type="checkbox" ng-model="order.selected"><i></i></label></td>
+  <!--                   <td><label class="checkbox checkbox-custom checkbox-custom-sm m-0"><input type="checkbox" ng-model="order.selected"><i></i></label></td> -->
                     <td>{{ order.order_created | date:'mediumDate'}}</td>
                     <td>{{ order.order_number }}</td>
                     <td>{{ order.reference_number }}</td>
