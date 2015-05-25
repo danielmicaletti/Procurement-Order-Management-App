@@ -88,7 +88,7 @@
 
     function updateOrderStatusSuccess(data, status, headers, config) {
       console.log(data);
-      toastr.info('Your response has been sent to Optiz.');   
+      toastr.info('Your response has been sent to Optiz');   
     }
 
     function updateOrderStatusError(errorMsg) {

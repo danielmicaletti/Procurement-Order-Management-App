@@ -5,7 +5,7 @@
     .module('orders.directives')
     .directive('editReq', editReq);
 
-  function editReq() {
+  function editReq($sce) {
 
 	var directive = {
 		// replace: true,
@@ -16,8 +16,9 @@
 		scope: {
 			req: '=',
       comp: '=',
+      path: '='
 		},
-        templateUrl: static_path('views/directives/editreq-directive.html'),
+        templateUrl: $sce.trustAsResourceUrl(static_path('views/directives/editreq-directive.html')),
 	}
 
     return directive;

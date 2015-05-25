@@ -116,7 +116,6 @@ class ReqItemSerializer(serializers.ModelSerializer):
         # order.description = val_data['order_description'] 
         order.order_draft = val_data['order_draft'] 
         order.save()   
-        # instance.item_details = validated_data['item_details']  
         instance.item_details = val_data.get('item_details', instance.item_details) 
         for item in val_data['req_product']:
             req_product = ReqProduct(id=item['id'], prod_title=item['prod_title'], prod_details=item['prod_details'], req_item=instance)
@@ -147,6 +146,9 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only_fields = ('order_created', 'modified_date', 'company_approval_by', 'optiz_status_change_by', 'order_status_change_by', 'modified_by',)
     
     def update(self, instance, validated_data):
+        print "SELF --- %s" % self
+        print "INST === %s" % instance
+        print "Val_data === %s" % validated_data
         instance.order_status = validated_data['order_status']
         instance.order_status_change_by = validated_data['user']
         instance.order_status_change_date = timezone.now()

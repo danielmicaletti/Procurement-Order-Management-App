@@ -5,7 +5,7 @@
     .module('orders.directives')
     .directive('newReq', newReq);
 
-  function newReq() {
+  function newReq($sce) {
 
 	var directive = {
 		// replace: true,
@@ -17,9 +17,8 @@
 			req: '=',
       comp: '=',
 		},
-        templateUrl: static_path('views/directives/newreq-directive.html'),
+        templateUrl: $sce.trustAsResourceUrl(static_path('views/directives/newreq-directive.html')),
 	}
-
     return directive;
   }
 
