@@ -38,7 +38,10 @@
             <h3>Order # : <strong class="text-greensea"> {{ vm.order.order_number }}/v{{ vm.order.order_version }}</strong></h3>
             <br/>
             <br/>
-            <h4>Reference # : <strong > {{ vm.order.reference_number }}</strong></h4>
+            <div ng-controller="AddRefNumModalCtrl">
+              <h4>Reference # : <strong > {{ vm.order.reference_number }}</strong></h4>
+              <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;" tooltip="Add Reference #" ng-click="open('sm')"><i class="fa fa-pencil"></i></button>
+            </div>
           </div> 
           <div class="col-md-4 "ng-show="!vm.order.order_offer">
             <span class="controls" ng-controller="AddReqModalCtrl">

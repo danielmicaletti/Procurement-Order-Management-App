@@ -196,7 +196,7 @@
             
                 <div class="form-group col-md-6" ng-repeat="file in vm.req.req_item_file">
                     <label for="input{{r.id}}">File Name: </label>
-                    <p><a href="{{path.media}}{{ file.req_file }}" target="_blank">{{file.req_file}}</a></p><a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>
+                    <p><a href="{{path}}{{ file.req_file }}" target="_blank">{{ file.req_file }}</a></p><a href="javascript:;" class="btn btn-xs btn-lightred"><i class="fa fa-times"></i> Delete</a>
                 </div>
             </div>
 
@@ -211,7 +211,7 @@
                 <div collapse="isCollapsed">
                     <div class="panel-body">
 
-                        <h4 class="custom-font"><strong>Add </strong> Files</h4>
+                        <h4 class="custom-font"><strong>Add</strong> Files</h4>
 
                         <div class="row">
 
