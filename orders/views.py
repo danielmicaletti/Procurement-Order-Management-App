@@ -20,8 +20,8 @@ class OrderViewSet(viewsets.ModelViewSet):
         return (permissions.IsAuthenticated(),)
 
     def perform_create(self, serializer):
-        print 'SeLF == %s' % self
         instance = serializer.save(order_created_by=self.request.user, order_company=self.request.user.user_company, order_status_change_date=timezone.now())
+        print 'SeLF == %s' % self
         print "SER === %s" % serializer.data
         print "instance == %s" % instance
         return super(OrderViewSet, self).perform_create(serializer)
@@ -183,11 +183,11 @@ class OfferViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         print 'Self data == %s' % self.request
         print 'Self request data == %s' % self.request.data
-        print 'SERial ==== %s' % serializer
+        print 'Serial ==== %s' % serializer
         if serializer.is_valid():
-            print 'SERial 2 ==== %s' % serializer
-            print 'SERial val_data ==== %s' % serializer.validated_data
-            print 'SERial val_data ORDER ==== %s' % serializer.validated_data['order']
+            print 'Serial 2 ==== %s' % serializer
+            print 'Serial val_data ==== %s' % serializer.validated_data
+            print 'Serial val_data ORDER ==== %s' % serializer.validated_data['order']
             print "USER PROF === %s" % self.request.user.access_level
             serializer.save(user=self.request.user, **self.request.data)
             # return super(OrderViewSet, self).perform_create(serializer)
