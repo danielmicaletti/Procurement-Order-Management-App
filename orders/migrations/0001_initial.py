@@ -9,8 +9,8 @@ import orders.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('authentication', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('authentication', '0001_initial'),
     ]
 
     operations = [
@@ -135,7 +135,7 @@ class Migration(migrations.Migration):
                 ('req_domain', models.CharField(max_length=250, null=True, blank=True)),
                 ('item_fam', models.CharField(max_length=250, null=True, blank=True)),
                 ('item_subfam', models.CharField(max_length=250, null=True, blank=True)),
-                ('item_details', models.CharField(max_length=250, null=True, blank=True)),
+                ('item_details', models.TextField(null=True, blank=True)),
                 ('good', models.ForeignKey(related_name='req_good', to='orders.Good')),
                 ('order', models.ForeignKey(related_name='req_order', to='orders.Order')),
             ],
