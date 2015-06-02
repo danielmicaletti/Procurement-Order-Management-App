@@ -29,6 +29,8 @@ class AccountManager(BaseUserManager):
 
     def create_superuser(self, email, password, **kwargs):
         account = self.create_user(email, password, **kwargs)
+        account.first_name = 'Daniel'
+        account.last_name = 'Micaletti'
         account.is_admin = True
         account.save()
 
