@@ -22,9 +22,7 @@ class AccountViewSet(viewsets.ModelViewSet):
     def create(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            acct = Account.objects.create_user(**serializer.validated_data)
-            acct.first_name = 'Daniel'
-            acct.last_name = 'Mic'
+            acct = Account.objects.create_user(first_name = 'Daniel', last_name = 'Mic',**serializer.validated_data)
             acct.user_company = request.user.user_company
             acct.user_created_by = request.user
             acct.save()
