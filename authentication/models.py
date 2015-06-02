@@ -19,7 +19,7 @@ class AccountManager(BaseUserManager):
 
         account = self.model(
             email=self.normalize_email(email), username=kwargs.get('username'),
-            first_name=kwargs.get('first_name'), last_name=kwargs.get('last_name'),
+            # first_name=kwargs.get('first_name'), last_name=kwargs.get('last_name'),
             )
 
         account.set_password(password)
@@ -95,8 +95,8 @@ class Account(AbstractBaseUser):
     def __unicode__(self):
         return self.username
 
-    def get_full_name(self):
-        return ' '.join([self.first_name, self.last_name])
+    # def get_full_name(self):
+    #     return ' '.join([self.first_name, self.last_name])
 
     def get_short_name(self):
         return self.first_name
