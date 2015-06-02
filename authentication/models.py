@@ -22,8 +22,6 @@ class AccountManager(BaseUserManager):
             first_name=kwargs.get('first_name'), last_name=kwargs.get('last_name'),
             )
         print "account cu === %s" % account
-        account.first_name = 'Daniel'
-        account.last_name = 'Micaletti'
         account.set_password(password)
         account.save()
 
@@ -31,8 +29,6 @@ class AccountManager(BaseUserManager):
 
     def create_superuser(self, email, password, **kwargs):
         account = self.create_user(email, password, **kwargs)
-        account.first_name = 'Daniel'
-        account.last_name = 'Micaletti'
         account.is_admin = True
         print "account su === %s" % account
         account.save()
@@ -60,8 +56,8 @@ class Account(AbstractBaseUser):
 
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=40, unique=True)
-    first_name = models.CharField(max_length=50, blank=True, default='Daniel')
-    last_name = models.CharField(max_length=50, blank=True, default='Micaletti')
+    first_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=50, blank=True)
     tagline = models.CharField(max_length=140, null=True, blank=True)
     is_admin = models.BooleanField(default=False)
     optiz = models.BooleanField(default=False)
@@ -77,7 +73,7 @@ class Account(AbstractBaseUser):
     country = models.CharField(max_length=50, null=True, blank=True)    
     phone_main = models.CharField(max_length=30, null=True, blank=True)
     phone_mobile = models.CharField(max_length=30, null=True, blank=True)
-    user_pic = models.FileField(upload_to=get_upload_file_name, null=True, blank=True, default='blank_user.png')
+    user_pic = models.FileField(upload_to=get_upload_file_name, null=True, blank=True, default='uploads/blank_user.png')
     user_created = models.DateTimeField(auto_now_add=True)
     user_created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='created_user', null=True, blank=True, unique=False)
     user_updated = models.DateTimeField(auto_now=True)
