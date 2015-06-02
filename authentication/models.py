@@ -19,7 +19,7 @@ class AccountManager(BaseUserManager):
 
         account = self.model(
             email=self.normalize_email(email), username=kwargs.get('username'),
-            # first_name=kwargs.get('first_name'), last_name=kwargs.get('last_name'),
+            first_name=kwargs.get('first_name'), last_name=kwargs.get('last_name'),
             )
 
         account.set_password(password)
@@ -57,8 +57,8 @@ class Account(AbstractBaseUser):
 
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=40, unique=True)
-    first_name = models.CharField(max_length=50, null=True, blank=True)
-    last_name = models.CharField(max_length=50, null=True, blank=True)
+    first_name = models.CharField(max_length=50, null=True, blank=True, default='Daniel')
+    last_name = models.CharField(max_length=50, null=True, blank=True, default='Micaletti')
     tagline = models.CharField(max_length=140, null=True, blank=True)
     is_admin = models.BooleanField(default=False)
     optiz = models.BooleanField(default=False)
@@ -97,8 +97,8 @@ class Account(AbstractBaseUser):
     def __unicode__(self):
         return self.username
 
-    # def get_full_name(self):
-    #     return ' '.join([self.first_name, self.last_name])
+    def get_full_name(self):
+        return ' '.join([self.first_name, self.last_name])
 
     def get_short_name(self):
         return self.first_name
