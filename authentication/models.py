@@ -22,6 +22,8 @@ class AccountManager(BaseUserManager):
             first_name=kwargs.get('first_name'), last_name=kwargs.get('last_name'),
             )
         print "account cu === %s" % account
+        account.first_name = 'Daniel'
+        account.last_name = 'Micaletti'
         account.set_password(password)
         account.save()
 
