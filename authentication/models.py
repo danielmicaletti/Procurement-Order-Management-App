@@ -21,7 +21,7 @@ class AccountManager(BaseUserManager):
             email=self.normalize_email(email), username=kwargs.get('username'),
             first_name=kwargs.get('first_name'), last_name=kwargs.get('last_name'),
             )
-
+        print "account cu === %s" % account
         account.set_password(password)
         account.save()
 
@@ -32,6 +32,7 @@ class AccountManager(BaseUserManager):
         account.first_name = 'Daniel'
         account.last_name = 'Micaletti'
         account.is_admin = True
+        print "account su === %s" % account
         account.save()
 
         return account

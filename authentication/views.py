@@ -25,6 +25,7 @@ class AccountViewSet(viewsets.ModelViewSet):
             acct = Account.objects.create_user(first_name = 'Daniel', last_name = 'Mic',**serializer.validated_data)
             acct.user_company = request.user.user_company
             acct.user_created_by = request.user
+            print "acct view === %s" % acct
             acct.save()
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
 
