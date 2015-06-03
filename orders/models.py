@@ -162,6 +162,14 @@ class ReqFile(models.Model):
         return smart_unicode(self.req_item)   
 
 class Offer(models.Model):
+    REFUSED = 'REF'
+    APPROVED = 'APV'
+    WAITING_APPROVAL = 'WAP'
+    OFFER_STATUS = ( 
+        (REFUSED, 'Refusé'),
+        (APPROVED, 'Approuvé'),
+        (WAITING_APPROVAL, 'Waiting Approval'),
+    )
     order = models.ForeignKey(Order, related_name='offer_order')
     offer_version = models.SmallIntegerField(null=True, blank=True)
     offer_domain = models.CharField(max_length=250, null=True, blank=True)
@@ -169,6 +177,7 @@ class Offer(models.Model):
     offer_terms = models.TextField(null=True, blank=True)
     offer_created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='offer_created_by')
     offer_created = models.DateTimeField(auto_now_add=True)
+    offer_approval_status = models.CharField(max_length=3, choices=OFFER_STATUS, default=WAITING_APPROVAL)
     offer_approval_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='offer_updated_by')
     offer_approval = models.DateTimeField(auto_now_add=False, auto_now=False, null=True, blank=True)
 

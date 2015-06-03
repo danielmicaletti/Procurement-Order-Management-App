@@ -29,13 +29,14 @@ class OfferSerializer(serializers.ModelSerializer):
     offer_item = OfferItemSerializer(many=True, required=False)
     offer_created_by = serializers.CharField(required=False)
     offer_created_by_name = serializers.CharField(source='offer_created_by.get_full_name', required=False)
+    offer_approval_display = serializers.CharField(source='get_offer_approval_status_display', required=False)
     offer_approval_by = serializers.CharField(required=False)
     offer_approval_by_name = serializers.CharField(source='offer_approval_by.get_full_name', required=False)    
 
     class Meta:
         model = Offer
         fields = ('id', 'order', 'offer_version', 'offer_domain', 'offer_total', 'offer_terms',
-            'offer_created', 'offer_created_by', 'offer_created_by_name', 'offer_approval', 'offer_approval_by', 'offer_approval_by_name', 'offer_item',)
+            'offer_created', 'offer_created_by', 'offer_created_by_name', 'offer_approval_status', 'offer_approval_display', 'offer_approval', 'offer_approval_by', 'offer_approval_by_name', 'offer_item',)
 
     def create(self, validated_data):
         order = Order.objects.get(id=validated_data['order'])
@@ -159,8 +160,10 @@ class OrderSerializer(serializers.ModelSerializer):
 
         if 'APV' or 'REF' in validated_data['order_status']:
             offer = Offer.objects.get(id=validated_data['offer'])
+            offer.offer_approval_status = validated_data['order_status']
             offer.offer_approval_by = validated_data['user']
             offer.offer_approval = timezone.now()
+            print "OFFER apv === %s" % offer
             offer.save()
         return instance
 
