@@ -18,7 +18,7 @@
     // console.log($cookies.authenticatedAccount);
 
     // if(vm.isAuthenticated === true){
-    //     $scope.au = $cookies.authenticatedAccount;
+    //     // $scope.au = JSON.parse($cookies.authenticatedAccount);
     //     console.log($scope.au);
     //     console.log($cookies.authenticatedAccount);
     //     $scope.$watchCollection('au', function(newVal, oldVal){
@@ -34,6 +34,7 @@
     //         console.log(newVal);
     //         console.log('old Val');
     //         console.log(oldVal);
+    //         console.log($scope.au);
     //     });
     // }
 

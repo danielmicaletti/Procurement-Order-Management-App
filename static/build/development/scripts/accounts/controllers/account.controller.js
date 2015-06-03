@@ -88,9 +88,8 @@
         console.log(data);
         console.log(data.data);
         if(vm.account.id === vm.authAcct.id){
-          
+            vm.account = data.data;
             Authentication.setAuthenticatedAccount(data.data)
-       
         }
         toastr.success('Your account has been updated.');
       }

@@ -15,9 +15,6 @@
     var vm = this;
 
     vm.isAuthenticated = Authentication.isAuthenticated();
-    // console.log(vm.isAuthenticated);
-    $scope.au = Authentication.getAuthenticatedAccount();
-    console.log($scope.au);
 
     $scope.main = {
       title: 'WeASe',

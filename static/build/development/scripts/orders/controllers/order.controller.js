@@ -51,6 +51,14 @@
       // BACKORDER = 'BOR'
     }
 
+  $scope.$watch( 'vm.order.order_status',
+      function(newValue, oldValue){
+          console.log('nv');
+          console.log(newValue);
+          console.log(oldValue);
+      }
+    );
+
     function activate() {
       var authenticatedAccount = Authentication.getAuthenticatedAccount();
       console.log(authenticatedAccount);
@@ -76,7 +84,7 @@
     vm.offerApvl = function(status){
       console.log(status);
       var stat={};
-      stat.offer = vm.order.offer_order[0].id;
+      stat.offer = vm.order.offer_order[vm.order.offer_order.length - 1].id;
       stat.order_status = status;
       stat.company_approval_status = status;
       console.log(stat);
@@ -88,6 +96,7 @@
 
     function updateOrderStatusSuccess(data, status, headers, config) {
       console.log(data);
+      vm.order = data;
       toastr.info('Your response has been sent to Optiz');   
     }
 

@@ -358,14 +358,14 @@
                         </tr>
                       </thead>
                       <tbody>
-                      <tr ng-repeat="offer in vm.order.order_offer">
-                          <td>{{offer.offer_created}}</td>
-                          <td>{{offer.offer_items.length}}</td>
+                      <tr ng-repeat="offer in vm.order.offer_order">
+                          <td>{{offer.offer_created | date:"mediumDate"}}</td>
+                          <td>{{ offer.offer_item.length }}</td>
                           <td ng-class="stati[vm.order.order_status]" ng-show="offer.offer_version === vm.order.offer_version">{{vm.order.order_status_display}}</td>
-                          <td class="text-lightred" ng-show="offer.offer_version !=== vm.order.offer_version">Refused</td>
-                          <td ng-show="offer.offer_approval_by"><a ui-sref="app.pages.profile({ username: offer.offer_approval_by })">{{offer.offer_approval_by}</a></td>
-                          <td ng-show="offer.offer_approval_by">{{ offer.offer_approval | date:"shortDate" }}</td>
-                          <td class="text-amythyst" colspan="2" ng-show="!offer.offer_approval_by">Waiting Approval</td>
+                          <td class="text-lightred" ng-show="offer.offer_version !== vm.order.offer_version">Refusé</td>
+                          <td ng-show="offer.offer_approval_by"><a ui-sref="app.pages.profile({ username: offer.offer_approval_by })">{{ offer.offer_approval_by_name }}</a></td>
+                          <td ng-show="offer.offer_approval_by">{{ offer.offer_approval | date:"mediumDate" }}</td>
+                          <td colspan="2" ng-show="!offer.offer_approval_by">Waiting Approval</td>
                           <td>{{ offer.offer_total | currency:"€ " }}</td>
                           <td><a class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a></td>
                         </tr>
