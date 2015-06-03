@@ -1,14 +1,14 @@
 from fabric.api import local
 
 def backup():
-    local('git pull')
-    local('git add .')
+    local('git pull origin master')
+    local('git add -A')
     
     print("enter your commit comments:")
     comment = raw_input()
     local('git commit -m "%s"' % comment)
     
-    local('git push')
+    local('git push origin master')
     
 def deploy():
     local('pip freeze > requirements.txt')
