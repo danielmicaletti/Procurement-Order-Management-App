@@ -39,6 +39,6 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-slategray btn-ef btn-ef-4 btn-ef-4c" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Return</button>
-    <button ui-sref="app.orders.edit({reqId:req.id})" ng-click="cancel()" class="btn btn-primary btn-ef btn-ef-4 btn-ef-4c"><i class="fa fa-pencil"></i> Edit</button>
-    <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="cancel()"><i class="fa fa-times"></i> Delete</button>
+    <button ui-sref="app.orders.edit({reqId:req.id})" ng-click="cancel()" class="btn btn-primary btn-ef btn-ef-4 btn-ef-4c" ng-show="!vm.order.order_offer"><i class="fa fa-pencil"></i> Edit</button>
+    <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="cancel()" ng-show="!vm.order.order_offer"><i class="fa fa-times"></i> Delete</button>
 </div>

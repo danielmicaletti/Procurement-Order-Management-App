@@ -3,7 +3,9 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework import permissions, status, views, viewsets
 from rest_framework.response import Response
 # from authentication.permissions import IsAccountOwner
-from authentication.models import Account, Company, Address
+from django.utils import timezone
+from ipware.ip import get_ip
+from authentication.models import Account, Activity, Company, Address
 from authentication.serializers import AccountSerializer, CompanySerializer, AddressSerializer
 
 class AccountViewSet(viewsets.ModelViewSet):
@@ -25,7 +27,6 @@ class AccountViewSet(viewsets.ModelViewSet):
             acct = Account.objects.create_user(**serializer.validated_data)
             acct.user_company = request.user.user_company
             acct.user_created_by = request.user
-            print "acct view === %s" % acct
             acct.save()
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
 
@@ -35,8 +36,6 @@ class AccountViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def perform_update(self, serializer):
-        print "VIEW SELF == %s" % self
-        print "VIEW SER === %s" % serializer
         if serializer.is_valid():
             serializer.save(user=self.request.user, **self.request.data)
 
@@ -85,6 +84,9 @@ class LoginView(views.APIView):
             if account.is_active:
                 login(request, account)
                 serialized = AccountSerializer(account)
+                user = self.request.user
+                ip = get_ip(request)
+                obj, created = Activity.objects.get_or_create(active_user=user, user_login_date=timezone.now(), user_ip=ip)
 
                 return Response(serialized.data)
             else:
@@ -97,7 +99,6 @@ class LoginView(views.APIView):
                 'status': 'Unauthorized',
                 'message': 'Username/password combination invalid.'
             }, status=status.HTTP_401_UNAUTHORIZED)
-
 
 class LogoutView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)

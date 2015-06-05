@@ -82,7 +82,34 @@ angular.module('minovateApp')
     $scope.open = function(size) {
 
       var modalInstance = $modal.open({
-        templateUrl: static_path('views/modals/reqitem-modal.html'),
+        templateUrl: static_path('views/modals/reference-modal.html'),
+        controller: 'ModalInstanceCtrl',
+        scope: $scope,
+        size: size,
+        resolve: {
+          items: function () {
+            return $scope.items;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    };
+  })
+
+  .controller('OrdAddressModalCtrl', function ($scope, $modal, $log, $localStorage) {
+    var vm = this;
+
+    $scope.items = [];
+
+    $scope.open = function(size) {
+
+      var modalInstance = $modal.open({
+        templateUrl: static_path('views/modals/orderaddress-modal.html'),
         controller: 'ModalInstanceCtrl',
         scope: $scope,
         size: size,

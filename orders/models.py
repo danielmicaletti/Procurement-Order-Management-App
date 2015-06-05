@@ -138,9 +138,19 @@ class ReqItem(models.Model):
     item_fam = models.CharField(max_length=250, null=True, blank=True)
     item_subfam = models.CharField(max_length=250, null=True, blank=True)
     item_details = models.TextField(null=True, blank=True) 
+    req_item_created = models.DateTimeField(auto_now_add=True, auto_now=False)
+    req_item_created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='req_item_modified_user', null=True, blank=True)
+    req_item_modified = models.DateTimeField(auto_now_add=False, auto_now=True)
+    req_item_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='req_item_created_user', null=True, blank=True)
 
     def __unicode__(self):
         return smart_unicode(self.order.order_number)
+
+    def get_order_num(self):
+        return self.order.order_number
+
+    def get_order_company(self):
+        return self.order.order_company
 
 class ReqProduct(models.Model):
     req_item = models.ForeignKey(ReqItem, related_name='req_product')   
@@ -183,6 +193,12 @@ class Offer(models.Model):
 
     def __unicode__(self):
         return smart_unicode(self.order.order_number)
+
+    def get_order_num(self):
+        return self.order.order_number
+
+    def get_order_company(self):
+        return self.order.order_company
 
 class OfferItem(models.Model):
     offer = models.ForeignKey(Offer, related_name='offer_item')

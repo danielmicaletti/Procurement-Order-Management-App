@@ -128,8 +128,8 @@ class ReqItemSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     order_company = CompanySerializer(read_only=True)
     order_created_by = UserCompanySerializer(read_only=True, required=False)
-    company_approval_by = UserCompanySerializer(required=False)
-    delivery_address = AddressSerializer(required=False)
+    company_approval_by = UserCompanySerializer(read_only=True, required=False)
+    delivery_address = AddressSerializer(required=False, read_only=True)
     req_order = ReqItemSerializer(many=True, read_only=True)
     offer_order = OfferSerializer(many=True, read_only=True)
     order_comment = CommentSerializer(many=True, required=False)
@@ -148,23 +148,29 @@ class OrderSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         print "SELF --- %s" % self
-        print "INST === %s" % instance
+        print "INST === %s" % instance.order_status
         print "Val_data === %s" % validated_data
-        instance.order_status = validated_data['order_status']
-        instance.order_status_change_by = validated_data['user']
-        instance.order_status_change_date = timezone.now()
-        instance.company_approval_status = validated_data['company_approval_status']
-        instance.company_approval_by = validated_data['user']
-        instance.company_approval_date = timezone.now()        
+        if 'order_status' in validated_data:
+            instance.order_status = validated_data['order_status']
+            instance.order_status_change_by = validated_data['user']
+            instance.order_status_change_date = timezone.now()
+            instance.company_approval_status = validated_data['company_approval_status']
+            instance.company_approval_by = validated_data['user']
+            instance.company_approval_date = timezone.now()
+
+            if 'APV' or 'REF' in validated_data['order_status']:
+                offer = Offer.objects.get(id=validated_data['offer'])
+                offer.offer_approval_status = validated_data['order_status']
+                offer.offer_approval_by = validated_data['user']
+                offer.offer_approval = timezone.now()
+                offer.save()
+
+        if 'delivery_address' in validated_data:
+            addr = Address.objects.get(id=validated_data['delivery_address'])
+            instance.delivery_address = addr
+        instance.reference_number = validated_data.get('reference_number', instance.reference_number)        
         instance.save()
 
-        if 'APV' or 'REF' in validated_data['order_status']:
-            offer = Offer.objects.get(id=validated_data['offer'])
-            offer.offer_approval_status = validated_data['order_status']
-            offer.offer_approval_by = validated_data['user']
-            offer.offer_approval = timezone.now()
-            print "OFFER apv === %s" % offer
-            offer.save()
         return instance
 
 

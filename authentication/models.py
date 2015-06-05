@@ -21,7 +21,6 @@ class AccountManager(BaseUserManager):
             email=self.normalize_email(email), username=kwargs.get('username'),
             first_name=kwargs.get('first_name'), last_name=kwargs.get('last_name'),
             )
-        print "account cu === %s" % account
         account.set_password(password)
         account.save()
 
@@ -30,7 +29,6 @@ class AccountManager(BaseUserManager):
     def create_superuser(self, email, password, **kwargs):
         account = self.create_user(email, password, **kwargs)
         account.is_admin = True
-        print "account su === %s" % account
         account.save()
 
         return account
@@ -60,6 +58,7 @@ class Account(AbstractBaseUser):
     last_name = models.CharField(max_length=50, blank=True)
     tagline = models.CharField(max_length=140, null=True, blank=True)
     is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     optiz = models.BooleanField(default=False)
     lang = models.CharField(max_length=3, null=True, blank=True, default=lang_def.lower())
     user_company = models.ForeignKey('Company', null=True, blank=True, related_name='wease_company')
@@ -148,6 +147,7 @@ class Address(models.Model):
         (DELIVERY, 'Delivery'),
         (OTHER, 'Other'),
     )    
+    addr_default = models.BooleanField(default=False)
     addr_type = models.CharField(max_length=3, choices=ADDR_LOC, default=OFFICE)
     addr_location = models.CharField(max_length=50, null=True, blank=True)
     addr_company = models.ForeignKey(Company, related_name='address_company', null=True, blank=True)

@@ -10,7 +10,9 @@ class OptizAdmin(admin.ModelAdmin):
     inlines = [
         DetailInline,
     ]
-    ordering = ['domain']
+    list_display = ('domain', 'family', 'subfamily',)
+    ordering = ('domain',)
+    filter_horizontal = ()
 
 admin.site.register(Good, OptizAdmin)
 
@@ -45,7 +47,8 @@ class OrderAdmin(admin.ModelAdmin):
         OfferInline,
         CommentInline,
     ]
-    # ordering = ['domain']
+    list_display = ('order_number', 'order_company', 'order_created',)
+    ordering = ('-order_number',)
         
 admin.site.register(Order, OrderAdmin)
 
@@ -55,7 +58,10 @@ class ReqItemAdmin(admin.ModelAdmin):
         ReqProdInline,
         ReqFileInline,
     ]
-        
+
+    list_display = ('get_order_num', 'item_subfam', 'get_order_company',)
+    ordering = ('-order',)
+
 admin.site.register(ReqItem, ReqItemAdmin)
 
 class ReqFileAdmin(admin.ModelAdmin):
@@ -69,6 +75,9 @@ class OfferAdmin(admin.ModelAdmin):
     inlines = [
         OfferItemInline,
     ]
+
+    list_display = ('get_order_num', 'offer_version', 'get_order_company', 'offer_created', 'offer_approval_status',)
+    ordering = ('-order', 'offer_version',)
 
 admin.site.register(Offer, OfferAdmin)
 

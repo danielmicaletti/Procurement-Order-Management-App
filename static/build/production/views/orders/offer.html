@@ -145,7 +145,7 @@
 
       <tabset>
 
-        <tab heading="Current Offer" ng-show="vm.offer.offer_item.length > 0 || vm.offer.blank_item.length > 0">
+        <tab heading="Current Offer" ng-show="vm.offer.offer_item.length > 0 || vm.offer.blank_item.length > 0" active="offerTab">
 
           <!-- row -->
           <div class="row">
@@ -280,7 +280,7 @@
 
         </tab>
 
-        <tab heading="Request Items" active="true">
+        <tab heading="Request Items" active="reqTab">
 
           <!-- row -->
           <div class="row">
@@ -311,8 +311,7 @@
                           <td ng-show="req.req_item_file.length">{{ req.req_item_file.length }}</td>
                           <td ng-show="!req.req_item_file.length">No files</td>
                           <td ng-controller="OfferReqItemModalCtrl">
-                            <a ng-click="open('lg')" class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a>
-                            <a ui-sref="app.orders.edit({reqId:req.id})" class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                            <a ng-click="open('lg')" class="btn btn-xs btn-default"><i class="fa fa-search"></i> View or Add Offer Item</a>
                           </td>
                         </tr>
                       </tbody>

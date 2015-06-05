@@ -29,6 +29,7 @@ class CompanySerializer(serializers.ModelSerializer):
     address_company = AddressSerializer(many=True, read_only=True)      
     company_created_by = serializers.CharField(read_only=True)
     company_updated_by = serializers.CharField(read_only=True)
+    email = serializers.CharField(read_only=True, required=False)
     # company_assigned_to = serializers.StringRelatedField(many=True, read_only=True)
     company_logo = serializers.CharField(read_only=True)
 
@@ -58,7 +59,6 @@ class CompanySerializer(serializers.ModelSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
-    # user_company = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
     user_company_full = serializers.CharField(source='user_company.get_name', read_only=True, required=False)
     password = serializers.CharField(write_only=True, required=False)
     confirm_password = serializers.CharField(write_only=True, required=False)
