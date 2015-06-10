@@ -43,32 +43,31 @@
         var authenticatedAccount = Authentication.getAuthenticatedAccount();
         
         console.log(authenticatedAccount);
-        if (!authenticatedAccount) {
+        if (!authenticatedAccount.optiz) {
             $state.go('core.login');
             toastr.error('You are not authorized to view this page.');
         } 
+        getOrder();
+    }
         console.log(vm.orderId);
 
-        Order.getOrder(vm.orderId).then(getOrderSuccess).catch(getOrderError);
+    function getOrder(){
+      Order.getOrder(vm.orderId)
+        .then(getOrderSuccess)
+        .catch(getOrderError);
+    }
+    function getOrderSuccess(data, status, headers, config) {
+      vm.order = data;
+      console.log(vm.order);
+    }
 
-        function getOrderSuccess(data, status, headers, config) {
-          vm.order = data;
-          console.log(vm.order);
-        }
-
-        function getOrderError(errorMsg) {
-            $state.go('app.dashboard');
-            toastr.error('Your request can not be processed '+errorMsg+'');          
-        }
+    function getOrderError(errorMsg) {
+        $state.go('app.dashboard');
+        toastr.error('Your request can not be processed '+errorMsg+'');          
     }
     console.log(vm.offer);
 
     $scope.reqTab = 'true';
-
-    // if(vm.offer){
-    //   $scope.reqTab = '';
-    //   $scope.offerTab = 'true';
-    // }
 
    vm.addItem = function (req_item){
       console.log(req_item);
@@ -105,28 +104,68 @@
     };
 
     vm.addOffer = function (){
+      console.log(vm.offer);
+      if(!vm.offer.offer_terms){
         console.log(vm.offer);
-        vm.offer['order'] = vm.orderId
-        angular.forEach(vm.offer.blank_item, function (value, prop, obj) {
-            console.log(value); 
-            console.log(prop); 
-            console.log(obj);
-            vm.offer.offer_item.push(value);
-        });
-        console.log(vm.offer);
-        Order.createOffer(vm.orderId, vm.offer)
-            .then(addOfferSuccess)
-            .catch(addOfferError);
+        vm.offer['offer_terms'] = 'None';
+        console.log(vm.offer.offer_terms);
+      }
+      if(!vm.offer.offer_total){
+        vm.offer['offer_total'] = 0;
+      }
+      vm.offer['order'] = vm.orderId
+      angular.forEach(vm.offer.blank_item, function (value, prop, obj) {
+          console.log(value); 
+          console.log(prop); 
+          console.log(obj);
+          vm.offer.offer_item.push(value);
+      });
+      console.log(vm.offer);
+      Order.createOffer(vm.orderId, vm.offer)
+          .then(addOfferSuccess)
+          .catch(addOfferError);
     };
 
-    function addOfferSuccess (data){
+    function addOfferSuccess(data){
         $log.info(data);
         $state.go('app.orders.order', {orderId:vm.orderId})  
     }
 
-    function addOfferError (errorMsg){
+    function addOfferError(errorMsg){
         $log.error(errorMsg);
     }
+
+    vm.delOfferItem = function(ofrItem){
+      console.log(ofrItem);
+      var index = vm.offer.offer_item.indexOf(ofrItem);
+      vm.offer.offer_item.splice(index, 1); 
+    }
+
+    vm.delBlankItem = function(ofrItem){
+      console.log(ofrItem);
+      var index = vm.offer.blank_item.indexOf(ofrItem);
+      vm.offer.blank_item.splice(index, 1); 
+    }
+    // $scope.remove = function(ofrItem) { 
+    //   var index = $scope.bdays.indexOf(ofrItem);
+    //   $scope.bdays.splice(index, 1);     
+    // }
+    // vm.delOfferItem = function(ofrId){
+    //   console.log(ofrId);
+    //   Order.delOfferItem(ofrId)
+    //     .then(delOfferItemSuccess)
+    //     .catch(delOfferItemError);
+    // }
+
+    // function delOfferItemSuccess(data){
+    //   console.log(data);
+    //   getOrder();
+    //   toastr.info('Your Offer Item has been removed');
+    // }
+
+    // function delOfferItemError(response){
+    //   toastr.error('Your request can not be processed '+errorMsg+' .');
+    // }
   }
 
 })();

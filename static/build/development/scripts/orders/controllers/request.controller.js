@@ -18,7 +18,7 @@
     var goodId = $stateParams.goodId;
 
     vm.newReq = {};
-    vm.newReq.order_draft = false;
+    vm.newReq.order_draft = true;
     // vm.updateReq = {};
     // $scope.oneAtATime = true;
 

@@ -66,12 +66,12 @@
         }
     }
 
-    vm.isDraft = function (){
-        console.log("here");
-        if(vm.req.order_draft){
-            vm.updateReq();
-        }
-    };
+    // vm.isDraft = function (){
+    //     console.log("here");
+    //     if(vm.req.order_draft){
+    //         vm.updateReq();
+    //     }
+    // };
 
     vm.updateReq = function (){
         console.log("Req Data");
@@ -93,9 +93,9 @@
         $log.info($scope.reqId);
         console.log(uploader)
         if (uploader.queue.length>0){
-            uploader.uploadAll()
+          uploader.uploadAll()
         }else{
-           $state.go('app.orders.order', {orderId:vm.orderId}) 
+          $state.go('app.orders.order', {orderId:vm.orderId}) 
         }
     }
 

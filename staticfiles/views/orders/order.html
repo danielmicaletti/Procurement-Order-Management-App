@@ -40,10 +40,10 @@
             <br/>
             <div ng-controller="AddRefNumModalCtrl">
               <h4>Reference # : <strong > {{ vm.order.reference_number }}</strong></h4>
-              <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;" tooltip="Add Reference #" ng-click="open('sm')"><i class="fa fa-pencil"></i></button>
+              <button type="button" class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10" style="width:30px;" tooltip="add or edit Reference #" ng-click="open('md')"><i class="fa fa-pencil"></i></button>
             </div>
           </div> 
-          <div class="col-md-4 "ng-show="!vm.order.order_offer">
+          <div class="col-md-4" ng-if="vm.order.order_status === 'WRQ'" >
             <span class="controls" ng-controller="AddReqModalCtrl">
               <p class="text-uppercase text-strong mb-10 custom-font">Add Item or Cancel Request</p>
               <a ng-click="open('lg')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="Add Request Item"><i class="fa fa-plus"></i></a>
@@ -106,12 +106,12 @@
           <!-- /col -->
 
           <!-- col -->
-          <div class="col-md-3 b-r">
+          <div class="col-md-3 b-r" ng-controller="OrdAddressModalCtrl">
             <p class="text-uppercase text-strong mb-10 custom-font" >
-              Delivery Address
+              Delivery Address <a class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10" style="width:30px;" tooltip="add or change Delivery Address" ng-click="open('lg')"><i class="fa fa-pencil"></i></a>
             </p>
-
-            <!-- col -->
+          <!--   <button type="button" class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10" style="width:30px;" tooltip="add or change Delivery Address" ng-click="open('lg')"><i class="fa fa-pencil"></i></button>
+ -->            <!-- col -->
             <div class="col-md-12">
               <ul class="list-unstyled text-default lt mb-20">
                 <li>{{ vm.order.delivery_address.addr_location }}</li>
@@ -142,13 +142,12 @@
 
           <!-- col -->
           <div class="col-md-3 b-r">
-            <div ng-show="vm.order.order_status === 'PEN' || vm.order.order_status === 'REF' && au.optiz">
+            <div ng-show="['PEN','REF'].indexOf(vm.order.order_status)!=-1 && au.optiz">
               <p class="text-uppercase text-strong mb-10 custom-font">Add Offer</p>
               <button class="btn btn-primary" ui-sref="app.orders.offer({ orderId: vm.order.id})">Create Offer</button>
             </div>
             <div ng-show="vm.order.order_status === 'OFR'">
               <p class="text-uppercase text-strong mb-10 custom-font">Add Item or Cancel Request</p>
-              <p>{{au.optiz}}</p>
             </div>
           </div>
           <!-- /col -->

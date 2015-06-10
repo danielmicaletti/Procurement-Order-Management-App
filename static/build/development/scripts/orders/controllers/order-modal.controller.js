@@ -74,6 +74,33 @@ angular.module('minovateApp')
     };
   })
 
+  .controller('ConfOrdModalCtrl', function ($scope, $modal, $log, $localStorage) {
+    var vm = this;
+
+    $scope.items = [];
+
+    $scope.open = function(size) {
+
+      var modalInstance = $modal.open({
+        templateUrl: static_path('views/modals/conford-modal.html'),
+        controller: 'ModalInstanceCtrl',
+        scope: $scope,
+        size: size,
+        resolve: {
+          items: function () {
+            return $scope.items;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    };
+  })
+
   .controller('AddRefNumModalCtrl', function ($scope, $modal, $log, $localStorage) {
     var vm = this;
 
@@ -196,6 +223,33 @@ angular.module('minovateApp')
 
       var modalInstance = $modal.open({
         templateUrl: static_path('views/modals/offerapvl-modal.html'),
+        controller: 'ModalInstanceCtrl',
+        scope: $scope,
+        size: size,
+        resolve: {
+          items: function () {
+            return $scope.items;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    };
+
+  })  
+  .controller('CancelOrdModalCtrl', function ($scope, $modal, $log, $localStorage) {
+    var vm = this;
+
+    $scope.items = [];
+
+    $scope.open = function(size) {
+
+      var modalInstance = $modal.open({
+        templateUrl: static_path('views/modals/cancelorder-modal.html'),
         controller: 'ModalInstanceCtrl',
         scope: $scope,
         size: size,

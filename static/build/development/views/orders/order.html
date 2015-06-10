@@ -39,20 +39,20 @@
             <br/>
             <br/>
             <div ng-controller="AddRefNumModalCtrl">
-              <h4>Reference # : <strong > {{ vm.order.reference_number }}</strong></h4>
-              <button type="button" class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10" style="width:30px;" tooltip="add or edit Reference #" ng-click="open('md')"><i class="fa fa-pencil"></i></button>
+              <h4>Reference # : <strong > {{ vm.order.reference_number }}</strong></h4><h4 class="text-lightred text-md ml-10" ng-show="!vm.order.reference_number">Add a Reference Number</h4>
+              <button type="button" class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10" style="width:30px;" tooltip="add or edit Reference #" ng-click="open('md')" ng-show="['WRQ','APN'].indexOf(vm.order.order_status)!=-1"><i class="fa fa-pencil"></i></button>
             </div>
           </div> 
-          <div class="col-md-4" ng-if="vm.order.order_status === 'WRQ'" >
-            <span class="controls" ng-controller="AddReqModalCtrl">
+          <div class="col-md-4" ng-if="['WRQ','APN'].indexOf(vm.order.order_status)!=-1 && vm.orderCompany && sub">
+            <span class="controls">
               <p class="text-uppercase text-strong mb-10 custom-font">Add Item or Cancel Request</p>
-              <a ng-click="open('lg')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="Add Request Item"><i class="fa fa-plus"></i></a>
-              <a class="btn btn-ef btn-ef-1 btn-ef-1-lightred btn-ef-1a btn-rounded-20 mr-5" tooltip="Cancel this order"><i class="fa fa-times"></i></a>
+              <a ng-click="open('lg')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="Add Request Item" ng-controller="AddReqModalCtrl"><i class="fa fa-plus"></i></a>
+              <a class="btn btn-ef btn-ef-1 btn-ef-1-lightred btn-ef-1a btn-rounded-20 mr-5" tooltip="Cancel this request" ng-click="open('md')" ng-controller="CancelOrdModalCtrl"><i class="fa fa-times"></i></a>
               <!-- <a href="javascript:;" class="btn btn-ef btn-ef-1 btn-ef-1-default btn-ef-1a btn-rounded-20 mr-5" tooltip="Send"><i class="fa fa-envelope"></i></a> -->
               <a href="javascript:window.print()" class="btn btn-ef btn-ef-1 btn-ef-1-default btn-ef-1a btn-rounded-20" tooltip="Print"><i class="fa fa-print"></i></a>
             </span>
           </div>
-          <div class="col-md-4" ng-show="vm.order.order_status === 'OFR'">
+          <div class="col-md-4" ng-if="vm.order.order_status === 'OFR' && vm.orderCompany && apv">
             <span class="controls" ng-controller="OfferApvlModalCtrl">
               <p class="text-uppercase text-strong mb-10 custom-font">Approve Current Offer</p>
               <a ng-click="open('lg', 'Approval')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="View and Approve Offer"><i class="fa fa-check"></i></a>
@@ -108,12 +108,13 @@
           <!-- col -->
           <div class="col-md-3 b-r" ng-controller="OrdAddressModalCtrl">
             <p class="text-uppercase text-strong mb-10 custom-font" >
-              Delivery Address <a class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10" style="width:30px;" tooltip="add or change Delivery Address" ng-click="open('lg')"><i class="fa fa-pencil"></i></a>
+              Delivery Address <a class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10" style="width:30px;" tooltip="add or change Delivery Address" ng-click="open('lg')" ng-show="['WRQ','APN'].indexOf(vm.order.order_status)!=-1"><i class="fa fa-pencil"></i></a>
             </p>
           <!--   <button type="button" class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10" style="width:30px;" tooltip="add or change Delivery Address" ng-click="open('lg')"><i class="fa fa-pencil"></i></button>
  -->            <!-- col -->
             <div class="col-md-12">
-              <ul class="list-unstyled text-default lt mb-20">
+              <p class="text-lightred text-md" ng-show="!vm.order.delivery_address">Add a Delivery Address</p>
+              <ul class="list-unstyled text-default lt mb-20" ng-show="vm.order.delivery_address">
                 <li>{{ vm.order.delivery_address.addr_location }}</li>
                 <li>{{ vm.order.delivery_address.street_addr1 }}</li>
                 <li ng-hide="!vm.order.delivery_address.street_addr2">{{ vm.order.delivery_address.street_addr2 }}</li>
@@ -136,18 +137,39 @@
               </ul>
             </div>
             <!-- /col -->
-
           </div>
           <!-- /col -->
 
           <!-- col -->
-          <div class="col-md-3 b-r">
-            <div ng-show="['PEN','REF'].indexOf(vm.order.order_status)!=-1 && au.optiz">
+          <div class="col-md-3 b-r" ng-controller="ConfOrdModalCtrl">
+            <div ng-if="['PEN','REF'].indexOf(vm.order.order_status)!=-1 && au.optiz">
               <p class="text-uppercase text-strong mb-10 custom-font">Add Offer</p>
               <button class="btn btn-primary" ui-sref="app.orders.offer({ orderId: vm.order.id})">Create Offer</button>
             </div>
-            <div ng-show="vm.order.order_status === 'OFR'">
-              <p class="text-uppercase text-strong mb-10 custom-font">Add Item or Cancel Request</p>
+            <div ng-if="['WRQ','APN'].indexOf(vm.order.order_status)!=-1 && vm.orderCompany && au.access_level === '5'">
+              <p class="text-uppercase text-strong mb-10 custom-font">Add Request Item</p>
+                <span class="controls block mb-10" ng-controller="AddReqModalCtrl">
+                  <a ng-click="open('lg')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="Add Request Item"><i class="fa fa-plus"></i></a>
+                  <a class="btn btn-ef btn-ef-1 btn-ef-1-lightred btn-ef-1a btn-rounded-20 mr-5" tooltip="Cancel this request"><i class="fa fa-times"></i></a>
+                </span>
+              <p class="text-uppercase text-strong mb-10 custom-font">Submit Request</p>
+              <p class="text-lightred">This Request must be approved by {{ vm.order.order_company.name }} management</p>
+              <button class="btn btn-primary" ng-click="open('lg')">Submit for Approval</button>
+            </div>
+<!--             <div ng-if="vm.order.order_status === 'APN' && vm.orderCompany && apv">
+              <p class="text-uppercase text-strong mb-10 custom-font">Submit Request</p>
+              <button class="btn btn-primary" ng-click="open('lg')">Submit Request</button>
+              <button class="btn btn-primary" ng-click="open('lg')">Refuse</button>
+            </div> -->
+            <div ng-if="['WRQ','APN'].indexOf(vm.order.order_status)!=-1 && vm.orderCompany && apv">
+              <p class="text-uppercase text-strong mb-10 custom-font">Add Request Item</p>
+                <span class="controls block mb-10">
+                  <a ng-click="open('lg')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="Add Request Item" ng-controller="AddReqModalCtrl"><i class="fa fa-plus"></i></a>
+                  <a class="btn btn-ef btn-ef-1 btn-ef-1-lightred btn-ef-1a btn-rounded-20 mr-5" tooltip="Cancel this request" ng-click="open('md')"  ng-controller="CancelOrdModalCtrl"><i class="fa fa-times"></i></a>
+                </span>
+              <p class="text-uppercase text-strong mb-10 custom-font">Submit Request</p>
+              <button class="btn btn-success" ng-click="open('lg')">Submit Request</button>
+              <button class="btn btn-primary" ng-if="vm.order.order_status === 'APN'">Refuse</button>
             </div>
           </div>
           <!-- /col -->
@@ -190,8 +212,8 @@
                           <td ng-show="!req.req_item_file.length">No files</td>
                           <td ng-controller="ReqItemModalCtrl">
                             <a ng-click="open('lg')" class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a>
-                            <a ui-sref="app.orders.edit({reqId:req.id})" class="btn btn-xs btn-primary" ng-show="!vm.order.order_offer"><i class="fa fa-pencil"></i> Edit</a>
-                            <a href="javascript:;" class="btn btn-xs btn-lightred" ng-show="!vm.order.order_offer"><i class="fa fa-times"></i> Delete</a>
+                            <a ui-sref="app.orders.edit({reqId:req.id})" class="btn btn-xs btn-primary" ng-show="['WRQ','APN'].indexOf(vm.order.order_status)!=-1"><i class="fa fa-pencil"></i> Edit</a>
+                            <a href="javascript:;" class="btn btn-xs btn-lightred" ng-show="['WRQ','APN'].indexOf(vm.order.order_status)!=-1" ng-click="vm.delReqItem(req.id)"><i class="fa fa-times"></i> Remove</a>
                           </td>
                         </tr>
                       </tbody>
@@ -288,7 +310,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-4 form-group m-20 pull-right" ng-controller="OfferApvlModalCtrl" ng-show="vm.order.order_status === 'OFR'">
+                    <div class="col-md-4 form-group m-20 pull-right" ng-controller="OfferApvlModalCtrl" ng-if="vm.order.order_status === 'OFR' && vm.orderCompany && apv">
                         <button ng-click="open('lg', 'Approval')" class="btn btn-rounded btn-success btn-block">Approve</button>
                         <button ng-click="open('lg', 'Refusal')" class="btn btn-rounded btn-lightred btn-block">Refuse</button>
                     </div>

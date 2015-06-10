@@ -169,8 +169,9 @@
                     <div role="form" class="col-md-12" ng-repeat="offer_item in vm.offer.offer_item track by $index">
                         <div class="well" >
                             <div class="row">
+                                <a href="javascript:;" class="btn btn-xs btn-lightred" ng-click="vm.delOfferItem(offer_item)"><i class="fa fa-times"></i> Remove</a>
                                 <div class="form-group col-md-4" ng-show="offer_item.item_name">
-                                    <label for="item_name"><strong>Offer Item</strong></label>
+                                    <label for="item_name">Offer Item</label>
                                     <p class="form-control-static">{{offer_item.item_name}}</p>
                                 </div>
                                 <div class="form-group col-md-4" ng-show="offer_item.item_details">
@@ -213,11 +214,12 @@
                     <div role="form" class="col-md-12" ng-repeat="blank_item in vm.offer.blank_item track by $index">
                         <div class="well" >
                             <div class="row">
-                                <div class="form-group col-md-6" ng-show="blank_item.item_name">
+                                <a href="javascript:;" class="btn btn-xs btn-lightred" ng-click="vm.delBlankItem(blank_item)"><i class="fa fa-times"></i> Remove</a>
+                                <div class="form-group col-md-4" ng-show="blank_item.item_name">
                                     <label for="item_name">Offer Item</label>
                                     <p class="form-control-static">{{blank_item.item_name}}</p>
                                 </div>
-                                <div class="form-group col-md-7" ng-show="blank_item.item_details">
+                                <div class="form-group col-md-4" ng-show="blank_item.item_details">
                                     <label for="item_details">Description</label>
                                     <p class="form-control-static">{{blank_item.item_details}}</p>
                                 </div>            
@@ -259,11 +261,11 @@
                           <!-- <div class="row"> -->
                               <div class="form-group col-md-6">
                                   <label for="date_end"><strong>Offer Terms</strong></label>
-                                  <textarea class="form-control" rows="3" ng-model="vm.offer.offer_terms"></textarea>
+                                  <textarea class="form-control" rows="3" ng-model="vm.offer.offer_terms" placeholder="Add terms for this offer"></textarea>
                               </div>
                           <!-- </div> -->
-                          <div>
-                              <button type="submit" ng-click="vm.addOffer()" class="btn btn-rounded btn-success btn mr-20 pull-right" placeholder="Add terms for this offer">Submit Offer</button>
+                          <div class="col-md-12">
+                              <button type="submit" ng-click="vm.addOffer()" class="btn btn-rounded btn-success btn mr-20 pull-right">Submit Offer</button>
                           </div>
                         </form>
                     <!-- </div> -->

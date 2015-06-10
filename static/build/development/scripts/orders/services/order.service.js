@@ -8,11 +8,13 @@
   Order.$inject = ['$http', '$q'];
 
   function Order($http, $q) {
-	var Order = {
-        getAll: getAll,
-        getOrder: getOrder,
-        createOffer: createOffer,
-        addToOrder: addToOrder,
+  	var Order = {
+          getAll: getAll,
+          getOrder: getOrder,
+          createOffer: createOffer,
+          addToOrder: addToOrder,
+          delOrder: delOrder,
+          delReqItem: delReqItem,
     };
 
     return Order;
@@ -27,6 +29,7 @@
     function generalCallbackSuccess(response){
       console.log("order")
       console.log(response.data)
+      console.log(response)
       return response.data;
     }
 
@@ -96,32 +99,21 @@
         .catch(generalCallbackError);
     }
 
-    // function addRefSuccess(response){
-    //   console.log(response.data);
-    //   return response.data;
-    // }
+    // Delete order
+    function delOrder(orderId) {
+      console.log(orderId);
+      return $http.delete('/api/v1/orders/'+orderId+'/')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    }
 
-    // function addRefError(response){
-    //   return $q.reject('Error updating order status '+response.status+''); 
-    // }
-
-    // Change order delivery address
-    // function addRef(orderId, data) {
-    //   console.log(orderId);
-    //   console.log(data);
-    //   return $http.put('/api/v1/orders/'+orderId+'/', data)
-    //     .then(generalCallbackSuccess)
-    //     .catch(generalCallbackError);
-    // }
-
-    // function addRefSuccess(response){
-    //   console.log(response.data);
-    //   return response.data;
-    // }
-
-    // function addRefError(response){
-    //   return $q.reject('Error updating order status '+response.status+''); 
-    // }        
+    //Remove Request Item
+    function delReqItem(reqId) {
+      console.log(reqId);
+      return $http.delete('/api/v1/req-items/'+reqId+'/')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    }
 
   }
 })();

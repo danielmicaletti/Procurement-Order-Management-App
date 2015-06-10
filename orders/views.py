@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import list_route, api_view, detail_route
 from orders.models import Good, Detail, Order, ReqItem, ReqProduct, ReqFile, Offer, OfferItem
 from authentication.models import Address
-from orders.serializers import OrderSerializer, GoodSerializer, DetailSerializer, ReqItemSerializer, ReqProductSerializer, ReqFileSerializer, OfferSerializer
+from orders.serializers import OrderSerializer, GoodSerializer, DetailSerializer, ReqItemSerializer, ReqProductSerializer, ReqFileSerializer, OfferSerializer, OfferItemSerializer
 from operator import itemgetter, attrgetter
 from django.utils import timezone
 from datetime import date
@@ -60,23 +60,23 @@ class ReqItemViewSet(viewsets.ModelViewSet):
                 order.order_number = ''.join(["0",yr,str(order.id)])
                 order.order_version = 00
 
-            print "ODRAFT 1 === %s" % self.request.data['order_draft']
-            if self.request.data['order_draft']:
+            # print "ODRAFT 1 === %s" % self.request.data['order_draft']
+            # if self.request.data['order_draft']:
                 order.order_draft = True
                 order.order_status = 'WRQ'
                 order.company_approval_status = 'WRQ'
                 order.optiz_status = 'WRQ'
-            else:
-                if user.access_level >= '6':
-                    order.company_approval_status = 'PEN'
-                    order.order_status = 'PEN'
-                    order.optiz_status = 'PEN'
-                    order.company_approval_by = user
-                    order.company_approval_date = timezone.now()
-                else:
-                    order.company_approval_status = 'APN'
-                    order.order_status = 'APN'
-                order.order_version = order.order_version + 01
+            # else:
+            #     if user.access_level >= '6':
+            #         order.company_approval_status = 'PEN'
+            #         order.order_status = 'PEN'
+            #         order.optiz_status = 'PEN'
+            #         order.company_approval_by = user
+            #         order.company_approval_date = timezone.now()
+            #     else:
+            #         order.company_approval_status = 'APN'
+            #         order.order_status = 'APN'
+            #     order.order_version = order.order_version + 01
             order.save()
             serializer.save(order=order, **self.request.data)
             # return super(ReqItemViewSet, self).perform_create(serializer)
@@ -91,27 +91,27 @@ class ReqItemViewSet(viewsets.ModelViewSet):
             val_data = self.request.data['data']
             print "VAL_DATA == %s" % val_data
             order = Order.objects.get(id=val_data['order'])
-            print "ORDER === %s "% order.order_version
-            print "SRD === %s" % self.request.data
-            print "USER PROF === %s" % self.request.user.access_level
-            print "ODRAFT 1 === %s" % val_data['order_draft']
-            if val_data['order_draft']:
-                order.order_status = 'WRQ'
-                order.company_approval_status = 'WRQ'
-                order.optiz_status = 'WRQ'
-                order.order_version = 00
-            else:
-                if user.access_level >= '6':
-                    order.company_approval_status = 'PEN'
-                    order.order_status = 'PEN'
-                    order.optiz_status = 'PEN'
-                    order.company_approval_by = user
-                    order.company_approval_date = timezone.now()
-                else:
-                    order.company_approval_status = 'APN'
-                    order.order_status = 'APN'
-                order.order_version = order.order_version + 01
-            order.save()
+            # print "ORDER === %s "% order.order_version
+            # print "SRD === %s" % self.request.data
+            # print "USER PROF === %s" % self.request.user.access_level
+            # print "ODRAFT 1 === %s" % val_data['order_draft']
+            # if val_data['order_draft']:
+            #     order.order_status = 'WRQ'
+            #     order.company_approval_status = 'WRQ'
+            #     order.optiz_status = 'WRQ'
+            #     order.order_version = 00
+            # else:
+            #     if user.access_level >= '6':
+            #         order.company_approval_status = 'PEN'
+            #         order.order_status = 'PEN'
+            #         order.optiz_status = 'PEN'
+            #         order.company_approval_by = user
+            #         order.company_approval_date = timezone.now()
+            #     else:
+            #         order.company_approval_status = 'APN'
+            #         order.order_status = 'APN'
+            #     order.order_version = order.order_version + 01
+            # order.save()
             serializer.save(order=order, **self.request.data)
 
 class ReqProductViewSet(viewsets.ModelViewSet):
@@ -191,6 +191,16 @@ class OfferViewSet(viewsets.ModelViewSet):
             print "USER PROF === %s" % self.request.user.access_level
             serializer.save(user=self.request.user, **self.request.data)
             # return super(OrderViewSet, self).perform_create(serializer)
+
+class OfferItemViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = OfferItem.objects.all()
+    serializer_class = OfferItemSerializer
+
+    def retrieve(self, request, id=None):
+        queryset = self.queryset.get(id=id)
+        serializer = OfferItemSerializer(queryset)
+        return Response(serializer.data)
 
 class GoodViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'

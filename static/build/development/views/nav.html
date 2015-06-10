@@ -21,7 +21,7 @@
             <li ui-sref-active="active"><a ui-sref="app.orders.all"><fa name="caret-right"></fa> Orders</a></li>
           </ul>
         </li>
-        <nav-items ui-sref-active="active" ng-class="{'open':$state.includes('app.orders.request({goodId:value.id)')}" ng-repeat="(domain, value) in vm.allGoods | groupBy: 'domain' | orderBy:'id'" nav-item="{{value}}" dom="{{domain}}" icon="{{vm.icon}}"> 
+        <nav-items ui-sref-active="active" ng-class="{'open':$state.includes('app.orders.request({goodId:value.id)')}" ng-repeat="(domain, value) in vm.allGoods | groupBy: 'domain' | orderBy:'id'" nav-item="{{value}}" dom="{{domain}}" icon="{{vm.icon}}" ng-if="sub"> 
         </nav-items>     
         <li ui-sref-active="active" ng-class="{'open':$state.includes('app.mail')}">
           <a ui-sref="app.mail"><fa name="envelope-o"></fa> <span>Mail</span> <span class="badge bg-lightred">6</span></a>

@@ -27,6 +27,7 @@ class OfferItemSerializer(serializers.ModelSerializer):
 class OfferSerializer(serializers.ModelSerializer):
     order = serializers.CharField(required=False)
     offer_item = OfferItemSerializer(many=True, required=False)
+    offer_terms = serializers.CharField(required=False)
     offer_created_by = serializers.CharField(required=False)
     offer_created_by_name = serializers.CharField(source='offer_created_by.get_full_name', required=False)
     offer_approval_display = serializers.CharField(source='get_offer_approval_status_display', required=False)
@@ -76,9 +77,6 @@ class ReqItemSerializer(serializers.ModelSerializer):
     order = serializers.CharField(required=False)
     order_draft = serializers.BooleanField(source='order.order_draft', required=False)
     item_details = serializers.CharField(required=False)
-    # order_description = serializers.CharField(source='order.description', read_only=True, required=False)
-    # order_reference = serializers.CharField(source='order.reference_number', read_only=True, required=False)
-    # delivery_address = serializers.IntegerField(source='order.delivery_address.id', read_only=True, required=False)
     req_product = ReqProductSerializer(many=True, required=False)
     req_item_file = ReqFileSerializer(many=True, required=False)
 
@@ -90,11 +88,10 @@ class ReqItemSerializer(serializers.ModelSerializer):
         order = validated_data.pop('order')
         goods = validated_data.pop('good')
         good = Good.objects.get(id=validated_data['good_id'])
-        item_details = validated_data.pop('item_details')
-        # addr = Address.objects.get(id=validated_data['delivery_address'])
-        # order.delivery_address = addr
-        # order.reference_number = validated_data['order_reference']
-        # order.description = validated_data['order_description'] 
+        if 'item_details' in validated_data:
+            item_details = validated_data.pop('item_details')
+        else:
+            item_details = ''
         order.order_draft = validated_data['order_draft']
         order.save()
         req_item = ReqItem.objects.create(order=order, good=good, req_domain=goods[0], item_fam=goods[1], item_subfam=goods[2], item_details=item_details)
@@ -130,7 +127,7 @@ class OrderSerializer(serializers.ModelSerializer):
     order_created_by = UserCompanySerializer(read_only=True, required=False)
     company_approval_by = UserCompanySerializer(read_only=True, required=False)
     delivery_address = AddressSerializer(required=False, read_only=True)
-    req_order = ReqItemSerializer(many=True, read_only=True)
+    req_order = ReqItemSerializer(many=True, read_only=False, required=False)
     offer_order = OfferSerializer(many=True, read_only=True)
     order_comment = CommentSerializer(many=True, required=False)
     order_status_change_date = serializers.DateTimeField(required=False)
@@ -150,18 +147,36 @@ class OrderSerializer(serializers.ModelSerializer):
         print "SELF --- %s" % self
         print "INST === %s" % instance.order_status
         print "Val_data === %s" % validated_data
+        user = validated_data.pop('user')
+        print "ORD SER USER == = %s" % user
+        if 'order_draft' in validated_data:
+            if 'False' in validated_data['order_draft']:
+                instance.order_draft = False
+                print "INST VAL DATA OD --- %s" % instance.order_draft
+                print "ORD SER USER LVL=== %s" % user.access_level
+                if user.access_level >= '6':
+                    instance.company_approval_status = 'PEN'
+                    instance.order_status = 'PEN'
+                    instance.optiz_status = 'PEN'
+                    instance.company_approval_by = user
+                    instance.company_approval_date = timezone.now()
+                else:
+                    instance.company_approval_status = 'APN'
+                    instance.order_status = 'APN'
+                instance.order_version = instance.order_version + 01
+
         if 'order_status' in validated_data:
             instance.order_status = validated_data['order_status']
-            instance.order_status_change_by = validated_data['user']
+            instance.order_status_change_by = user
             instance.order_status_change_date = timezone.now()
             instance.company_approval_status = validated_data['company_approval_status']
-            instance.company_approval_by = validated_data['user']
+            instance.company_approval_by = user
             instance.company_approval_date = timezone.now()
 
             if 'APV' or 'REF' in validated_data['order_status']:
                 offer = Offer.objects.get(id=validated_data['offer'])
                 offer.offer_approval_status = validated_data['order_status']
-                offer.offer_approval_by = validated_data['user']
+                offer.offer_approval_by = user
                 offer.offer_approval = timezone.now()
                 offer.save()
 

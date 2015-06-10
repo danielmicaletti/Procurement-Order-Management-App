@@ -14,15 +14,12 @@
 
     activate();
 
-    $scope.page = {
-      title: 'Order',
-    };
-
     $scope.stati = {
 
       'WRQ':'text-cyan',
       'PEN':'text-warning',
       'OFR':'text-drank',
+      'APN':'text-dutch',
       'VAL':'text-greensea',
       'REF':'text-lightred',
       'APV':'text-success',
@@ -30,50 +27,123 @@
       'CAN':'text-red',
       'ARC':'text-darkgray',
 
-    }
+    }  
 
     function activate() {
-      var authenticatedAccount = Authentication.getAuthenticatedAccount();
-      console.log(authenticatedAccount);
+      vm.authenticatedAccount = Authentication.getAuthenticatedAccount();
+      console.log(vm.authenticatedAccount);
+      getOrder();
+    }
+
+    function getOrder(argument) {
       var orderId = $stateParams.orderId;
+      Order.getOrder(orderId)
+        .then(getOrderSuccess)
+        .catch(getOrderError);
+    }
 
-      Order.getOrder(orderId).then(getOrderSuccess, getOrderError);
+    function getOrderSuccess(data, status, headers, config) {
+      vm.order = data;
+      console.log(vm.order); 
+      pageTitle(vm.order);
+      if(vm.authenticatedAccount.optiz && vm.order.order_status === 'PEN'){
+        toastr.info('Offer needed for this order');
+      }
+      if(vm.authenticatedAccount.user_company === vm.order.order_company.id){
+        vm.orderCompany = true;
+      }else{
+        vm.orderCompany = false;
+      }
+    }
 
-      function getOrderSuccess(data, status, headers, config) {
-        vm.order = data;
-        console.log(vm.order); 
-        if(authenticatedAccount.optiz && vm.order.order_status === 'PEN'){
-          toastr.info('Offer needed for this order');
-        }    
+    function getOrderError(errorMsg) {
+      $state.go('app.dashboard');
+      toastr.error('Your request can not be processed '+errorMsg+' . Please contact Optiz');
+    }
+
+    function pageTitle(ordInfo){
+      if(ordInfo.order_offer === false){
+        $scope.page={ title : 'Request'};
+      } else if (['OFR','REF'].indexOf(ordInfo.order_status)!=-1){
+        $scope.page={ title : 'Offer'};
+      } else {
+        $scope.page={ title : 'Order'};
+      } 
+    }
+
+    vm.confirmReq = function(reqInfo){
+      console.log(reqInfo);
+      console.log(reqInfo.id);
+      if(!reqInfo.delivery_address || reqInfo.delivery_address === 'Null'){
+        toastr.error('Please add a Delivery Address');
+      } else {
+        console.log(reqInfo);
+        console.log(reqInfo.id);
+        var draft = {};
+        draft.order_draft = 'False';
+        Order.addToOrder(reqInfo.id, draft)
+          .then(confirmReqSuccess)
+          .catch(confirmReqError);
+      }
+    }
+
+    function confirmReqSuccess(data, status, headers, config){
+      console.log(data);
+      vm.order = data;
+      pageTitle(vm.order);
+      if (vm.order.order_status === 'PEN') {
+        toastr.success('Your Request has been submitted to Optiz');
+      } else {
+        toastr.success('Your Request has been submitted to '+vm.order.order_company.name+' management for approval.');
       }
 
-      function getOrderError(errorMsg) {
-        $state.go('app.dashboard');
-        toastr.error('Your request can not be processed '+errorMsg+'');
-      }
+    }
+
+    function confirmReqError(errorMsg) {
+      toastr.error('Your request can not be processed '+errorMsg+'. Please contact Optiz.');
+    }
+
+    vm.reqApvl = function(reqApv){
+      var reqStat = {};
+      reqStat.order_status = reqApv;
+      reqStat.company_approval_status = reqApv;
+      Order.addToOrder(vm.order.id, reqApv)
+        .then(updateReqStatusSuccess)
+        .catch(updateReqStatusError);
+    }
+
+    function updateReqStatusSuccess(data){
+      console.log(data);
+      vm.order = data;
+      // toastr.info('Your response has been sent to Optiz'); 
+    }
+
+    function updateReqStatusError(errorMsg){
+      toastr.error('Your request can not be processed '+errorMsg+' . Please contact Optiz');
     }
 
     vm.offerApvl = function(status){
       console.log(status);
-      var stat={};
+      var stat = {};
       stat.offer = vm.order.offer_order[vm.order.offer_order.length - 1].id;
       stat.order_status = status;
       stat.company_approval_status = status;
       console.log(stat);
       console.log(vm.order.id);
       Order.addToOrder(vm.order.id, stat)
-        .then(updateOrderStatusSuccess)
-        .catch(updateOrderStatusError);
+        .then(updateOfferSuccess)
+        .catch(updateOfferError);
     }
 
-    function updateOrderStatusSuccess(data, status, headers, config) {
+    function updateOfferSuccess(data, status, headers, config) {
       console.log(data);
       vm.order = data;
+      pageTitle(vm.order);
       toastr.info('Your response has been sent to Optiz');   
     }
 
-    function updateOrderStatusError(errorMsg) {
-      toastr.error('Your request can not be processed '+errorMsg+'');
+    function updateOfferError(errorMsg) {
+      toastr.error('Your request can not be processed '+errorMsg+' . Please contact Optiz');
     }
 
     vm.addRef = function(rn){
@@ -86,13 +156,12 @@
 
     function addRefSuccess(data, status, headers, config) {
       console.log(data);
-      vm.order.reference_number = data.reference_number;
-      // toastr.info('Your response has been sent to Optiz');   
+      vm.order.reference_number = data.reference_number; 
     }
 
     function addRefError(errorMsg) {
       vm.order.reference_number = vm.order.reference_number;
-      toastr.error('Your request can not be processed. Please contact Optiz');
+      toastr.error('Your request can not be processed '+errorMsg+' . Please contact Optiz');
     }
 
     vm.addAddr = function(addr){
@@ -112,7 +181,40 @@
 
     function addAddrError(errorMsg) {
       vm.order.delivery_address = vm.order.delivery_address;
-      toastr.error('Your request can not be processed. Please contact Optiz');
+      toastr.error('Your request can not be processed '+errorMsg+' . Please contact Optiz');
+    }
+
+    vm.delOrder = function(orderId) {
+      Order.delOrder(orderId)
+        .then(delOrderSuccess)
+        .catch(delOrderError);
+    }
+
+    function delOrderSuccess(data, status, headers, config) {
+      console.log(data);
+      $state.go('app.dashboard');
+      toastr.info('Your order has been deleted');
+    }
+
+    function delOrderError(errorMsg) {
+      toastr.error('Your request can not be processed '+errorMsg+' . Please contact Optiz');
+    }
+
+    vm.delReqItem = function(reqId) {
+      Order.delReqItem(reqId)
+        .then(delReqItemSuccess)
+        .catch(delReqItemError);
+    }
+
+    function delReqItemSuccess(data, status, headers, config) {
+      console.log(data);
+      console.log(status);
+      getOrder();
+      toastr.info('Your request Item has been removed');
+    }
+
+    function delReqItemError(errorMsg) {
+      toastr.error('Your request can not be processed '+errorMsg+' . Please contact Optiz');
     }
 
   }

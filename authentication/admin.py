@@ -120,6 +120,7 @@ class AddressInline(admin.StackedInline):
 class AccountInline(admin.StackedInline):
     model = Account
     extra = 0
+    readonly_fields = ('password',)
 
 class CompanyAdmin(admin.ModelAdmin):
     inlines = [

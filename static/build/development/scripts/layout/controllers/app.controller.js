@@ -12,8 +12,24 @@
     var vm = this;
 
     vm.isAuthenticated = Authentication.isAuthenticated();
-    // console.log(vm.isAuthenticated);
+    console.log(vm.isAuthenticated);
     $scope.au = Authentication.getAuthenticatedAccount();
+
+    if($scope.au.access_level >= 7){
+        $scope.mgr = true;
+        console.log($scope.mgr);
+    }
+    if($scope.au.access_level >= 6){
+        $scope.apv = true;
+        console.log($scope.apv);
+    }
+    if($scope.au.access_level >= 5){
+        $scope.sub = true;
+        console.log($scope.sub);
+    }else{
+        $scope.view = true;
+        console.log($scope.view);
+    }
     // console.log($scope.au);
     // console.log($cookies.authenticatedAccount);
 
