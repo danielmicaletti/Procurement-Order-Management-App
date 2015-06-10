@@ -9,7 +9,7 @@
         <form name="step1" role="form" novalidate class="form-validation">
 
             <div class="row">
-                <div class="form-group col-md-6" ng-repeat="(i, r) in vm.req.req_product">
+                <div class="form-group col-md-6" ng-repeat="(i, r) in vm.req.req_product | orderBy:'r.id' track by r.id">
                     <label for="input{{r.id}}">{{r.prod_title}}: </label>
                     <input type="text" name="{{r.prod_details}}" class="form-control" id="input{{r.id}}" ng-model="r.prod_details">
                 </div>
@@ -175,7 +175,7 @@
 
             <div class="row">
 
-                <div class="form-group col-md-6" ng-repeat="(i, r) in vm.req.req_product">
+                <div class="form-group col-md-6" ng-repeat="(i, r) in vm.req.req_product | orderBy:'r.id'">
                     <label for="input{{r.id}}" class="text-uppercase">{{r.prod_title}}: </label>
                     <p class="pl-15">{{r.prod_details}}</p>
                 </div>
@@ -440,12 +440,12 @@
                     </div>
                 </div>
             </div> -->
-            <div class="row">
+<!--             <div class="row">
                 <button ng-click="toggle = !toggle" type="checkbox" ng-model="vm.req.order_draft" ng-init="vm.req.order_draft=vm.req.order_draft"  class="btn btn-ef btn-ef-1 btn-ef-1-slategray btn-ef-1a mb-40 mr-40 pull-right" btn-checkbox><span ng-show="vm.req.order_draft"><i class="after fa fa-star"></i>  Draft </span><span ng-show="!vm.req.order_draft"><i class="fa fa-star-o"></i>  Save request as draft </span></button>
-              <!--  <input type="checkbox" ng-model="vm.updateReq.order_draft" -->
-            </div>                    
+        
+            </div>   -->                  
             <button type="submit" class="btn btn-default" ng-click="steps.step3=true">Previous</button>
-            <button ng-disabled="step4.$invalid" class="btn btn-success pull-right" ng-click="vm.updateReq()">Submit Request</button>
+            <button ng-disabled="step4.$invalid" class="btn btn-success pull-right" ng-click="vm.updateReq()">Add Request Item</button>
 
         </form>
 

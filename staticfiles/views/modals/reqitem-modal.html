@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" ng-show="req.req_item_file[0]">
         <div class="form-group col-md-12">
             <label for="offer_terms" custom-font>Attached <strong>Files</strong></label>
             <div ng-repeat="file in req.req_item_file" class="col-md-12">
@@ -39,6 +39,6 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-slategray btn-ef btn-ef-4 btn-ef-4c" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Return</button>
-    <button ui-sref="app.orders.edit({reqId:req.id})" ng-click="cancel()" class="btn btn-primary btn-ef btn-ef-4 btn-ef-4c" ng-show="!vm.order.order_offer"><i class="fa fa-pencil"></i> Edit</button>
-    <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="cancel()" ng-show="!vm.order.order_offer"><i class="fa fa-times"></i> Delete</button>
+    <button ui-sref="app.orders.edit({reqId:req.id})" ng-click="cancel()" class="btn btn-primary btn-ef btn-ef-4 btn-ef-4c" ng-show="vm.order.order_draft"><i class="fa fa-pencil"></i> Edit</button>
+    <button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" ng-click="cancel()" ng-show="vm.order.order_draft"><i class="fa fa-times"></i> Delete</button>
 </div>
