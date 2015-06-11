@@ -128,7 +128,8 @@
         var news = par.split(',');
         console.log(news);
         vm.newReq['good'] = news;
-        vm.newReq.good_id = parseInt(vm.details[item].id)
+        console.log(goodId);
+        vm.newReq.good_id = goodId;
         console.log(vm.newReq.good_id);
         vm.newReq.add = false;
         console.log("Req Data 2");

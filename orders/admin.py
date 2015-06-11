@@ -4,13 +4,14 @@ from orders.models import Order, Comment, ReqItem, ReqProduct, ReqFile, Offer, O
 class DetailInline(admin.StackedInline):
     model = Detail
     extra = 0
+    list_display = ('id', 'good_info', 'good_description',)
 
 class OptizAdmin(admin.ModelAdmin):
 
     inlines = [
         DetailInline,
     ]
-    list_display = ('domain', 'family', 'subfamily',)
+    list_display = ('id', 'domain', 'family', 'subfamily',)
     ordering = ('domain',)
     filter_horizontal = ()
 

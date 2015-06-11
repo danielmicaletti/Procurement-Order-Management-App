@@ -14,8 +14,8 @@
     var vm = this;
  
     vm.orderId = $stateParams.orderId;
-    vm.goodId = $stateParams.goodId;
-
+    var goodId = $stateParams.goodId;
+    console.log(goodId);
     vm.addReq = {};
     console.log(vm.addReq);
 
@@ -52,8 +52,8 @@
       //   }
       // }
         
-        console.log(vm.goodId);
-        Requests.getDetails(vm.goodId).then(detailsSuccess).catch(detailsError);
+        console.log(goodId);
+        Requests.getDetails(goodId).then(detailsSuccess).catch(detailsError);
 
         function detailsSuccess(data, status, headers, config) {
             vm.details = data;
@@ -117,7 +117,8 @@
         var news = par.split(',');
         console.log(news);
         vm.addReq['good'] = news;
-        vm.addReq.good_id = parseInt(vm.details[item].id)
+        console.log(goodId);
+        vm.addReq.good_id = goodId;
         console.log(vm.addReq.good_id);
         vm.addReq.add = true;
         console.log("Req Data 2");

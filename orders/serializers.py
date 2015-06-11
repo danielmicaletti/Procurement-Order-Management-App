@@ -87,7 +87,10 @@ class ReqItemSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         order = validated_data.pop('order')
         goods = validated_data.pop('good')
+        print "VALD === %s" % validated_data
+        print "GOODS --- %s" % goods
         good = Good.objects.get(id=validated_data['good_id'])
+        print "GOOD = %s" % good
         if 'item_details' in validated_data:
             item_details = validated_data.pop('item_details')
         else:
