@@ -19,6 +19,14 @@ class OrderViewSet(viewsets.ModelViewSet):
             return (permissions.AllowAny(),)
         return (permissions.IsAuthenticated(),)
 
+    def list(self, request, order_id=None):
+        if self.request.user.optiz:
+            queryset = Order.objects.all()
+        else:
+            queryset = self.queryset.filter(order_company=self.request.user.user_company)
+        serializer = OrderSerializer(queryset, many=True)
+        return Response(serializer.data)
+
     def perform_create(self, serializer):
         instance = serializer.save(order_created_by=self.request.user, order_company=self.request.user.user_company, order_status_change_date=timezone.now())
         print 'SeLF == %s' % self

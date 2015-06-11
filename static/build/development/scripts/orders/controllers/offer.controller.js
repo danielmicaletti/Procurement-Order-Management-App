@@ -30,12 +30,15 @@
       'WRQ':'text-cyan',
       'PEN':'text-warning',
       'OFR':'text-drank',
+      'APN':'text-dutch',
       'VAL':'text-greensea',
       'REF':'text-lightred',
       'APV':'text-success',
       'COM':'text-amethyst',
       'CAN':'text-red',
       'ARC':'text-darkgray',
+      'INP':'text-primary',
+      'INV':'text-info',
     }
 
 
@@ -67,7 +70,7 @@
     }
     console.log(vm.offer);
 
-    $scope.reqTab = 'true';
+    vm.reqTab = true;
 
    vm.addItem = function (req_item){
       console.log(req_item);
@@ -76,6 +79,8 @@
       console.log(vm.offer);
       getTotal(req_item.item_sub_total);
       toastr.success(req_item.item_name+' has been added to Current Offer');
+      vm.reqTab = '';
+      vm.offerTab = true;
 
     };
 
@@ -88,6 +93,8 @@
         console.log(vm.offer);
         getTotal(blank_item.item_sub_total);
         toastr.success(blank_item.item_name+' has been added to Current Offer');
+        vm.reqTab = '';
+        vm.offerTab = true;
     }
 
     function getTotal(item){
@@ -107,7 +114,7 @@
       console.log(vm.offer);
       if(!vm.offer.offer_terms){
         console.log(vm.offer);
-        vm.offer['offer_terms'] = 'None';
+        vm.offer['offer_terms'] = '';
         console.log(vm.offer.offer_terms);
       }
       if(!vm.offer.offer_total){

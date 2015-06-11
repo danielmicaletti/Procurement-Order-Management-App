@@ -141,34 +141,47 @@
           <!-- /col -->
 
           <!-- col -->
-          <div class="col-md-3 b-r" ng-controller="ConfOrdModalCtrl">
-            <div ng-if="['PEN','REF'].indexOf(vm.order.order_status)!=-1 && au.optiz">
-              <p class="text-uppercase text-strong mb-10 custom-font">Add Offer</p>
-              <button class="btn btn-primary" ui-sref="app.orders.offer({ orderId: vm.order.id})">Create Offer</button>
+          <div class="col-md-3 b-r">
+            <div ng-if="!['WRQ','APN'].indexOf(vm.order.order_status)!=-1 && au.optiz">
+                <div class="form-group mb-10 col-md-12">
+                    <p class="text-uppercase text-strong mb-10 custom-font">Update Status</p>
+                    <div class="col-sm-10">
+
+                        <select class="form-control mb-10" ng-model="ordStat">
+                            <option></option>
+                            <option value="INP">In Progress</option>
+                            <option value="COM">Complete</option>
+                            <option value="INV">Invoice</option>
+                            <option value="CAN">Cancel</option>
+                            <option value="BOR">Back Order</option>
+                        </select>
+
+                        <button class="btn btn-slategray" ng-click="vm.orderStat(ordStat);">Update Status</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <p class="text-uppercase text-strong mb-10 custom-font">Add Offer</p>
+                    <button class="btn btn-primary ml-10" ui-sref="app.orders.offer({ orderId: vm.order.id})">Create Offer</button>
+                </div>
             </div>
             <div ng-if="['WRQ','APN'].indexOf(vm.order.order_status)!=-1 && vm.orderCompany && au.access_level === '5'">
               <p class="text-uppercase text-strong mb-10 custom-font">Add Request Item</p>
-                <span class="controls block mb-10" ng-controller="AddReqModalCtrl">
-                  <a ng-click="open('lg')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="Add Request Item"><i class="fa fa-plus"></i></a>
-                  <a class="btn btn-ef btn-ef-1 btn-ef-1-lightred btn-ef-1a btn-rounded-20 mr-5" tooltip="Cancel this request"><i class="fa fa-times"></i></a>
+                <span class="controls block mb-10">
+                  <a ng-controller="AddReqModalCtrl" ng-click="open('lg')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="Add Request Item"><i class="fa fa-plus"></i></a>
+                  <a ng-controller="CancelOrdModalCtrl" ng-click="open('md')" class="btn btn-ef btn-ef-1 btn-ef-1-lightred btn-ef-1a btn-rounded-20 mr-5" tooltip="Cancel this request"><i class="fa fa-times"></i></a>
                 </span>
               <p class="text-uppercase text-strong mb-10 custom-font">Submit Request</p>
               <p class="text-lightred">This Request must be approved by {{ vm.order.order_company.name }} management</p>
-              <button class="btn btn-primary" ng-click="open('lg')">Submit for Approval</button>
+              <button ng-controller="ConfOrdModalCtrl" ng-click="open('lg')" class="btn btn-primary">Submit for Approval</button>
             </div>
-<!--             <div ng-if="vm.order.order_status === 'APN' && vm.orderCompany && apv">
-              <p class="text-uppercase text-strong mb-10 custom-font">Submit Request</p>
-              <button class="btn btn-primary" ng-click="open('lg')">Submit Request</button>
-              <button class="btn btn-primary" ng-click="open('lg')">Refuse</button>
-            </div> -->
             <div ng-if="['WRQ','APN'].indexOf(vm.order.order_status)!=-1 && vm.orderCompany && apv">
               <p class="text-uppercase text-strong mb-10 custom-font">Add Request Item</p>
                 <span class="controls block mb-10">
-                  <a ng-click="open('lg')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="Add Request Item" ng-controller="AddReqModalCtrl"><i class="fa fa-plus"></i></a>
-                  <a class="btn btn-ef btn-ef-1 btn-ef-1-lightred btn-ef-1a btn-rounded-20 mr-5" tooltip="Cancel this request" ng-click="open('md')"  ng-controller="CancelOrdModalCtrl"><i class="fa fa-times"></i></a>
+                  <a ng-controller="AddReqModalCtrl" ng-click="open('lg')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="Add Request Item"><i class="fa fa-plus"></i></a>
+                  <a ng-controller="CancelOrdModalCtrl" ng-click="open('md')" class="btn btn-ef btn-ef-1 btn-ef-1-lightred btn-ef-1a btn-rounded-20 mr-5" tooltip="Cancel this request"><i class="fa fa-times"></i></a>
                 </span>
               <p class="text-uppercase text-strong mb-10 custom-font">Submit Request</p>
-              <button class="btn btn-success" ng-click="open('lg')">Submit Request</button>
+              <button ng-controller="ConfOrdModalCtrl" ng-click="open('lg')" class="btn btn-success">Submit Request</button>
               <button class="btn btn-primary" ng-if="vm.order.order_status === 'APN'">Refuse</button>
             </div>
           </div>
@@ -180,7 +193,7 @@
 
       <tabset>
 
-        <tab heading="Request Items">
+        <tab heading="Request Items" active="vm.reqTab">
 
           <!-- row -->
           <div class="row">
@@ -235,7 +248,7 @@
 
 
 
-        <tab heading="Current Offer" ng-show="vm.order.order_offer">
+        <tab heading="Current Offer" ng-show="vm.order.order_offer" active="vm.curOfferTab">
 
           <!-- row -->
           <div class="row">
@@ -356,16 +369,16 @@
                         </tr>
                       </thead>
                       <tbody>
-                      <tr ng-repeat="offer in vm.order.offer_order">
+                      <tr ng-repeat="offer in vm.order.offer_order | orderBy:'-offer_created'">
                           <td>{{ offer.offer_created | date:"mediumDate" }}</td>
                           <td>{{ offer.offer_item.length }}</td>
                           <td ng-class="stati[offer.offer_approval_status]">{{ offer.offer_approval_display }}</td>
                           <!-- <td class="text-lightred" ng-show="offer.offer_version !== vm.order.offer_version">Refusé</td>  ng-show="offer.offer_version === vm.order.offer_version" -->
                           <td ng-show="offer.offer_approval_by"><a ui-sref="app.pages.profile({ username: offer.offer_approval_by })">{{ offer.offer_approval_by_name }}</a></td>
                           <td ng-show="offer.offer_approval_by">{{ offer.offer_approval | date:"mediumDate" }}</td>
-                          <td colspan="2" ng-show="!offer.offer_approval_by">Waiting Approval</td>
+                          <td colspan="2" ng-show="!offer.offer_approval_by"></td>
                           <td>{{ offer.offer_total | currency:"€ " }}</td>
-                          <td><a class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a></td>
+                          <td><a class="btn btn-xs btn-default" ng-controller="OfferViewModalCtrl" ng-click="open('lg')"><i class="fa fa-search"></i> View</a></td>
                         </tr>
                       </tbody>
                     </table>
@@ -384,7 +397,7 @@
 
         </tab>
 
-        <tab heading="Order Items" ng-show="vm.order.order_status === 'COM'">
+        <tab heading="Order Items" ng-show="vm.order.order_status === 'IDK'">
 
           <!-- row -->
           <div class="row">

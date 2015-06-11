@@ -145,7 +145,7 @@
 
       <tabset>
 
-        <tab heading="Current Offer" ng-show="vm.offer.offer_item.length > 0 || vm.offer.blank_item.length > 0" active="offerTab">
+        <tab heading="Current Offer" ng-show="vm.offer.offer_item.length > 0 || vm.offer.blank_item.length > 0" active="vm.offerTab">
 
           <!-- row -->
           <div class="row">
@@ -265,7 +265,7 @@
                               </div>
                           <!-- </div> -->
                           <div class="col-md-12">
-                              <button type="submit" ng-click="vm.addOffer()" class="btn btn-rounded btn-success btn mr-20 pull-right">Submit Offer</button>
+                              <button type="submit" ng-click="vm.addOffer()" class="btn btn-rounded btn-success btn mr-20 pull-right mb-20">Submit Offer</button>
                           </div>
                         </form>
                     <!-- </div> -->
@@ -282,7 +282,7 @@
 
         </tab>
 
-        <tab heading="Request Items" active="reqTab">
+        <tab heading="Request Items" active="vm.reqTab">
 
           <!-- row -->
           <div class="row">
@@ -333,7 +333,7 @@
 
         </tab>
 
-        <tab heading="Offers">
+        <tab heading="Offers" ng-show="vm.order.offer_order[0]">
 
           <!-- row -->
           <div class="row">
@@ -359,16 +359,16 @@
                         </tr>
                       </thead>
                       <tbody>
-                      <tr ng-repeat="offer in vm.order.offer_order">
+                      <tr ng-repeat="offer in vm.order.offer_order | orderBy:'-offer_created'">
                           <td>{{offer.offer_created | date:"mediumDate"}}</td>
                           <td>{{ offer.offer_item.length }}</td>
                           <td ng-class="stati[vm.order.order_status]" ng-show="offer.offer_version === vm.order.offer_version">{{vm.order.order_status_display}}</td>
                           <td class="text-lightred" ng-show="offer.offer_version !== vm.order.offer_version">Refusé</td>
                           <td ng-show="offer.offer_approval_by"><a ui-sref="app.pages.profile({ username: offer.offer_approval_by })">{{ offer.offer_approval_by_name }}</a></td>
                           <td ng-show="offer.offer_approval_by">{{ offer.offer_approval | date:"mediumDate" }}</td>
-                          <td colspan="2" ng-show="!offer.offer_approval_by">Waiting Approval</td>
+                          <td colspan="2" ng-show="!offer.offer_approval_by"></td>
                           <td>{{ offer.offer_total | currency:"€ " }}</td>
-                          <td><a class="btn btn-xs btn-default"><i class="fa fa-search"></i> View</a></td>
+                          <td><a class="btn btn-xs btn-default" ng-controller="OfferViewModalCtrl" ng-click="open('lg')"><i class="fa fa-search"></i> View</a></td>
                         </tr>
                       </tbody>
                     </table>

@@ -27,7 +27,7 @@ class OfferItemSerializer(serializers.ModelSerializer):
 class OfferSerializer(serializers.ModelSerializer):
     order = serializers.CharField(required=False)
     offer_item = OfferItemSerializer(many=True, required=False)
-    offer_terms = serializers.CharField(required=False)
+    offer_terms = serializers.CharField(required=False, allow_blank=True)
     offer_created_by = serializers.CharField(required=False)
     offer_created_by_name = serializers.CharField(source='offer_created_by.get_full_name', required=False)
     offer_approval_display = serializers.CharField(source='get_offer_approval_status_display', required=False)
@@ -169,11 +169,16 @@ class OrderSerializer(serializers.ModelSerializer):
             instance.order_status = validated_data['order_status']
             instance.order_status_change_by = user
             instance.order_status_change_date = timezone.now()
-            instance.company_approval_status = validated_data['company_approval_status']
-            instance.company_approval_by = user
-            instance.company_approval_date = timezone.now()
-
-            if 'APV' or 'REF' in validated_data['order_status']:
+            if 'optiz_status' in validated_data:
+                instance.optiz_status = validated_data['optiz_status']
+                instance.optiz_status_change_by = user
+                instance.optiz_status_change_date = timezone.now()
+            else: 
+                instance.company_approval_status = validated_data['company_approval_status']
+                instance.company_approval_by = user
+                instance.company_approval_date = timezone.now()
+            print 'VAL OD STAT avp?=== %s' % validated_data['order_status']
+            if validated_data['order_status'] == 'APV' or validated_data['order_status'] == 'REF':
                 offer = Offer.objects.get(id=validated_data['offer'])
                 offer.offer_approval_status = validated_data['order_status']
                 offer.offer_approval_by = user

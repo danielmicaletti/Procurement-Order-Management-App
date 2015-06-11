@@ -26,7 +26,8 @@
       'COM':'text-amethyst',
       'CAN':'text-red',
       'ARC':'text-darkgray',
-
+      'INP':'text-primary',
+      'INV':'text-info',
     }  
 
     function activate() {
@@ -53,6 +54,11 @@
         vm.orderCompany = true;
       }else{
         vm.orderCompany = false;
+      }
+      if(vm.order.order_offer){
+        vm.curOfferTab = true;
+      }else{
+        vm.reqTab = true;
       }
     }
 
@@ -120,6 +126,17 @@
 
     function updateReqStatusError(errorMsg){
       toastr.error('Your request can not be processed '+errorMsg+' . Please contact Optiz');
+    }
+
+    vm.orderStat = function(stat){
+      console.log(stat);
+      var ordStat = {};
+      ordStat.order_status = stat;
+      ordStat.optiz_status = stat;
+      console.log(ordStat);
+      Order.addToOrder(vm.order.id, ordStat)
+        .then(updateReqStatusSuccess)
+        .catch(updateReqStatusError);
     }
 
     vm.offerApvl = function(status){

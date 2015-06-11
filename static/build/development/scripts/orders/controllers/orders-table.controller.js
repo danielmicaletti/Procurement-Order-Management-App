@@ -6,10 +6,10 @@
     .controller('OrdersTableController', OrdersTableController);
 
   OrdersTableController.$inject = [
-    '$scope', '$stateParams', '$log', 'Authentication', 'Account', 'Company', 'Order', 'toastr', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'DTColumnBuilder'
+    '$scope', '$state', '$stateParams', '$log', 'Authentication', 'Account', 'Company', 'Order', 'toastr', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'DTColumnBuilder'
   ];
 
-  function OrdersTableController($scope, $stateParams, $log, Authentication, Account, Company, Order, toastr, DTOptionsBuilder, DTColumnDefBuilder, DTColumnBuilder) {
+  function OrdersTableController($scope, $state, $stateParams, $log, Authentication, Account, Company, Order, toastr, DTOptionsBuilder, DTColumnDefBuilder, DTColumnBuilder) {
     var vm = this;
 
     vm.orders = [];
@@ -19,43 +19,15 @@
       'WRQ':'text-cyan',
       'PEN':'text-warning',
       'OFR':'text-drank',
+      'APN':'text-dutch',
       'VAL':'text-greensea',
       'REF':'text-lightred',
       'APV':'text-success',
       'COM':'text-amethyst',
       'CAN':'text-red',
       'ARC':'text-darkgray',
-
-
-      // 'WQR':'bg-slategray',
-      // 'PEN':'bg-orange',
-      // 'OFR':'bg-drank',
-      // 'VAL':'bg-greensea',
-      // 'REF':'bg-lightred',
-      // 'APV':'bg-success',
-      // 'COM':'bg-primary',
-      // 'CAN':'bg-red',
-      // 'ARC':'bg-darkgray',
-
-      // WAITING_REQUEST = 'WRQ'
-      // PENDING = 'PEN'
-      // OFFER = 'OFR'
-      // VALIDATED = 'VAL'
-      // REFUSED = 'REF'
-      // APPROVED = 'APV'
-      // COMPLETED = 'COM'
-      // INVOICED = 'INV'
-      // CANCELED = 'CAN' 
-      // ARCHIVED = 'ARC'   
-      // REQUEST_SUBMITTED = 'RSB'
-      // APPROVE_REQUEST = 'APR'
-      // APPROVE_OFFER = 'APO'
-      // APPROVAL_NEEDED = 'APN'
-      // OFFER_SUBMITTED = 'OSB'
-      // NOT_APPROVED = 'NAP'
-      // RETURNED = 'RET'
-      // IN_PROGRESS = 'INP'
-      // BACKORDER = 'BOR'
+      'INP':'text-primary',
+      'INV':'text-info',
     }
 
     Order.getAll().then(getAllSuccess, getAllError);
@@ -67,7 +39,7 @@
 
     function getAllError(errorMsg) {
       $state.go('app.dashboard');
-      toastr.error('Your request can not be processed '+errorMsg+'');
+      toastr.error('Your request can not be processed '+errorMsg+'. Please contact Optiz.');
     }
 
     vm.dtOptions = DTOptionsBuilder.newOptions()
