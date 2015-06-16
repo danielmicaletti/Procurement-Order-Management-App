@@ -15,7 +15,7 @@
     activate();
 
     $scope.page = {
-      title: 'Orders',
+      title: 'Historique',
     };
 
     function activate() {

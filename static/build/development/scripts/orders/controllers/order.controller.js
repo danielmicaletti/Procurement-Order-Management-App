@@ -48,7 +48,8 @@
       console.log(vm.order); 
       pageTitle(vm.order);
       if(vm.authenticatedAccount.optiz && vm.order.order_status === 'PEN'){
-        toastr.info('Offer needed for this order');
+        vm.order.order_status_display = 'demande disponible';
+        toastr.info('Offer is needed for this order.');
       }
       if(vm.authenticatedAccount.user_company === vm.order.order_company.id){
         vm.orderCompany = true;

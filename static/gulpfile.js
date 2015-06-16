@@ -38,6 +38,9 @@ jsSources = [
 sassSources = [
 	'sass/main.scss'
 ];
+cssSources = [
+  'styles/wease.css'
+]
 bowerFiles = [
 	'build/development/bower_components/jquery.min.js',
 	'build/development/bower_components/angular.min.js',

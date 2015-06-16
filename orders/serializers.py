@@ -9,10 +9,14 @@ from orders.models import Order, ReqItem, ReqProduct, ReqFile, Offer, OfferItem,
 from authentication.serializers import AccountSerializer, UserCompanySerializer, CompanySerializer, AddressSerializer
 
 class CommentSerializer(serializers.ModelSerializer):
+    created_by_username = serializers.CharField(source='created_by.username')
+    created_by_first_name = serializers.CharField(source='created_by.first_name')
+    created_by_last_name = serializers.CharField(source='created_by.last_name')
+    created_by_pic = serializers.CharField(source='created_by.user_pic')
 
     class Meta:
         model = Comment
-        fields = ('id', 'created_by', 'order', 'body', 'created_date',)
+        fields = ('id', 'created_by', 'created_by_username', 'created_by_first_name', 'created_by_last_name', 'created_by_pic', 'order', 'body', 'created_date',)
 
 
 class OfferItemSerializer(serializers.ModelSerializer):
@@ -42,6 +46,7 @@ class OfferSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         order = Order.objects.get(id=validated_data['order'])
         order.offer_version = order.offer_version+1
+        order.order_version = order.order_version+1
         order.order_offer = True
         order.order_total = validated_data['offer_total']
         user = validated_data['user']
@@ -151,7 +156,7 @@ class OrderSerializer(serializers.ModelSerializer):
         print "INST === %s" % instance.order_status
         print "Val_data === %s" % validated_data
         user = validated_data.pop('user')
-        print "ORD SER USER == = %s" % user
+        print "ORD SER USER === %s" % user
         if 'order_draft' in validated_data:
             if 'False' in validated_data['order_draft']:
                 instance.order_draft = False
@@ -163,10 +168,10 @@ class OrderSerializer(serializers.ModelSerializer):
                     instance.optiz_status = 'PEN'
                     instance.company_approval_by = user
                     instance.company_approval_date = timezone.now()
+                    instance.order_version = instance.order_version + 01
                 else:
                     instance.company_approval_status = 'APN'
                     instance.order_status = 'APN'
-                instance.order_version = instance.order_version + 01
 
         if 'order_status' in validated_data:
             instance.order_status = validated_data['order_status']
@@ -191,6 +196,11 @@ class OrderSerializer(serializers.ModelSerializer):
         if 'delivery_address' in validated_data:
             addr = Address.objects.get(id=validated_data['delivery_address'])
             instance.delivery_address = addr
+
+        if 'comment_body' in validated_data:
+            comment = Comment.objects.create(order=instance, created_by=user, body=validated_data['comment_body'])
+
+            comment.save()
         instance.reference_number = validated_data.get('reference_number', instance.reference_number)        
         instance.save()
 

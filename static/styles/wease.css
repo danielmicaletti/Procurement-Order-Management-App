@@ -1,7 +1,4 @@
-button a i.fa:link {
+.panel-heading.bg-white{
 	text-decoration: none;
-}
-
-button a i.fa:visited {
-	text-decoration: none;
+	overflow: hidden;
 }

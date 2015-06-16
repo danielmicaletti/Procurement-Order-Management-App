@@ -12,6 +12,8 @@
   function OrdersTableController($scope, $state, $stateParams, $log, Authentication, Account, Company, Order, toastr, DTOptionsBuilder, DTColumnDefBuilder, DTColumnBuilder) {
     var vm = this;
 
+    vm.authenticatedAccount = Authentication.getAuthenticatedAccount();
+    
     vm.orders = [];
 
     $scope.stati = {
@@ -34,7 +36,7 @@
 
     function getAllSuccess(data, status, headers, config) {
       vm.orders = data;
-      console.log(vm.orders);      
+      console.log(vm.orders);
     }
 
     function getAllError(errorMsg) {
@@ -44,7 +46,7 @@
 
     vm.dtOptions = DTOptionsBuilder.newOptions()
       .withBootstrap()
-      .withOption('order', [[0, 'desc']])
+      .withOption('order', [[1, 'desc']])
       .withDOM('<"row"<"col-md-8 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"pull-right"f>>>t<"row"<"col-md-4 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"inline-controls text-center"i>><"col-md-4 col-sm-12"p>>')
       .withLanguage({
         "sLengthMenu": 'View _MENU_ records',

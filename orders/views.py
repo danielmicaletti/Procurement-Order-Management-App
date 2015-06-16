@@ -2,9 +2,9 @@ from rest_framework import permissions, viewsets, generics
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.decorators import list_route, api_view, detail_route
-from orders.models import Good, Detail, Order, ReqItem, ReqProduct, ReqFile, Offer, OfferItem
+from orders.models import Good, Detail, Order, ReqItem, ReqProduct, ReqFile, Offer, OfferItem, Comment
 from authentication.models import Address
-from orders.serializers import OrderSerializer, GoodSerializer, DetailSerializer, ReqItemSerializer, ReqProductSerializer, ReqFileSerializer, OfferSerializer, OfferItemSerializer
+from orders.serializers import OrderSerializer, GoodSerializer, DetailSerializer, ReqItemSerializer, ReqProductSerializer, ReqFileSerializer, OfferSerializer, OfferItemSerializer, CommentSerializer
 from operator import itemgetter, attrgetter
 from django.utils import timezone
 from datetime import date
@@ -214,6 +214,11 @@ class GoodViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     queryset = Good.objects.all()
     serializer_class = GoodSerializer
+
+class CommentViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
 
 class DetailViewSet(viewsets.ViewSet):

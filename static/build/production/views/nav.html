@@ -18,7 +18,7 @@
            <a ui-sref="app.pages."><fa name="group"></fa> <span>{{ vm.user.user_company_full }}</span></a>
           <ul>
             <li ui-sref-active="active"><a ui-sref="app.pages.company-profile({companyId:vm.user.user_company})"><fa name="caret-right"></fa> {{ vm.user.user_company_full }} Profile</a></li>
-            <li ui-sref-active="active"><a ui-sref="app.orders.all"><fa name="caret-right"></fa> Orders</a></li>
+            <li ui-sref-active="active"><a ui-sref="app.orders.all"><fa name="caret-right"></fa> History</a></li>
           </ul>
         </li>
         <nav-items ui-sref-active="active" ng-class="{'open':$state.includes('app.orders.request({goodId:value.id)')}" ng-repeat="(domain, value) in vm.allGoods | groupBy: 'domain' | orderBy:'id'" nav-item="{{value}}" dom="{{domain}}" icon="{{vm.icon}}" ng-if="sub"> 

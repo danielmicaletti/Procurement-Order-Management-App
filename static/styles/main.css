@@ -1872,7 +1872,7 @@ html.boxed-layout {
       padding-left: 30px;
       height: 45px;
       line-height: 45px;
-      background: url(../images/minovate-logo.png) no-repeat 0 10px;
+      background: url(../images/weaselogo2.png) no-repeat 0 10px;
       float: left;
       -webkit-transition: none;
       -moz-transition: none;
@@ -10803,7 +10803,7 @@ hr.line-full {
   border-right: 1px solid rgba(0, 0, 0, 0.1); }
   #header .branding.scheme-light .brand {
     color: #4a555b;
-    background-image: url(../images/minovate-logo-color.png); }
+    background-image: url(../images/weaselogo2.png); }
 
 #sidebar.scheme-light,
 #sidebar.scheme-light #sidebar-wrap:before {
