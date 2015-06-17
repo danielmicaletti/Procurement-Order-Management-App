@@ -184,9 +184,10 @@
 
     vm.addAddr = function(addr){
       console.log(addr);
+      vm.order['delivery_address'] = addr;
       console.log(vm.order.delivery_address);
       var delAddr = {};
-      delAddr.delivery_address = addr;
+      delAddr.delivery_address = addr.id;
       Order.addToOrder(vm.order.id, delAddr)
         .then(addAddrSuccess)
         .catch(addAddrError);

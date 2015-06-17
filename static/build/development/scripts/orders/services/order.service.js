@@ -12,6 +12,7 @@
           getAll: getAll,
           getOrder: getOrder,
           createOffer: createOffer,
+          createBlankOffer: createBlankOffer,
           addToOrder: addToOrder,
           delOrder: delOrder,
           delReqItem: delReqItem,
@@ -44,15 +45,13 @@
         .catch(generalCallbackError);
     }
 
-    // function getOrderResponse(response){
-    //   console.log("order")
-    //   console.log(response.data)
-    //   return response.data;
-    // }
-
-    // function getOrderError(response){
-    //   return $q.reject('Error retrieving order details '+response.status+'');
-    // }
+    // Create a blank offer
+    function createBlankOffer(data) {
+      console.log(data);
+      return $http.post('/api/v1/offers/', data)
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    }
 
     // Create order offer
     function createOffer(orderId, data) {
@@ -62,33 +61,6 @@
         .then(generalCallbackSuccess)
         .catch(generalCallbackError);
     }
-
-    // function createOfferSuccess(response){
-    //   console.log(response.data);
-    //   return response.data;
-    // }
-
-    // function createOfferError(response){
-    //   return $q.reject('Error creating request '+response.status+'');
-    // }
-
-    // // Update order status
-    // function updateOrderStatus(orderId, data) {
-    //   console.log(orderId);
-    //   console.log(data);
-    //   return $http.put('/api/v1/orders/'+orderId+'/', data)
-    //     .then(generalCallbackSuccess)
-    //     .catch(generalCallbackError);
-    // }
-
-    // function updateOrderStatusSuccess(response){
-    //   console.log(response.data);
-    //   return response.data;
-    // }
-
-    // function updateOrderStatusError(response){
-    //   return $q.reject('Error updating order status '+response.status+''); 
-    // }
 
     // Add or update order
     function addToOrder(orderId, data) {

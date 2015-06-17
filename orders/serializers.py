@@ -1,5 +1,6 @@
 from django.forms import widgets
 from django.utils import timezone
+from datetime import date
 from rest_framework import serializers
 from rest_framework.parsers import JSONParser
 import json
@@ -44,13 +45,27 @@ class OfferSerializer(serializers.ModelSerializer):
             'offer_created', 'offer_created_by', 'offer_created_by_name', 'offer_approval_status', 'offer_approval_display', 'offer_approval', 'offer_approval_by', 'offer_approval_by_name', 'offer_item',)
 
     def create(self, validated_data):
-        order = Order.objects.get(id=validated_data['order'])
+        print "Offer Val Data === %s" % validated_data
+        user = validated_data['user']
+        if 'blank_offer' in validated_data:
+            company = Company.objects.get(id=validated_data['offer_company'])
+            address = Address.objects.get(id=validated_data['delivery_address'])
+            order = Order.objects.create(order_company=company, delivery_address=address, order_created_by=user, order_status_change_date = timezone.now())
+            yr = str(date.today().year)[2:]
+            order.order_number = ''.join(["0",yr,str(order.id)])
+            order.order_version = 01
+            if 'reference_number' in validated_data:
+                order.reference_number = validated_data['reference_number']
+        else:
+            order = Order.objects.get(id=validated_data['order'])
+            order.order_status_change_date = timezone.now()
+        if order.offer_version >= 01:
+            order.order_version = order.order_version+1
         order.offer_version = order.offer_version+1
-        order.order_version = order.order_version+1
         order.order_offer = True
         order.order_total = validated_data['offer_total']
-        user = validated_data['user']
         order.modified_by = user
+        # order.order_status_change_date = timezone.now()
         order.order_status_change_by = user
         order.order_status = 'OFR'
         order.save()
@@ -93,6 +108,8 @@ class ReqItemSerializer(serializers.ModelSerializer):
         order = validated_data.pop('order')
         goods = validated_data.pop('good')
         print "VALD === %s" % validated_data
+        print "USER === %s" % validated_data['user']
+        user = validated_data['user']
         print "GOODS --- %s" % goods
         good = Good.objects.get(id=validated_data['good_id'])
         print "GOOD = %s" % good
@@ -103,6 +120,7 @@ class ReqItemSerializer(serializers.ModelSerializer):
         order.order_draft = validated_data['order_draft']
         order.save()
         req_item = ReqItem.objects.create(order=order, good=good, req_domain=goods[0], item_fam=goods[1], item_subfam=goods[2], item_details=item_details)
+        req_item.req_item_created_by = user
         req_item.save()
         for k, v in validated_data['prod_details'].iteritems():
             req_product = ReqProduct(req_item=req_item, prod_fam=goods[1], prod_subfam=goods[2], prod_title=k, prod_details=v)
@@ -115,13 +133,9 @@ class ReqItemSerializer(serializers.ModelSerializer):
         print "Val_data === %s" % validated_data
         val_data = validated_data.pop('data')
         order = validated_data.pop('order')
-        # addr = val_data['delivery_address']
-        # del_address = Address.objects.get(id=addr)
-        # order.delivery_address = del_address
-        # order.reference_number = val_data['order_reference']
-        # order.description = val_data['order_description'] 
         order.order_draft = val_data['order_draft'] 
-        order.save()   
+        order.save()
+        instance.req_item_modified_by = validated_data['user']  
         instance.item_details = val_data.get('item_details', instance.item_details) 
         for item in val_data['req_product']:
             req_product = ReqProduct(id=item['id'], prod_title=item['prod_title'], prod_details=item['prod_details'], req_item=instance)

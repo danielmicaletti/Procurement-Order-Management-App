@@ -6,18 +6,12 @@
     .module('accounts.services')
     .factory('Company', Company);
 
-  Company.$inject = ['$http'];
+  Company.$inject = ['$http', '$q'];
 
-  /**
-   * @namespace Account
-   */
-  function Company($http) {
-    /**
-     * @name Account
-     * @desc The factory to be returned
-     * @memberOf thinkster.accounts.services.Account
-     */
+  function Company($http, $q) {
+
     var Company = {
+      getAll: getAll,
       destroy: destroy,
       get: get,
       update: update
@@ -25,42 +19,38 @@
 
     return Company;
 
-    /////////////////////
+    function generalCallbackSuccess(response){
+      console.log(response.data)
+      console.log(response)
+      return response.data;
+    }
 
-    /**
-     * @name destroy
-     * @desc Destroys the account with username `username`
-     * @param {string} username The username of the account to be destroyed
-     * @returns {Promise}
-     * @memberOf thinkster.accounts.services.Account
-     */
+    function generalCallbackError(response){
+      return $q.reject('Error '+response.status+'');
+    }
+
+    function getAll() {
+      return $http.get('/api/v1/companies/')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    }
+
     function destroy(companyId) {
-      return $http.delete('/api/v1/companies/' + companyId + '/');
+      return $http.delete('/api/v1/companies/' + companyId + '/')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
     }
 
-
-    /**
-     * @name get
-     * @desc Gets the account with username `username`
-     * @param {string} username The username of the account to get
-     * @returns {Promise}
-     * @memberOf thinkster.accounts.services.Account
-     */
     function get(companyId) {
-      return $http.get('/api/v1/companies/' + companyId + '/');
+      return $http.get('/api/v1/companies/' + companyId + '/')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
     }
 
-
-    /**
-     * @name update
-     * @desc Update the account with username `username`
-     * @param {string} username The username of the account to be updated
-     * @param {Object} account The updated account model
-     * @returns {Promise}
-     * @memberOf thinkster.accounts.services.Account
-     */
     function update(companyId, company) {
-      return $http.put('/api/v1/companies/' + companyId + '/', company);
+      return $http.put('/api/v1/companies/' + companyId + '/', company)
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
     }      
 
   }

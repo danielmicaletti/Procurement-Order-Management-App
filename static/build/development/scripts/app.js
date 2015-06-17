@@ -44,7 +44,7 @@ angular
     'uiGmapgoogle-maps',
     'ui.calendar',
     'angular.filter',
-    // 'ui.utils.masks',
+    'localytics.directives',
     'authentication',
     'layout',
     'accounts',
@@ -241,6 +241,22 @@ angular
         }]
       }
     })
+    //Blank Offer
+    .state('app.orders.blankoffer', {
+      url: '/blankoffer',
+      controller: 'BlankOfferController',
+      controllerAs: 'vm',
+      templateUrl: static_path('views/orders/offer-blank.html'),
+      resolve: {
+        plugins: ['$ocLazyLoad', function($ocLazyLoad) {
+          return $ocLazyLoad.load([
+            static_path('scripts/vendor/datatables/datatables.bootstrap.min.css'),
+            static_path('scripts/vendor/datatables/Pagination/input.js'),
+            static_path('scripts/vendor/datatables/ColumnFilter/jquery.dataTables.columnFilter.js')
+          ]);
+        }]
+      }
+    })    
     //example pages
     .state('app.pages', {
       url: '/pages',

@@ -61,6 +61,10 @@
               <a href="javascript:window.print()" class="btn btn-ef btn-ef-1 btn-ef-1-default btn-ef-1a btn-rounded-20" tooltip="Print"><i class="fa fa-print"></i></a>
             </span>
           </div>
+          <div class="col-md-4" ng-if="['PEN','REF'].indexOf(vm.order.order_status)!=-1 && au.optiz">
+              <p class="text-uppercase text-strong mb-10 custom-font">Add Offer</p>
+              <button class="btn btn-primary ml-10" ui-sref="app.orders.offer({ orderId: vm.order.id})">Create Offer</button>
+          </div>
         </div>
         <hr/>
         <!-- row -->
@@ -160,10 +164,6 @@
                         <button class="btn btn-slategray" ng-click="vm.orderStat(ordStat);">Update Status</button>
                     </div>
                 </div>
-                <div class="col-md-12" ng-if="['PEN','REF'].indexOf(vm.order.order_status)!=-1 && au.optiz">
-                    <p class="text-uppercase text-strong mb-10 custom-font">Add Offer</p>
-                    <button class="btn btn-primary ml-10" ui-sref="app.orders.offer({ orderId: vm.order.id})">Create Offer</button>
-                </div>
             </div>
             <div ng-if="['WRQ','APN'].indexOf(vm.order.order_status)!=-1 && vm.orderCompany && au.access_level === '5'">
               <p class="text-uppercase text-strong mb-10 custom-font">Add Request Item</p>
@@ -194,7 +194,7 @@
 
       <tabset>
 
-        <tab heading="Request Items" active="vm.reqTab">
+        <tab heading="Request Items" active="vm.reqTab" ng-show="vm.order.req_order > 0">
 
           <!-- row -->
           <div class="row">

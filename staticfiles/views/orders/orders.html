@@ -38,7 +38,7 @@
 
           <!-- tile header -->
           <div class="tile-header dvd dvd-btm">
-            <h1 class="custom-font"><strong>Orders</strong> List</h1>
+            <h1 class="custom-font"><strong>Historique</strong> List</h1>
             <ul class="controls">
 
               <!-- <li><a href="javascipt:;"><i class="fa fa-plus mr-5"></i> New Order</a></li>
@@ -108,13 +108,13 @@
                       </label>
                     </th> -->
                     <th style="width:100px;">Date</th>
-                    <th style="width:90px;">Order #</th>
-                    <th style="width:80px;">Reference #</th>
+                    <th style="width:90px;">Référence</th>
+                    <th style="width:80px;">Référence interne</th>
                     <th style="width:140px;">Created By</th>
                     <th>Delivery Address</th>
                     <th style="width:100px;">Type</th>
                     <th style="width:70px;">Items</th>
-                    <th style="width:100px;">Statuses</th>
+                    <th style="width:100px;">Status</th>
                     <th style="width:90px;">Actions</th>
                   </tr>
                   </thead>
@@ -134,9 +134,8 @@
                   </tfoot>
                   <tbody>
                   <tr ng-repeat="order in showCase.orders">
-  <!--                   <td><label class="checkbox checkbox-custom checkbox-custom-sm m-0"><input type="checkbox" ng-model="order.selected"><i></i></label></td> -->
-                    <td>{{ order.order_created | date:'mediumDate'}}</td>
-                    <td>{{ order.order_number }}</td>
+                    <td>{{ order.order_created | date:"d MMM y 'at' h:mm a"}}</td>
+                    <td>{{ order.order_number }}/v{{ order.order_version }}</td>
                     <td>{{ order.reference_number }}</td>
                     <td><a ui-sref="app.pages.profile({ username: order.order_created_by.username })" >{{ order.order_created_by.first_name }} {{ order.order_created_by.last_name }}</a></td>
                     

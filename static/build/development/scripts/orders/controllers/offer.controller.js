@@ -124,6 +124,7 @@
         };
 
         vm.addOffer = function (){
+          console.log(vm.order);  
           console.log(vm.offer);
           if(!vm.offer.offer_terms){
             console.log(vm.offer);
