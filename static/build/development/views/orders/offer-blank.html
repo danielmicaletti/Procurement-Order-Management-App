@@ -49,8 +49,10 @@
               </div>
             </div>
             <div class="row" ng-controller="AddRefNumModalCtrl" ng-show="vm.order.order_company.name">
-              <h4 class="mt-20 col-md-3">Référence interne : <strong> {{ vm.offer.reference_number }}</strong></h4><h4 class="text-lightred text-md ml-10 col-md-3" ng-show="!vm.offer.reference_number">Add a référence interne</h4>
-              <button type="button" class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10 col-md-3" style="width:30px;" tooltip="add or edit référence interne" ng-click="open('md')"><i class="fa fa-pencil"></i></button>
+              <div class="col-md-12">
+                <h4 class="mt-20">Référence interne : <strong> {{ vm.offer.reference_number }}</strong></h4><h4 class="text-lightred text-md ml-10" ng-show="!vm.offer.reference_number">Add a référence interne</h4>
+                <button type="button" class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10" style="width:30px;" tooltip="add or edit référence interne" ng-click="open('md')"><i class="fa fa-pencil"></i></button>
+              </div>
             </div>
           </div> 
           <div class="col-md-4" ng-show="vm.order.order_company.name">
@@ -311,7 +313,7 @@
                               </div>
                           <!-- </div> -->
                           <div class="col-md-12">
-                              <button type="submit" ng-click="vm.addOffer()" class="btn btn-rounded btn-success btn mr-20 pull-right mb-20">Submit Offer</button>
+                              <button type="submit" ng-controller="OfferSubModalCtrl" ng-click="open('lg')" class="btn btn-rounded btn-success btn mr-20 pull-right mb-20">Submit Offer</button>
                           </div>
                         </form>
                     <!-- </div> -->

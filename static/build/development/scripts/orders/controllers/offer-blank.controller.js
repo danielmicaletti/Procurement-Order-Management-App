@@ -77,7 +77,11 @@
         vm.addBlankItem = function(blank_item){
             console.log(vm.offer.blank_item);
             console.log(blank_item);
-            blank_item.item_sub_total = blank_item.quantity*blank_item.price;
+            if(blank_item.price){
+              blank_item.item_sub_total = blank_item.quantity*blank_item.price;
+            }else{
+              blank_item.item_sub_total = 0;
+            }
             vm.offer.blank_item.push(blank_item);
             vm.blank_item = {};
             console.log(vm.offer);
@@ -86,17 +90,22 @@
             vm.offerTab = true;
         };
 
-        function getTotal(item){
+        function getTotal(){
             console.log(vm.offer.blank_item);
-            console.log(vm.offer.offer_total);
-            if(vm.offer.offer_total){
-                vm.offer['offer_total'] = vm.offer.offer_total += item;
-            }else{
-                vm.offer['offer_total'] = item;
-            }
-            if(!vm.offer.offer_total){
-                vm.offer['offer_total'] = 0;
-            }
+            vm.offer['offer_total'] = 0;
+            angular.forEach(vm.offer.blank_item, function(blankItemValue, key, obj) {
+              console.log(key);
+              console.log(blankItemValue);
+              console.log(obj);
+              angular.forEach(blankItemValue, function(biv, k, o) {
+                if(k==='item_sub_total'){
+                  console.log(k);
+                  console.log(biv);
+                  console.log(o);
+                  vm.offer['offer_total'] = vm.offer.offer_total += biv;
+                }
+              })  
+            })
             console.log(vm.offer.offer_total);
             console.log(vm.offer);
         };
@@ -133,21 +142,11 @@
             $log.error(errorMsg);
         }
 
-       //  vm.delOfferItem = function(ofrItem){
-       //    console.log(ofrItem);
-       //    var index = vm.offer.offer_item.indexOf(ofrItem);
-       //    vm.offer.offer_item.splice(index, 1); 
-       //  }
-
         vm.delBlankItem = function(ofrItem){
             console.log(ofrItem);
             var index = vm.offer.blank_item.indexOf(ofrItem);
             vm.offer.blank_item.splice(index, 1);
-            if(ofrItem.item_sub_total){
-                var item = -ofrItem.item_sub_total;
-                console.log(item);
-                getTotal(item);
-            }
+            getTotal();
         };
 
         vm.cancelOffer = function(){

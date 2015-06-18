@@ -85,40 +85,91 @@
 
         vm.reqTab = true;
 
-       vm.addItem = function (req_item){
+       vm.addItem = function(req_item){
           console.log(req_item);
-          req_item.item_sub_total = req_item.quantity*req_item.price;
+          if(req_item.price){
+            req_item.item_sub_total = req_item.quantity*req_item.price;
+          }else{
+            req_item.item_sub_total = 0;
+          }
           console.log(req_item.item_name);
           console.log(vm.offer);
-          getTotal(req_item.item_sub_total);
+          // getTotal(req_item.item_sub_total);
+          getTotal();
           toastr.success(req_item.item_name+' has been added to Current Offer');
           vm.reqTab = '';
           vm.offerTab = true;
 
         };
 
-        vm.addBlankItem = function (blank_item){
+        vm.addBlankItem = function(blank_item){
             console.log(vm.offer.blank_item);
             console.log(blank_item);
-            blank_item.item_sub_total = blank_item.quantity*blank_item.price;
+            if(blank_item.price){
+              blank_item.item_sub_total = blank_item.quantity*blank_item.price;
+            }else{
+              blank_item.item_sub_total = 0;
+            }
             vm.offer.blank_item.push(blank_item);
             vm.blank_item = {};
             console.log(vm.offer);
-            getTotal(blank_item.item_sub_total);
+            // getTotal(blank_item.item_sub_total);
+            getTotal();
             toastr.success(blank_item.item_name+' has been added to Current Offer');
             vm.reqTab = '';
             vm.offerTab = true;
         }
 
-        function getTotal(item){
+        // function getTotal(item){
+        //     console.log(vm.offer.blank_item);
+        //     console.log(vm.offer.offer_item);
+        //     console.log(item);
+        //     if(vm.offer.offer_total){
+        //         vm.offer['offer_total'] = vm.offer.offer_total += item;
+        //     }else{
+        //         vm.offer['offer_total'] = item;
+        //     }
+        //     if(!vm.offer.offer_total){
+        //         vm.offer['offer_total'] = 0;
+        //     }
+        //     console.log(vm.offer.offer_total);
+        //     console.log(vm.offer);
+        // };
+
+        function getTotal(){
             console.log(vm.offer.blank_item);
             console.log(vm.offer.offer_item);
-            console.log(item);
-            if(vm.offer.offer_total){
-                vm.offer['offer_total'] = vm.offer.offer_total += item;
-            }else{
-                vm.offer['offer_total'] = item;
-            }
+            // console.log(item);
+            // if(!vm.offer.offer_total){
+            //     vm.offer['offer_total'] = 0;
+            // }
+            vm.offer['offer_total'] = 0;
+            angular.forEach(vm.offer.offer_item, function(offItemValue, key, obj) {
+              console.log(key);
+              console.log(offItemValue);
+              console.log(obj);
+              angular.forEach(offItemValue, function(oiv, k, o) {
+                if(k==='item_sub_total'){
+                  console.log(k);
+                  console.log(oiv);
+                  console.log(o);
+                  vm.offer['offer_total'] = vm.offer.offer_total += oiv;
+                }
+              })  
+            })
+            angular.forEach(vm.offer.blank_item, function(blankItemValue, key, obj) {
+              console.log(key);
+              console.log(blankItemValue);
+              console.log(obj);
+              angular.forEach(blankItemValue, function(biv, k, o) {
+                if(k==='item_sub_total'){
+                  console.log(k);
+                  console.log(biv);
+                  console.log(o);
+                  vm.offer['offer_total'] = vm.offer.offer_total += biv;
+                }
+              })  
+            })
             console.log(vm.offer.offer_total);
             console.log(vm.offer);
         };
@@ -131,9 +182,9 @@
             vm.offer['offer_terms'] = '';
             console.log(vm.offer.offer_terms);
           }
-          if(!vm.offer.offer_total){
-            vm.offer['offer_total'] = 0;
-          }
+          // if(!vm.offer.offer_total){
+          //   vm.offer['offer_total'] = 0;
+          // }
           vm.offer['order'] = vm.orderId
           angular.forEach(vm.offer.blank_item, function (value, prop, obj) {
               console.log(value); 
@@ -160,13 +211,24 @@
           console.log(ofrItem);
           var index = vm.offer.offer_item.indexOf(ofrItem);
           vm.offer.offer_item.splice(index, 1); 
+          getTotal();
         }
 
         vm.delBlankItem = function(ofrItem){
           console.log(ofrItem);
           var index = vm.offer.blank_item.indexOf(ofrItem);
           vm.offer.blank_item.splice(index, 1); 
+          getTotal();
         }
+
+        vm.cancelOffer = function(){
+            console.log('cancel');
+            vm.offer.offer_item = [];
+            vm.offer.blank_item = [];            
+            vm.offer = {};
+            vm.order = {};
+            $state.go('app.orders.order', {orderId:vm.orderId});
+        };
 
     }
 

@@ -3,7 +3,7 @@
   <!-- page header -->
   <div class="pageheader">
 
-    <h2>{{page.title}} <span>for {{ vm.company.name }}</span></h2>
+    <h2>{{page.title}} <span> for </span> {{ vm.company.name }}</h2>
 
     <div class="page-bar">
 
@@ -26,7 +26,7 @@
 
   <!-- page content -->
   <div class="pagecontent">
-
+    <h3 class="mb-20">{{vm.req.req_domain}} > {{vm.req.item_fam}} > {{vm.req.item_subfam}}</h3>
     <edit-req req="vm.req" path="path.static_files" comp="vm.company"></edit-req>
 
   </div>

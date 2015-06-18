@@ -4,6 +4,10 @@
 </div>
 <div class="modal-body">
     <div class="row">
+        <div class="block ml-20" ng-show="vm.order.reference_number">
+            <h5 class="custom-font text-strong text-uppercase">reférence interne</h5>
+            <h5 class="">{{ vm.order.reference_number}}</h5>
+        </div>
         <div class="col-md-4">
             <h5 class="text-strong text-uppercase custom-font">customer</h5>
             <ul class="list-unstyled">

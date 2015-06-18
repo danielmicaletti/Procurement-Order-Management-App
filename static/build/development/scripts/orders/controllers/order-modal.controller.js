@@ -242,6 +242,33 @@ angular.module('minovateApp')
 
   })  
 
+  .controller('OfferSubModalCtrl', function ($scope, $modal, $log, $localStorage) {
+    var vm = this;
+
+    $scope.items = [];
+
+    $scope.open = function(size) {
+
+      var modalInstance = $modal.open({
+        templateUrl: static_path('views/modals/offersub-modal.html'),
+        controller: 'ModalInstanceCtrl',
+        scope: $scope,
+        size: size,
+        resolve: {
+          items: function () {
+            return $scope.items;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    };
+  })
+
   .controller('OfferApvlModalCtrl', function ($scope, $modal, $log) {
     var vm = this;
   

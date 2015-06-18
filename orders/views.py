@@ -35,6 +35,25 @@ class OrderViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save(user=self.request.user, **self.request.data)
 
+# class OrdersAllViewSet(viewsets.ModelViewSet):
+#     lookup_field = 'id'
+#     queryset = Order.objects.all()
+#     serializer_class = OrdersAllSerializer
+
+#     def get_permissions(self):
+#         if self.request.method in permissions.SAFE_METHODS:
+#             return (permissions.AllowAny(),)
+#         return (permissions.IsAuthenticated(),)
+
+#     def list(self, request, order_id=None):
+#         if self.request.user.optiz:
+#             queryset = Order.objects.all()
+#         else:
+#             queryset = self.queryset.filter(order_company=self.request.user.user_company)
+#         serializer = OrderSerializer(queryset, many=True)
+#         return Response(serializer.data)
+
+
 class ReqItemViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     queryset = ReqItem.objects.all()

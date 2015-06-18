@@ -1,5 +1,5 @@
 <ul class="chats p-0">
-    <li ng-class-odd="'in'" ng-class-even="'out'" ng-repeat="item in comments">
+    <li ng-class-odd="'in'" ng-class-even="'out'" ng-repeat="item in comments | orderBy: '-created_date'">
         <div class="media">
             <div ng-class-odd="'pull-left'" ng-class-even="'pull-right'" class="thumb thumb-sm pt-10">
                 <a ui-sref="app.pages.profile({ username: item.created_by_username })"><img class="media-object img-circle" ng-src="{{path.static_files}}{{ item.created_by_pic }}" alt=""></a>

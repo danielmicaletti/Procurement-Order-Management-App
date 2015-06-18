@@ -55,7 +55,7 @@
         Company.get(authenticatedAccount.user_company).then(companySuccess).catch(companyError);
         
         function companySuccess(data, status, headers, config) {
-            vm.company = data.data;
+            vm.company = data;
             console.log("company");
             console.log(vm.company);      
         }
@@ -65,13 +65,6 @@
             toastr.error('Your request can not be processed '+errorMsg+'');
         }
     }
-
-    // vm.isDraft = function (){
-    //     console.log("here");
-    //     if(vm.req.order_draft){
-    //         vm.updateReq();
-    //     }
-    // };
 
     vm.updateReq = function (){
         console.log("Req Data");

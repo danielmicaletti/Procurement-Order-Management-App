@@ -143,6 +143,13 @@ class ReqItemSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+# class OrdersAllSerializer(serializers.ModelSerializer):
+#     # offer = serializers.CharField(required=False)
+
+#     class Meta:
+#         model = Order
+#         fields = ('id', 'offer', 'item_name', 'item_details', 'price', 'item_sub_total', 'frequency', 'quantity',
+#             'delivery_date', 'date_start', 'date_end',)
 
 class OrderSerializer(serializers.ModelSerializer):
     order_company = CompanySerializer(read_only=True)
@@ -179,6 +186,8 @@ class OrderSerializer(serializers.ModelSerializer):
                 if user.access_level >= '6':
                     instance.company_approval_status = 'PEN'
                     instance.order_status = 'PEN'
+                    instance.order_status_change_by = user
+                    instance.order_status_change_date = timezone.now()
                     instance.optiz_status = 'PEN'
                     instance.company_approval_by = user
                     instance.company_approval_date = timezone.now()
@@ -213,8 +222,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
         if 'comment_body' in validated_data:
             comment = Comment.objects.create(order=instance, created_by=user, body=validated_data['comment_body'])
-
             comment.save()
+
         instance.reference_number = validated_data.get('reference_number', instance.reference_number)        
         instance.save()
 

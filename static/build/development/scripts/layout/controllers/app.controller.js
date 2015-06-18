@@ -14,7 +14,7 @@
     vm.isAuthenticated = Authentication.isAuthenticated();
     console.log(vm.isAuthenticated);
     $scope.au = Authentication.getAuthenticatedAccount();
-
+    console.log($scope.au);
     if($scope.au.access_level >= 7){
         $scope.mgr = true;
         console.log($scope.mgr);

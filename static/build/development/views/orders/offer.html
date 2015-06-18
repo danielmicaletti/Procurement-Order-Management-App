@@ -44,7 +44,7 @@
             <span class="controls" ng-controller="OfferBlankItemModalCtrl">
               <p class="text-uppercase text-strong mb-10 custom-font">Add Offer Item</p>
               <a ng-click="open('lg')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="Add Offer Item"><i class="fa fa-plus"></i></a>
-              <a class="btn btn-ef btn-ef-1 btn-ef-1-lightred btn-ef-1a btn-rounded-20 mr-5" tooltip="Cancel offer"><i class="fa fa-times"></i></a>
+              <a class="btn btn-ef btn-ef-1 btn-ef-1-lightred btn-ef-1a btn-rounded-20 mr-5" tooltip="Cancel offer" ng-click="vm.cancelOffer();"><i class="fa fa-times"></i></a>
               <a href="javascript:window.print()" class="btn btn-ef btn-ef-1 btn-ef-1-default btn-ef-1a btn-rounded-20" tooltip="Print"><i class="fa fa-print"></i></a>
             </span>
           </div>
@@ -170,7 +170,7 @@
                   
                   <div class="row">
                     <div role="form" class="col-md-12" ng-repeat="offer_item in vm.offer.offer_item track by $index">
-                        <div class="well" >
+                        <div class="well" ng-show="offer_item.item_name">
                             <div class="row">
                                 <a href="javascript:;" class="btn btn-xs btn-lightred" ng-click="vm.delOfferItem(offer_item)"><i class="fa fa-times"></i> Remove</a>
                                 <div class="form-group col-md-4" ng-show="offer_item.item_name">
@@ -268,7 +268,7 @@
                               </div>
                           <!-- </div> -->
                           <div class="col-md-12">
-                              <button type="submit" ng-click="vm.addOffer()" class="btn btn-rounded btn-success btn mr-20 pull-right mb-20">Submit Offer</button>
+                              <button type="submit" ng-controller="OfferSubModalCtrl" ng-click="open('lg')" class="btn btn-rounded btn-success btn mr-20 pull-right mb-20">Submit Offer</button>
                           </div>
                         </form>
                     <!-- </div> -->
@@ -498,10 +498,6 @@
 
             <ul class="list-unstyled">
                 <li><strong class="inline-block w-sm mb-5">Subtotal:</strong> {{vm.offer.offer_total | currency:"€ "}}</li>
-                <!-- <li><strong class="inline-block w-sm mb-5">Shipping:</strong> {{25 | currency}}</li>
-                <li><strong class="inline-block w-sm mb-5">Grand Total:</strong> {{vm.offer.offer_item[$index].item_sub_total + vm.offer.blank_item[$index].item_sub_total }}</li> -->
-<!--                 <li><strong class="inline-block w-sm mb-5">Total Paid:</strong> {{865.21 + 25 | currency}}</li> -->
-<!--                 <li><strong class="inline-block w-sm mb-5">Total Refunded:</strong> {{0 | currency}}</li> -->
                 <li><strong class="inline-block w-sm">Grand Total:</strong> <h3 class="inline-block text-success">{{vm.offer.offer_total | currency:"€ "}}</h3></li>
               </ul>
 

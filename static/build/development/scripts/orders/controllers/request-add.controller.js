@@ -58,7 +58,15 @@
         function detailsSuccess(data, status, headers, config) {
             vm.details = data;
             console.log("Details");
-            console.log(vm.details);      
+            console.log(vm.details);
+            for(var item in vm.details){
+                console.log(vm.details[item].good);
+            }
+            console.log(vm.details[item].good);
+            var par = vm.details[item].good.replace(/domain: | family: | subfamily: |' '/g,'');
+            console.log(par);
+            vm.news = par.split(',');
+            console.log(vm.news);
         }
 
         function detailsError(errorMsg) {
@@ -85,7 +93,7 @@
         Company.get(authenticatedAccount.user_company).then(companySuccess).catch(companyError);
         
         function companySuccess(data, status, headers, config) {
-            vm.company = data.data;
+            vm.company = data;
             console.log("company");
             console.log(vm.company);      
         }
@@ -108,15 +116,15 @@
         console.log(vm.addReq);
         console.log("good Deet");
         console.log(vm.details);
-        for(var item in vm.details){
-            console.log(vm.details[item].good);
-        }
-        console.log(vm.details[item].good);
-        var par = vm.details[item].good.replace(/domain: | family: | subfamily: |' '/g,'');
-        console.log(par);
-        var news = par.split(',');
-        console.log(news);
-        vm.addReq['good'] = news;
+        // for(var item in vm.details){
+        //     console.log(vm.details[item].good);
+        // }
+        // console.log(vm.details[item].good);
+        // var par = vm.details[item].good.replace(/domain: | family: | subfamily: |' '/g,'');
+        // console.log(par);
+        // var news = par.split(',');
+        console.log(vm.news);
+        vm.addReq['good'] = vm.news;
         console.log(goodId);
         vm.addReq.good_id = goodId;
         console.log(vm.addReq.good_id);
