@@ -37,6 +37,7 @@
 
         function createCompanySuccess(data){
             console.log(data);
+            $state.go('app.pages.company-profile', {companyId:data.id}); 
         }
 
         function createCompanyError(errorMsg){
