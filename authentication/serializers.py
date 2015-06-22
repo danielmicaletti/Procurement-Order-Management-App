@@ -21,12 +21,13 @@ class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
         fields = ('id', 'addr_type', 'addr_location', 'addr_company', 'addr_user', 'street_addr1', 'street_addr2', 'city',
-            'post_code', 'country', 'phone_main', 'addr_notes',)
+            'post_code', 'country', 'phone_main', 'email', 'addr_notes',)
 
 class CompanySerializer(serializers.ModelSerializer):
-    wease_company = UserCompanySerializer(many=True)
-    company_assigned_to = UserCompanySerializer(many=True)
-    address_company = AddressSerializer(many=True, read_only=True)      
+    wease_company = UserCompanySerializer(many=True, required=False)
+    company_assigned_to = UserCompanySerializer(many=True, required=False)
+    address_company = AddressSerializer(many=True, read_only=True)  
+    company_address = AddressSerializer()    
     company_created_by = serializers.CharField(read_only=True)
     company_updated_by = serializers.CharField(read_only=True)
     email = serializers.CharField(read_only=True, required=False)
@@ -35,13 +36,21 @@ class CompanySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Company
-        fields = ('id', 'name', 'street_addr1', 'street_addr2', 'city', 'post_code', 'country', 'phone_main', 'company_logo',
-            'company_created', 'email', 'company_created_by', 'company_updated', 'company_updated_by', 'company_assigned_to','address_company',
-            'wease_company',)
+        fields = ('id', 'name', 'company_logo', 'company_created', 'email', 'company_created_by', 'company_updated', 'company_updated_by', 'company_assigned_to','address_company',
+            'company_address', 'company_website', 'wease_company',)
         read_only_fields = ('company_updated', 'company_created',)
 
     def create(self, validated_data):
-        return Company.objects.create(**validated_data)
+        print "VAL-DATA COMP === %s" % validated_data
+        user = validated_data.pop('user')
+        addr = validated_data.pop('company_address')
+        comp = Company.objects.create(company_created_by=user, **validated_data)
+        comp.save()
+        comp_addr = Address.objects.create(addr_created_by=user, addr_company=comp, **addr)
+        comp_addr.save()
+        comp.company_address = comp_addr
+        comp.save()
+        return comp
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name', instance.name)
@@ -60,6 +69,7 @@ class CompanySerializer(serializers.ModelSerializer):
 
 class AccountSerializer(serializers.ModelSerializer):
     user_company_full = serializers.CharField(source='user_company.get_name', read_only=True, required=False)
+    user_company = serializers.CharField(source='user_company.id',required=False)
     password = serializers.CharField(write_only=True, required=False)
     confirm_password = serializers.CharField(write_only=True, required=False)
     user_created_by = serializers.CharField(read_only=True)

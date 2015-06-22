@@ -5,9 +5,9 @@
         .module('authentication.services')
         .factory('Authentication', Authentication);
 
-    Authentication.$inject = ['$cookies', '$http', '$state', 'toastr'];
+    Authentication.$inject = ['$cookies', '$http', '$q', '$state', 'toastr'];
 
-    function Authentication($cookies, $http, $state, toastr) {
+    function Authentication($cookies, $http, $q, $state, toastr) {
 
         var Authentication = {
             getAuthenticatedAccount: getAuthenticatedAccount,
@@ -42,8 +42,6 @@
         }
 
         function loginSuccessFn(data, status, headers, config) {
-            // console.log('authacct data');
-            // console.log(data.data);
             Authentication.setAuthenticatedAccount(data.data);
             $state.go('app.dashboard');
         }
@@ -60,7 +58,6 @@
 
         function logoutSuccessFn(data, status, headers, config) {
             Authentication.unauthenticate();
-            // window.location = '#/core/login';
             $state.go('core.login');
         }
 
@@ -68,8 +65,9 @@
             console.error('Epic failure!');
         }
 
-        function register(username, email, first_name, last_name, password, confirm_password) {
+        function register(company, username, email, first_name, last_name, password, confirm_password) {
             return $http.post('/api/v1/accounts/', {
+                company: company, 
                 username: username,
                 email: email,
                 first_name: first_name,
@@ -79,18 +77,16 @@
             }).then(registerSuccessFn).catch(registerErrorFn);
         }
 
-        function registerSuccessFn(data, status, headers, config) {
-            toastr.success('New user has been created');
+        function registerSuccessFn(response) {
+            return response.data;
         }
 
-        function registerErrorFn(data, status, headers, config) {
-            toastr.error('There was an issue creating this user');
-            console.error('Epic failure!'+data);
+        function registerErrorFn(response) {
+            return $q.reject('Error '+response.status+'');
         }
 
         function setAuthenticatedAccount(account) {
             $cookies.authenticatedAccount = JSON.stringify(account);
-            // console.log($cookies.authenticatedAccount);
         }
 
         function unauthenticate() {

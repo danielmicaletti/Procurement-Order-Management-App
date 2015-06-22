@@ -1,0 +1,761 @@
+<div class="page page-profile">
+
+
+
+
+  <!-- page header -->
+  <div class="pageheader">
+
+    <h2>{{page.title}} <span>for</span> {{ vm.company.name }}</h2>
+
+    <div class="page-bar">
+
+      <ul class="page-breadcrumb">
+        <li>
+          <a ui-sref="app.dashboard"><i class="fa fa-home"></i> {{main.title}}</a>
+        </li>
+        <li>
+          <a ui-sref="app.pages.company-profile">{{ vm.company.name }} Page</a>
+        </li>
+      </ul>
+
+    </div>
+
+  </div>
+  <!-- /page header -->
+
+
+
+
+
+
+  <!-- page content -->
+  <div class="pagecontent">
+
+
+    <!-- row -->
+    <div class="row">
+
+
+
+
+
+
+      <!-- col -->
+      <div class="col-md-4">
+
+        <!-- tile -->
+        <section class="tile tile-simple">
+
+          <!-- tile widget -->
+          <div class="tile-widget p-30 text-center">
+
+            <div class="thumb thumb-xl">
+              <img class="img-circle" ng-src="{{path.static_files}}{{ vm.company.company_logo }}" alt=""/>
+            </div>
+            <h4 class="mb-0"><strong>{{ vm.company.name }}</strong></h4>
+            <span class="text-muted">{{ vm.account.position }}</span>
+            <div class="mt-10">
+              <button class="btn btn-rounded-20 btn-sm btn-greensea">Chat</button>
+              <button class="btn btn-rounded-20 btn-sm btn-lightred">Message</button>
+            </div>
+
+          </div>
+          <!-- /tile widget -->
+
+          <!-- tile body -->
+<!--           <div class="tile-body text-center bg-blue p-0">
+
+            <ul class="list-inline tbox m-0">
+              <li class="tcol p-10">
+                <h2 class="m-0">695</h2>
+                <span class="text-transparent-white">Tweets</span>
+              </li>
+              <li class="tcol bg-blue dker p-10">
+                <h2 class="m-0">1 269</h2>
+                <span class="text-transparent-white">Followers</span>
+              </li>
+              <li class="tcol p-10">
+                <h2 class="m-0">369</h2>
+                <span class="text-transparent-white">Following</span>
+              </li>
+            </ul>
+
+          </div> -->
+          <!-- /tile body -->
+
+        </section>
+        <!-- /tile -->
+
+
+        <!-- tile -->
+<!--         <section class="tile tile-simple">
+
+          <div class="tile-header">
+            <h1 class="custom-font"><strong>About</strong> {{ vm.account.first_name }}</h1>
+          </div>
+         
+          <div class="tile-body">
+
+            <p>
+              <a href="#" class="icon icon-info icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-twitter"></i></a>
+              <a href="{{ facebookLink }}" class="icon icon-primary icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-facebook"></i></a>
+              <a href="#" class="icon icon-lightred icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-google-plus"></i></a>
+              <a href="#" class="icon icon-hotpink icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-dribbble"></i></a>
+            </p>
+
+            <p class="text-default lt">But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful.</p>
+
+          </div>
+          
+
+        </section> -->
+        <!-- /tile -->
+
+        <!-- tile -->
+        <section class="tile tile-simple">
+
+          <!-- tile header -->
+          <div class="tile-header">
+            <h1 class="custom-font"><strong>Team</strong> {{ vm.company.name }}</h1>
+          </div>
+          <!-- /tile header -->
+
+          <!-- tile body -->
+          <div class="tile-body">
+
+            <div class="media" ng-repeat="user in vm.company.wease_company">
+              
+              <div class="pull-left thumb">
+                <img class="media-object img-circle" ng-src="{{path.static_files}}{{ user.user_pic }}" alt="">
+              </div>
+              <div class="pull-right mt-10">
+                <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><a ui-sref="app.pages.profile({username:user.username})"><i class="fa fa-eye" style="margin-left: -2px;"></i></a></button>
+                <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+              </div>
+              <div class="media-body">
+                <p class="media-heading mb-0 mt-10">{{ user.first_name }} <strong>{{ user.last_name }}</strong></p>
+                <small class="text-lightred">{{ user.position }}</small><br/>
+                <small class="">{{ user.city }}, {{ user.country }}</small>
+              </div>
+
+              <hr/>
+            </div>
+
+
+<!--             <div class="media">
+              <div class="pull-left thumb">
+                <img class="media-object img-circle" ng-src="/static/images/random-avatar4.jpg" alt="">
+              </div>
+              <div class="pull-right mt-10">
+                <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+                <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+              </div>
+              <div class="media-body">
+                <p class="media-heading mb-0 mt-10">Deel <strong>McApple</strong></p>
+                <small class="text-lightred">Print master</small>
+              </div>
+            </div>
+
+            <hr/>
+
+            <div class="media ">
+              <div class="pull-left thumb">
+                <img class="media-object img-circle" src="/static/images/random-avatar8.jpg" alt="">
+              </div>
+              <div class="pull-right mt-10">
+                <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+              </div>
+              <div class="media-body">
+                <p class="media-heading mb-0 mt-10">Anna <strong>Opichia</strong></p>
+                <small class="text-lightred">lead designer</small>
+              </div>
+            </div>
+
+            <hr/>
+
+            <div class="media ">
+              <div class="pull-left thumb">
+                <img class="media-object img-circle" src="/static/images/random-avatar7.jpg" alt="">
+              </div>
+              <div class="pull-right mt-10">
+                <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-times"></i></button>
+                <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
+                <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><i class="fa fa-eye" style="margin-left: -2px;"></i></button>
+              </div>
+              <div class="media-body">
+                <p class="media-heading mb-0 mt-10">Bobby <strong>Socks</strong></p>
+                <small class="text-lightred">CEO</small>
+              </div>
+            </div> -->
+
+          </div>
+          <!-- /tile body -->
+
+        </section>
+        <!-- /tile -->
+
+        <!-- tile -->
+<!--         <section class="tile tile-simple">
+          
+          <div class="tile-header">
+            <h1 class="custom-font"><strong>My</strong> Projects</h1>
+          </div>
+ 
+          <div class="tile-body">
+
+            <ul class="list-unstyled">
+
+              <li>
+                <div class="row">
+                  <div class="col-md-3">
+                    Minimal
+                  </div>
+                  <div class="col-md-9">
+                    <progressbar class="progress-striped not-rounded" value="56" type="warning">56%</progressbar>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <div class="row">
+                  <div class="col-md-3">
+                    Minoral
+                  </div>
+                  <div class="col-md-9">
+                    <progressbar class="progress-striped not-rounded" value="90" type="blue">90%</progressbar>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <div class="row">
+                  <div class="col-md-3">
+                    The Kamarel
+                  </div>
+                  <div class="col-md-9">
+                    <progressbar class="progress-striped not-rounded" value="36" type="greensea">36%</progressbar>
+                  </div>
+                </div>
+              </li>
+
+              <li>
+                <div class="row">
+                  <div class="col-md-3">
+                    Themeforest
+                  </div>
+                  <div class="col-md-9">
+                    <progressbar class="progress-striped not-rounded" value="8" type="danger">8%</progressbar>
+                  </div>
+                </div>
+              </li>
+
+            </ul>
+
+          </div>
+
+        </section> -->
+        <!-- /tile -->
+
+
+      </div>
+      <!-- /col -->
+
+
+
+
+
+
+      <!-- col -->
+      <div class="col-md-8">
+
+        <!-- tile -->
+        <section class="tile tile-simple">
+          <!-- tile header -->
+
+          <!-- tile body -->
+          <div class="tile-body p-0">
+
+            <tabset class="tabs-dark">
+
+              <tab heading="Profile">
+                <div class="wrap-reset">
+                  <div class="tile-header">
+                    <h1 class="custom-font"><strong>About</strong> {{ vm.company.name }}</h1>
+                  </div>
+
+                  <!-- <div class="streamline-form">
+                    <textarea class="form-control br-0 br-2-t" placeholder="What's up dude?" rows="5"></textarea>
+                    <div class="post-toolbar">
+                      <a href="#" tooltip="Add File"><i class="fa fa-paperclip"></i></a>
+                      <a href="#" tooltip="Add Image"><i class="fa fa-camera"></i></a>
+                      <a href="#" class="pull-right" tooltip="Post it!"><i class="fa fa-share"></i></a>
+                    </div>
+                  </div> -->
+
+                  <!-- <div class="streamline mt-20">
+
+                    <article class="streamline-post">
+
+                      <aside>
+                        <div class="thumb thumb-sm">
+                          <img class="img-circle" src="images/profile-photo.jpg" alt="">
+                        </div>
+                      </aside>
+
+                      <div class="post-container">
+
+                        <div class="panel panel-default">
+                          <div class="panel-heading bg-white">
+                            John Douey <small class="text-muted">posted a new status</small>
+                            <span class="text-muted pull-right"><i class="fa fa-clock-o mr-5"></i> Just now</span>
+                          </div>
+                          <div class="panel-body">
+                            On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain.
+
+                            <p class="mt-10 mb-0">
+                              <a href="" active-toggle="" class="btn btn-default btn-xs active">
+                                <i class="fa fa-heart-o text-inactive"></i><i class="fa fa-heart text-danger text-active"></i> Like (14)
+                              </a>
+                              <a href="" class="btn btn-default btn-xs">
+                                <i class="fa fa-comments"></i> Comments (30)
+                              </a>
+                              <a href="" class="btn btn-default btn-xs">
+                                <i class="fa fa-mail-reply"></i> Reply
+                              </a>
+                            </p>
+                          </div>
+                        </div>
+
+                        <ul class="list-unstyled post-replies">
+
+                          <li>
+
+                            <aside>
+                              <div class="thumb thumb-sm">
+                                <img class="img-circle" src="images/random-avatar4.jpg" alt="">
+                              </div>
+                            </aside>
+
+                            <div class="reply-container">
+                              <div class="panel panel-default">
+                                <div class="panel-body">
+                                  <p>
+                                    <strong>James Bend</strong>
+                                    <span class="text-muted pull-right"><i class="fa fa-clock-o mr-5"></i> 6 minutes ago</span>
+                                  </p>
+
+                                  <p class="mb-0 text-small">These cases are perfectly simple and easy to distinguish.</p>
+
+                                  <p class="mt-10 mb-0">
+                                    <a href="" active-toggle="" class="btn btn-default btn-xs">
+                                      <i class="fa fa-heart-o text-inactive"></i><i class="fa fa-heart text-danger text-active"></i> Like (5)
+                                    </a>
+                                    <a href="" class="btn btn-default btn-xs">
+                                      <i class="fa fa-mail-reply"></i> Reply
+                                    </a>
+                                  </p>
+
+                                </div>
+                              </div>
+                            </div>
+
+                          </li>
+
+                          <li>
+
+                            <aside>
+                              <div class="thumb thumb-sm">
+                                <img class="img-circle" src="images/ici-avatar.jpg" alt="">
+                              </div>
+                            </aside>
+
+                            <div class="reply-container">
+                              <div class="panel panel-default">
+                                <div class="panel-body">
+                                  <p>
+                                    <strong>Ing. Imrich Kamarel</strong>
+                                    <span class="text-muted pull-right"><i class="fa fa-clock-o mr-5"></i> 50 minutes ago</span>
+                                  </p>
+
+                                  <p class="mb-0 text-small">In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best.</p>
+
+                                  <p class="mt-10 mb-0">
+                                    <a href="" active-toggle="" class="btn btn-default btn-xs active">
+                                      <i class="fa fa-heart-o text-inactive"></i><i class="fa fa-heart text-danger text-active"></i> Like
+                                    </a>
+                                    <a href="" class="btn btn-default btn-xs">
+                                      <i class="fa fa-mail-reply"></i> Reply
+                                    </a>
+                                  </p>
+
+                                </div>
+                              </div>
+                            </div>
+
+                          </li>
+
+                          <li>
+
+                            <aside>
+                              <div class="thumb thumb-sm">
+                                <img class="img-circle" src="images/arnold-avatar.jpg" alt="">
+                              </div>
+                            </aside>
+
+                            <div class="reply-container">
+                              <div class="panel panel-default">
+                                <div class="panel-body">
+                                  <p>
+                                    <strong>Arnold Karlsberg</strong>
+                                    <span class="text-muted pull-right"><i class="fa fa-clock-o mr-5"></i> 56 minutes ago</span>
+                                  </p>
+
+                                  <p class="mb-0 text-small">But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted.</p>
+
+                                  <p class="mt-10 mb-0">
+                                    <a href="" active-toggle="" class="btn btn-default btn-xs">
+                                      <i class="fa fa-heart-o text-inactive"></i><i class="fa fa-heart text-danger text-active"></i> Like (2)
+                                    </a>
+                                    <a href="" class="btn btn-default btn-xs">
+                                      <i class="fa fa-mail-reply"></i> Reply
+                                    </a>
+                                  </p>
+
+                                </div>
+                              </div>
+                            </div>
+
+                          </li>
+
+                        </ul>
+
+                      </div>
+
+                    </article>
+
+                    <article class="streamline-post">
+                      <aside>
+                        <div class="thumb thumb-sm">
+                          <img class="img-circle" src="images/random-avatar1.jpg" alt="">
+                        </div>
+                      </aside>
+                      <div class="post-container">
+                        <div class="panel panel-default">
+                          <div class="panel-heading bg-white">
+                            Mike Herrington <small class="text-muted">posted a new status</small>
+                            <span class="text-muted pull-right"><i class="fa fa-clock-o mr-5"></i> 39 minutes ago</span>
+                          </div>
+                          <div class="panel-body">
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+                            <p class="mt-10 mb-0">
+                              <a href="" active-toggle="" class="btn btn-default btn-xs">
+                                <i class="fa fa-heart-o text-inactive"></i><i class="fa fa-heart text-danger text-active"></i> Like
+                              </a>
+                              <a href="" class="btn btn-default btn-xs">
+                                <i class="fa fa-comments"></i> Comments (9)
+                              </a>
+                              <a href="" class="btn btn-default btn-xs">
+                                <i class="fa fa-mail-reply"></i> Reply
+                              </a>
+                            </p>
+
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+
+                    <article class="streamline-post">
+                      <aside>
+                        <div class="thumb thumb-sm">
+                          <img class="img-circle" src="images/random-avatar3.jpg" alt="">
+                        </div>
+                      </aside>
+                      <div class="post-container">
+                        <div class="panel panel-default">
+                          <div class="panel-heading bg-white">
+                            Robin Wills <small class="text-muted">added a new photo</small>
+                            <span class="text-muted pull-right"><i class="fa fa-clock-o mr-5"></i> 1 hour ago</span>
+                          </div>
+                          <div class="panel-body">
+
+                            <img src="http://placekitten.com/g/800/600" class="img-responsive mb-20" alt />
+
+                            <p>On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain.</p>
+
+                            <p class="mt-10 mb-0">
+                              <a href="" active-toggle="" class="btn btn-default btn-xs active">
+                                <i class="fa fa-heart-o text-inactive"></i><i class="fa fa-heart text-danger text-active"></i> Like (16)
+                              </a>
+                              <a href="" class="btn btn-default btn-xs">
+                                <i class="fa fa-comments"></i> Comments (16)
+                              </a>
+                              <a href="" class="btn btn-default btn-xs">
+                                <i class="fa fa-mail-reply"></i> Reply
+                              </a>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </article>
+
+                    <div class="text-center">
+                      <a href="#" class="btn btn-sm btn-default">
+                        Load More …
+                      </a>
+                    </div>
+
+                  </div> -->
+                  <div class="title-body">
+                    <p ng-show="vm.account.tagline"><em>"{{ vm.account.tagline }}"</em></p>
+                  </div>
+                </div>
+              </tab>
+
+              <tab heading="Settings">
+                <div class="wrap-reset">
+
+                  <form class="profile-settings" ng-submit="vm.update()">
+
+                    <div class="row">
+                      <div class="form-group col-md-12 legend">
+                        <h4><strong>{{ vm.company.name }}</strong> Information</h4>
+                        <p>Update {{ vm.company.name }} information</p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="company-name">Company Name</label>
+                            <input type="text" class="form-control" ng-model="vm.company.name">
+                        </div>
+                    <!-- </div>
+                    <div class="row"> -->
+                        <div class="form-group col-sm-6">
+                            <label for="addr_location">Address Title</label>
+                            <input type="text" class="form-control" ng-model="vm.company.company_address.addr_location">
+                            <span class="help-block">Main Office, HeadQuarters, Warehouse, etc.</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="street_addr1">Address Line 1</label>
+                            <input type="text" class="form-control" ng-model="vm.company.company_address.street_addr1">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="street_addr2">Address Line 2</label>
+                            <input type="text" class="form-control" ng-model="vm.company.company_address.street_addr2">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" ng-model="vm.company.company_address.city">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="post_code">Post Code</label>
+                            <input type="text" class="form-control" ng-model="vm.company.company_address.post_code">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="country">Country</label>
+                            <select ui-jq="chosen" id="country" ui-options="{width: '100%'}" ng-model="vm.company.company_address.country">
+                                <option>France</option>
+                                <option>Morocco</option>
+                                <option>United States</option>
+                                <option>Germany</option>
+                                <option>Spain</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="email">E-mail</label>
+                            <input type="email" class="form-control" ng-model="vm.company.company_address.email">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="phone">Phone Main</label>
+                            <input type="text" class="form-control" ng-model="vm.company.company_address.phone_main">
+                            <span class="help-block">+(34) 13 24 76 98</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label for="company_logo">Company Logo</label>
+                            <input ui-jq="filestyle" type="file" class="filestyle" ui-options="{
+                            buttonText: 'Find file',
+                            iconName: 'fa fa-inbox'
+                            }" id="avatar" ng-model="vm.company.company_logo">
+                            <span class="help-block">Allowed files: gif, png, jpg. Max file size 1Mb</span>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="company_website">Website</label>
+                            <input type="text" class="form-control" ng-model="vm.company.company_website">
+                            <span class="help-block">www.optiz.fr</span>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="addr_notes">Address Notes</label>
+                            <textarea class="form-control" rows="4" ng-model="vm.company.company_address.addr_notes"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-primary">Update Company</button>
+                  </form>
+                </div>
+              </tab>
+                <tab heading="Addresses">
+                    <div class="wrap-reset">
+                        <div class="tile-header">
+                            <h1 class="custom-font"><strong>{{ vm.company.name }}</strong> Addresses</h1>
+                        </div>
+                        <div class="title-body">
+                            <accordion close-others="oneAtATime">
+                                <accordion-group heading="{{address.addr_location}}" ng-repeat="address in vm.company.address_company">
+                                    <form class="profile-settings" ng-submit="vm.update()">
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="address_location">Address Location</label>
+                                                <input type="text" class="form-control" id="address_location" value="{{ address.addr_location}}" ng-model="address.addr_location">
+                                            </div>
+
+                                            <div class="form-group col-sm-6">
+                                                <label for="address2">Address Type</label>
+                                                <select ui-jq="chosen" id="address_type" ui-options="{width: '100%'}" ng-model="address.addr_type">
+                                                <option>Office</option>
+                                                <option>Delivery</option>
+                                                <option>Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="address1">Address Line 1</label>
+                                                <input type="text" class="form-control" id="address1" value="{{ address.street_addr1 }}" ng-model="address.street_addr1">
+                                            </div>
+
+                                            <div class="form-group col-sm-6">
+                                                <label for="address2">Address Line 2</label>
+                                                <input type="text" class="form-control" id="address2" value="{{ address.street_addr2 }}" ng-model="address.street_addr2">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-4">
+                                                <label for="city">City</label>
+                                                <input type="text" class="form-control" id="city" value="{{ address.city }}" ng-model="address.city">
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="country">Country</label>
+                                                <select ui-jq="chosen" id="country" ui-options="{width: '100%'}" ng-model="address.country">
+                                                <option>France</option>
+                                                <option>Morocca</option>
+                                                <option>United States</option>
+                                                <option>Germany</option>
+                                                <option>Spain</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                <label for="post_code">Post Code</label>
+                                                <input type="text" class="form-control" id="post_code" value="{{ address.post_code}}">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="email">E-mail</label>
+                                                <input type="email" class="form-control" id="email" value="{{ address.email }}" ng-model="address.email">
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label for="addr_notes">Address Notes</label>
+                                                <textarea class="form-control" id="tagline" rows="2" ng-model="address.addr_notes">{{ address.addr_notes }}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="phone">Phone</label>
+                                                <input type="text" class="form-control" id="phone" value="{{ address.phone_main }}" ng-model="address.phone_main">
+                                                <span class="help-block">+(34) 13 24 76 98</span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </accordion-group>
+                            </accordion>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Add User">
+                    <div class="wrap-reset">
+                    <form class="profile-settings" ng-submit="vm.register()">
+                        <div class="row">
+                            <div class="form-group col-md-12 legend">
+                                <h4><strong>Add</strong> user</h4>
+                                <p>Create a new WeAse user for your company</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" placeholder="Username must be unique" ng-model="vm.username">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Email must be unique" ng-model="vm.email">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="first-name">First Name</label>
+                                <input type="text" class="form-control" id="first-name" placeholder="Enter a first name" ng-model="vm.first_name">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="last-name">Last Name</label>
+                                <input type="text" class="form-control" id="last-name" placeholder="Enter a last name" ng-model="vm.last_name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="" ng-model="vm.password">
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="password_confirm">Password Confirm</label>
+                                <input type="password" class="form-control" id="confirm_password" placeholder="" ng-model="vm.confirm_password">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-lg btn-primary">Add New User</button>
+                    </form>
+                    </div>
+                </tab>
+            </tabset>
+
+          </div>
+          <!-- /tile body -->
+
+        </section>
+        <!-- /tile -->
+
+      </div>
+      <!-- /col -->
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <!-- /row -->
+
+
+
+  </div>
+  <!-- /page content -->
+
+
+
+
+</div>

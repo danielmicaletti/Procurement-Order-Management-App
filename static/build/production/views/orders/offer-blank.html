@@ -26,8 +26,6 @@
 
   <!-- page content -->
   <div class="pagecontent">
-
-
     <div class="add-nav">
       <div class="nav-heading">
         <div class="row">
@@ -52,6 +50,15 @@
               <div class="col-md-12">
                 <h4 class="mt-20">Référence interne : <strong> {{ vm.offer.reference_number }}</strong></h4><h4 class="text-lightred text-md ml-10" ng-show="!vm.offer.reference_number">Add a référence interne</h4>
                 <button type="button" class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10" style="width:30px;" tooltip="add or edit référence interne" ng-click="open('md')"><i class="fa fa-pencil"></i></button>
+              </div>
+              <div class="col-md-12 mt-20">
+                  <select chosen width="240" 
+                          ng-model="vm.offer_domain" 
+                          ng-options="value.domain as value.domain group by value.domain for (key,value) in vm.allGoods"
+                          data-placeholder="Choose a Domain">
+                          <option value=""></option>
+                  </select>
+                  <h4 class="p-10" ng-show="vm.offer_domain">Domain : <strong>{{vm.offer_domain}}</strong></h4>
               </div>
             </div>
           </div> 
@@ -111,84 +118,8 @@
 
           </div>
           <!-- /col -->
-          <!-- col -->
-<!--           <div class="col-md-5">
-            <p class="text-uppercase text-strong mt-0 mb-0 custom-font">Status</p>
-            <h3 class="text-uppercase mt-10 mb-10" ng-class="stati[vm.order.order_status]">{{ vm.order.order_status_display }}</h3>
-            <p>Updated: {{ vm.order.order_status_change_date | date:"d MMM y 'at' h:mm a"}}</p>
-          </div> -->
-          <!-- /col -->
 
         </div>
-        <!-- /row -->
-
-        <!-- row -->
-        <!-- <div class="row b-t pt-20"> -->
-
-          <!-- col -->
-<!--           <div class="col-md-3 b-r">
-            <p class="text-uppercase text-strong mb-10 custom-font">{{page.ref_title}} Details</p>
-            <ul class="list-unstyled text-default lt mb-20">
-              <li><strong>Created: </strong> {{ vm.order.order_created | date:"d MMM y 'at' h:mm a" }}</li>
-              <li><strong>By: </strong> <a ui-sref="app.pages.profile({ username: vm.order.order_created_by.username })"> {{ vm.order.order_created_by.first_name }} {{ vm.order.order_created_by.last_name }} </a></li>
-              <li><strong>Assigned to: </strong> <a ui-sref="app.pages.profile({ username: optiz.username })" ng-repeat="optiz in vm.order.order_company.company_assigned_to"> {{ optiz.first_name }} {{ optiz.last_name }} </a></li>
-              <li ng-show="vm.order.company_approval_by"><strong>Approved by: </strong> <a ui-sref="app.pages.profile({ username: vm.order.company_approval_by.username })"> {{ vm.order.company_approval_by.first_name }} {{ vm.order.company_approval_by.last_name }}</a></li>
-              <li ng-show="!vm.order.company_approval_by"><strong>Approved by: </strong> Not approved</li>
-            </ul>
-          </div> -->
-          <!-- /col -->
-
-          <!-- col -->
-<!--           <div class="col-md-3 b-r" ng-controller="OrdAddressModalCtrl">
-            <p class="text-uppercase text-strong mb-10 custom-font" >
-              Delivery Address <a class="btn btn-rounded-20 btn-default b-0 btn-sm ml-10" style="width:30px;" tooltip="add or change Delivery Address" ng-click="open('lg')"><i class="fa fa-pencil"></i></a>
-            </p>
-            <div class="col-md-12">
-              <p class="text-lightred text-md" ng-show="!vm.order.delivery_address">Add a Delivery Address</p>
-              <ul class="list-unstyled text-default lt mb-20" ng-show="vm.order.delivery_address">
-                <li>{{ vm.order.delivery_address.addr_location }}</li>
-                <li>{{ vm.order.delivery_address.street_addr1 }}</li>
-                <li ng-hide="!vm.order.delivery_address.street_addr2">{{ vm.order.delivery_address.street_addr2 }}</li>
-                <li>{{ vm.order.delivery_address.city }}, {{ vm.order.delivery_address.country }}  {{ vm.order.delivery_address.post_code }}</li>
-                <li>{{ vm.order.delivery_address.phone_main }}</li>
-              </ul>
-            </div>
-          
-          </div>
-          <div class="col-md-3 b-r" ng-show="vm.order.delivery_address">
-            <p class="text-uppercase text-strong mb-10 custom-font">
-             Notes & Contact
-            </p>
-  
-            <div class="col-md-12">
-
-              <ul class="list-unstyled text-default lt mb-20">
-                <li ng-hide="!vm.order.delivery_address.email">{{ vm.order.delivery_address.email }}</li>
-                <li>{{ vm.order.delivery_address.addr_notes }}</li>
-              </ul>
-            </div>
-      
-
-          </div> -->
-          <!-- /col -->
-
-          <!-- col -->
-          <!-- <div class="col-md-3 b-r">
-            <div ng-show="vm.order.order_offer">
-              <p class="text-uppercase text-strong mb-10 custom-font">Approval</p>
-          <ul class="list-unstyled text-default lt mb-20">
-                <li><strong>Delivery:</strong> Pick-Up</li>
-                <li><strong>Payment:</strong> Cash</li>
-              </ul> 
-            </div>
-            <div ng-show="!vm.order.order_offer">
-              <p class="text-uppercase text-strong mb-10 custom-font">Add Item or Cancel Request</p>
-            </div>
-          </div> -->
-          <!-- /col -->
-          
-        <!-- </div> -->
-        <!-- /row -->
       </div>
 
       <tabset>
@@ -212,52 +143,6 @@
                     </div>
                   </div>
                   <hr>
-                  
-<!--                   <div class="row">
-                    <div role="form" class="col-md-12" ng-repeat="offer_item in vm.offer.offer_item track by $index">
-                        <div class="well" >
-                            <div class="row">
-                                <a href="javascript:;" class="btn btn-xs btn-lightred" ng-click="vm.delOfferItem(offer_item)"><i class="fa fa-times"></i> Remove</a>
-                                <div class="form-group col-md-4" ng-show="offer_item.item_name">
-                                    <label for="item_name">Offer Item</label>
-                                    <p class="form-control-static">{{offer_item.item_name}}</p>
-                                </div>
-                                <div class="form-group col-md-4" ng-show="offer_item.item_details">
-                                    <label for="item_details">Description</label>
-                                    <p class="form-control-static">{{offer_item.item_details}}</p>
-                                </div>            
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-4" ng-show="offer_item.quantity">
-                                    <label for="quantity">Quantity</label>
-                                    <p class="form-control-static">{{offer_item.quantity}}</p>
-                                </div>
-                                <div class="form-group col-md-4" ng-show="offer_item.price">
-                                    <label for="price">Rate</label>
-                                    <p class="form-control-static">{{offer_item.price | currency:"€ "}}</p>
-                                </div>
-                                <div class="form-group col-md-4" ng-show="offer_item.item_sub_total">
-                                    <label for="subtotal">SubTotal</label>
-                                    <p class="form-control-static">{{ vm.offer.offer_item[$index].quantity * vm.offer.offer_item[$index].price | currency:"€ "}}</p>
-                                </div>                                        
-                            </div>
-                            <div class="row" ng-controller="DatepickerDemoCtrl">
-                                <div class="form-group col-md-4" ng-show="offer_item.delivery_date">
-                                    <label for="delivery-date">Delivery Date</label>
-                                    <p class="form-control-static">{{offer_item.delivery_date | date: 'mediumDate'}}</p>
-                                </div>
-                                <div class="form-group col-md-4" ng-show="offer_item.date_start">
-                                    <label for="date_start">Start Date</label>
-                                    <p class="form-control-static">{{offer_item.date_start | date: 'mediumDate'}}</p>
-                                </div>
-                                <div class="form-group col-md-4" ng-show="offer_item.date_end">
-                                    <label for="date_end">End Date</label>
-                                    <p class="form-control-static">{{offer_item.date_end | date: 'mediumDate'}}</p>
-                                </div>                                        
-                            </div> 
-                        </div>
-                    </div>
-                  </div> -->
                   <div class="row">
                     <div role="form" class="col-md-12" ng-repeat="blank_item in vm.offer.blank_item track by $index">
                         <div class="well" >
@@ -329,175 +214,6 @@
           <!-- /row -->
 
         </tab>
-
-<!--         <tab heading="Request Items" active="vm.reqTab">
-          <div class="row">
-            <div class="col-md-12">
-              <section class="tile tile-simple">
-                <div class="tile-body p-0">
-
-                  <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                      <thead>
-                        <tr>
-                          <th>Family</th>
-                          <th>SubFamily</th>
-                          <th>Items</th>
-                          <th>Files</th>
-                          <th style="width: 260px">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr ng-repeat="req in vm.order.req_order track by $index">
-                          <td>{{ req.item_fam }}</td>
-                          <td>{{ req.item_subfam }}</td>
-                          <td>{{ req.req_product.length }}</td>
-                          <td ng-show="req.req_item_file.length">{{ req.req_item_file.length }}</td>
-                          <td ng-show="!req.req_item_file.length">No files</td>
-                          <td ng-controller="OfferReqItemModalCtrl">
-                            <a ng-click="open('lg')" class="btn btn-xs btn-default"><i class="fa fa-search"></i> View or Add Offer Item</a>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                </div>
-
-              </section>
-
-            </div>
-          </div>
-        </tab>
-
-        <tab heading="Offers" ng-show="vm.order.offer_order[0]">
-          <div class="row">
-            <div class="col-md-12">
-              <section class="tile tile-simple">
-
-                <div class="tile-body p-0">
-
-                  <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                      <thead>
-                        <tr>
-                          <th>Offer Date</th>
-                          <th>Offer Items</th>
-                          <th>Status</th>
-                          <th>Status By</th>
-                          <th>Status Date</th>
-                          <th>Total</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      <tr ng-repeat="offer in vm.order.offer_order | orderBy:'-offer_created'">
-                          <td>{{offer.offer_created | date:"mediumDate"}}</td>
-                          <td>{{ offer.offer_item.length }}</td>
-                          <td ng-class="stati[vm.order.order_status]" ng-show="offer.offer_version === vm.order.offer_version">{{vm.order.order_status_display}}</td>
-                          <td class="text-lightred" ng-show="offer.offer_version !== vm.order.offer_version">Refusé</td>
-                          <td ng-show="offer.offer_approval_by"><a ui-sref="app.pages.profile({ username: offer.offer_approval_by })">{{ offer.offer_approval_by_name }}</a></td>
-                          <td ng-show="offer.offer_approval_by">{{ offer.offer_approval | date:"mediumDate" }}</td>
-                          <td colspan="2" ng-show="!offer.offer_approval_by"></td>
-                          <td>{{ offer.offer_total | currency:"€ " }}</td>
-                          <td><a class="btn btn-xs btn-default" ng-controller="OfferViewModalCtrl" ng-click="open('lg')"><i class="fa fa-search"></i> View</a></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                </div>
-
-              </section>
-
-            </div>
-          </div>
-
-        </tab> -->
-
-<!--         <tab heading="Comments">
-
-    
-          <div class="row">
-            <div class="tcol">
-              <div class="col-md-1"></div>
-              <div class="pb-15 pl-15 pr-15 col-md-9">
-
-     
-                <comment path="path" user="au" comments="vm.order.order_comment"></comment>
-   
-
-              </div>
-            </div>
-              <div class="col-md-2"></div>
-          </div>
-   
-        </tab> -->
-
-<!--         <tab heading="History">
-          <div class="row">
-            <div class="col-md-12">
-              <section class="tile tile-simple">
-
-                <div class="tile-body p-0">
-
-                  <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                      <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Desription</th>
-                        <th>Date</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr>
-                        <td><a href="javascript:;">1</a></td>
-                        <td>Order Created</td>
-                        <td>Jan 20, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Order Received</td>
-                        <td>Jan 20, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Order Shipped</td>
-                        <td>Jan 21, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Invoice Created</td>
-                        <td>Jan 21, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Invoice Sent</td>
-                        <td>Jan 21, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Payment Received</td>
-                        <td>Jan 23, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Order Completed</td>
-                        <td>Jan 23, 2015</td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                </div>
-
-              </section>
-
-
-            </div>
-          </div>
-        </tab> -->
 
       </tabset>
 

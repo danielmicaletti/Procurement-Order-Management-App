@@ -33,7 +33,6 @@ class AccountManager(BaseUserManager):
 
         return account
 
-
 class Account(AbstractBaseUser):
     lang_def = 'fr'
 
@@ -118,14 +117,16 @@ class Account(AbstractBaseUser):
 
 class Company(models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
-    street_addr1 = models.CharField(max_length=50, null=True, blank=True)
-    street_addr2 = models.CharField(max_length=50, null=True, blank=True)
-    city = models.CharField(max_length=50, null=True, blank=True)
-    post_code = models.CharField(max_length=10, null=True, blank=True)
-    country = models.CharField(max_length=50, null=True, blank=True)
-    phone_main = models.CharField(max_length=30, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)    
-    company_logo = models.FileField(upload_to=get_upload_file_name, null=True, blank=True)
+    # street_addr1 = models.CharField(max_length=50, null=True, blank=True)
+    # street_addr2 = models.CharField(max_length=50, null=True, blank=True)
+    # city = models.CharField(max_length=50, null=True, blank=True)
+    # post_code = models.CharField(max_length=10, null=True, blank=True)
+    # country = models.CharField(max_length=50, null=True, blank=True)
+    # phone_main = models.CharField(max_length=30, null=True, blank=True)
+    # email = models.EmailField(null=True, blank=True)
+    company_address = models.ForeignKey('Address', null=True, blank=True, related_name='default_address')    
+    company_logo = models.FileField(upload_to=get_upload_file_name, null=True, blank=True, default='uploads/blank_co.png')
+    company_website = models.CharField(max_length=200, null=True, blank=True)
     company_created = models.DateTimeField(auto_now_add=True)    
     company_created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='created_company', unique=False)
     company_updated = models.DateTimeField(auto_now_add=False, auto_now=True)

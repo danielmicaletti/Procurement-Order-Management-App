@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import list_route, api_view, detail_route
 from orders.models import Good, Detail, Order, ReqItem, ReqProduct, ReqFile, Offer, OfferItem, Comment
 from authentication.models import Address
-from orders.serializers import OrderSerializer, GoodSerializer, DetailSerializer, ReqItemSerializer, ReqProductSerializer, ReqFileSerializer, OfferSerializer, OfferItemSerializer, CommentSerializer
+from orders.serializers import OrderSerializer, OrderSimpleSerializer, GoodSerializer, DetailSerializer, ReqItemSerializer, ReqProductSerializer, ReqFileSerializer, OfferSerializer, OfferItemSerializer, CommentSerializer
 from operator import itemgetter, attrgetter
 from django.utils import timezone
 from datetime import date
@@ -35,24 +35,23 @@ class OrderViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save(user=self.request.user, **self.request.data)
 
-# class OrdersAllViewSet(viewsets.ModelViewSet):
-#     lookup_field = 'id'
-#     queryset = Order.objects.all()
-#     serializer_class = OrdersAllSerializer
+class OrderSimpleViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = Order.objects.all()
+    serializer_class = OrderSimpleSerializer
 
-#     def get_permissions(self):
-#         if self.request.method in permissions.SAFE_METHODS:
-#             return (permissions.AllowAny(),)
-#         return (permissions.IsAuthenticated(),)
+    def get_permissions(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return (permissions.AllowAny(),)
+        return (permissions.IsAuthenticated(),)
 
-#     def list(self, request, order_id=None):
-#         if self.request.user.optiz:
-#             queryset = Order.objects.all()
-#         else:
-#             queryset = self.queryset.filter(order_company=self.request.user.user_company)
-#         serializer = OrderSerializer(queryset, many=True)
-#         return Response(serializer.data)
-
+    def list(self, request, order_id=None):
+        if self.request.user.optiz:
+            queryset = Order.objects.all()
+        else:
+            queryset = self.queryset.filter(order_company=self.request.user.user_company)
+        serializer = OrderSimpleSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 class ReqItemViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'

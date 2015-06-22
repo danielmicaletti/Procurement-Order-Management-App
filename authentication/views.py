@@ -21,12 +21,17 @@ class AccountViewSet(viewsets.ModelViewSet):
             return (permissions.AllowAny(),)
         return (permissions.IsAuthenticated(),)
 
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
+    def perform_create(self, serializer):
+        # serializer = self.serializer_class(data=request.data)
+        # print "SER --- %s" % serializer.data
         if serializer.is_valid():
+            print "ser --- %s" % serializer.data
+            print "SRD --- %s" % self.request.data['company']
+            company = Company.objects.get(id=self.request.data['company'])
+            print "COMPANY ==== %s" % company
             acct = Account.objects.create_user(**serializer.validated_data)
-            acct.user_company = request.user.user_company
-            acct.user_created_by = request.user
+            acct.user_company = company
+            acct.user_created_by = self.request.user
             acct.save()
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
 
@@ -45,16 +50,21 @@ class CompanyViewSet(viewsets.ModelViewSet):
     serializer_class = CompanySerializer
     permission_classes = (permissions.IsAuthenticated,)
 
-    def create(self, request):
-        serializer = self.serializer_class(data=request.data)
+    def perform_create(self, serializer):
+        print "COMP SELF == %s" % self
+        print "COMP Ser == %s" % serializer
+        # serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            Company.objects.create(**serializer.validated_data)
+            # Company.objects.create(**serializer.validated_data)
+            user = self.request.user
 
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
-        return Response({
-            'status': 'Bad request',
-            'message': 'Company could not be created with received data.'
-        }, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save(user=user, **self.request.data)
+
+        #     return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+        # return Response({
+        #     'status': 'Bad request',
+        #     'message': 'Company could not be created with received data.'
+        # }, status=status.HTTP_400_BAD_REQUEST)
 
     def perform_update(self, serializer):
         print "COMP SELf === %s" % self

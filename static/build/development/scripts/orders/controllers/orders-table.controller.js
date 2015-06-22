@@ -32,7 +32,7 @@
       'INV':'text-info',
     }
 
-    Order.getAll().then(getAllSuccess, getAllError);
+    Order.getAllSimple().then(getAllSuccess, getAllError);
 
     function getAllSuccess(data, status, headers, config) {
       vm.orders = data;

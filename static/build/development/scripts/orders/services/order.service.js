@@ -10,6 +10,7 @@
   function Order($http, $q) {
   	var Order = {
           getAll: getAll,
+          getAllSimple: getAllSimple,
           getOrder: getOrder,
           createOffer: createOffer,
           createBlankOffer: createBlankOffer,
@@ -23,6 +24,12 @@
     // Get all orders
     function getAll() {
       return $http.get('api/v1/orders/')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    }
+
+    function getAllSimple() {
+      return $http.get('api/v1/order-simple/')
         .then(generalCallbackSuccess)
         .catch(generalCallbackError);
     }

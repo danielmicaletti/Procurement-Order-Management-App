@@ -72,9 +72,6 @@
                     ref_title: 'Request',
                 };
             }
-            if(vm.order.order_status === 'PEN'){
-                vm.order.order_status_display = 'demande disponible';
-            }
         }
 
         function getOrderError(errorMsg) {

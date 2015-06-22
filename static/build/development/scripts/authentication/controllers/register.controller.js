@@ -39,8 +39,6 @@
      * @desc Register a new user
      * @memberOf thinkster.authentication.controllers.RegisterController
      */
-    function register() {
-      Authentication.register(vm.username, vm.email, vm.first_name, vm.last_name, vm.password, vm.confirm_password);
-    }
+
   }
 })();

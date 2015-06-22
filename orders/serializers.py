@@ -69,7 +69,7 @@ class OfferSerializer(serializers.ModelSerializer):
         order.order_status_change_by = user
         order.order_status = 'OFR'
         order.save()
-        offer = Offer.objects.create(order=order, offer_version=order.offer_version, offer_created_by=user, offer_total=validated_data['offer_total'], offer_terms=validated_data['offer_terms'])
+        offer = Offer.objects.create(order=order, offer_version=order.offer_version, offer_created_by=user, offer_total=validated_data['offer_total'], offer_terms=validated_data['offer_terms'], offer_domain=validated_data['offer_domain'])
         offer.save()
         for item in validated_data['offer_item']:
             offer_item = OfferItem(offer=offer, **item)
@@ -143,13 +143,37 @@ class ReqItemSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-# class OrdersAllSerializer(serializers.ModelSerializer):
-#     # offer = serializers.CharField(required=False)
 
-#     class Meta:
-#         model = Order
-#         fields = ('id', 'offer', 'item_name', 'item_details', 'price', 'item_sub_total', 'frequency', 'quantity',
-#             'delivery_date', 'date_start', 'date_end',)
+class OrderSimpleSerializer(serializers.ModelSerializer):
+    # order_status_display = serializers.CharField(source='get_order_status_display', required=False)
+    # order_company = serializers.CharField(source='order_company.name', required=False, read_only=True)
+    # order_status_change_date = serializers.DateTimeField(required=False)
+    req_order = serializers.SlugRelatedField(many=True, read_only=True, slug_field='req_domain')
+    offer_order = serializers.SlugRelatedField(many=True, read_only=True, slug_field='offer_domain')
+    delivery_address = serializers.CharField(source='delivery_address.addr_location', required=False, read_only=True)
+    order_created_date = serializers.DateTimeField(required=False)
+    order_created_by_username = serializers.CharField(source='order_created_by.username', required=False)    
+    order_created_by_first_name = serializers.CharField(source='order_created_by.first_name', required=False)
+    order_created_by_last_name = serializers.CharField(source='order_created_by.last_name', required=False)
+    order_status_change_date = serializers.DateTimeField(required=False)
+    order_status_change_by_username = serializers.CharField(source='order_status_change_by.username', required=False)
+    order_status_change_by_first_name = serializers.CharField(source='order_status_change_by.first_name', required=False)
+    order_status_change_by_last_name = serializers.CharField(source='order_status_change_by.last_name', required=False)
+    order_status_display = serializers.CharField(source='get_order_status_display', required=False)    
+    # order_created_by = UserCompanySerializer(read_only=True, required=False)
+    # company_approval_by = UserCompanySerializer(read_only=True, required=False)
+    # req_order = ReqItemSerializer(many=True, read_only=False, required=False)
+    # offer_order = OfferSerializer(many=True, read_only=True)
+    # order_comment = CommentSerializer(many=True, required=False)
+    # company_approval_status_display = serializers.CharField(source='get_company_approval_status_display', required=False)
+    # optiz_status_display = serializers.CharField(source='get_optiz_status_display', required=False)
+
+    class Meta:
+        model = Order
+        fields = ('id', 'req_order','order_company', 'order_number', 'order_version','reference_number', 'delivery_address', 'order_created', 'order_created_date', 'order_created_by', 'order_created_by_username', 'order_created_by_first_name', 'order_created_by_last_name', 'order_status',
+            'order_status_display', 'order_status_change_by', 'order_status_change_by_username', 'order_status_change_by_first_name', 'order_status_change_by_last_name', 'order_status_change_date','req_order', 'offer_order', 'order_comment',)
+        read_only_fields = ('order_created', 'order_status_change_by',)
+
 
 class OrderSerializer(serializers.ModelSerializer):
     order_company = CompanySerializer(read_only=True)

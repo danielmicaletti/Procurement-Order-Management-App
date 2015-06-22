@@ -6,10 +6,10 @@
         .controller('BlankOfferController', BlankOfferController);
 
     BlankOfferController.$inject = [
-        '$scope', '$filter', '$state', '$stateParams', '$log', '$cookies', 'Authentication', 'Account', 'Company', 'Order', 'toastr',
+        '$scope', '$filter', '$state', '$stateParams', '$log', 'Goods', 'Authentication', 'Account', 'Company', 'Order', 'toastr',
     ];
 
-    function BlankOfferController($scope, $filter, $state, $stateParams, $log, $cookies, Authentication, Account, Company, Order, toastr) {
+    function BlankOfferController($scope, $filter, $state, $stateParams, $log, Goods, Authentication, Account, Company, Order, toastr) {
 
         var vm = this;
         // vm.offer = {};
@@ -42,7 +42,37 @@
 
             function allCompanyError(errorMsg){
               console.log(errorMsg);
-            }            
+            }
+
+            Goods.get().then(getGoodsSuccess).catch(getGoodsError);
+    
+            function getGoodsSuccess(goods){
+                console.log(goods);
+                vm.allGoods = goods;
+                console.log(vm.allGoods);
+                // vm.domains = [];
+                // angular.forEach(goods, function(val, key, obj) {
+                //     console.log(val.domain);
+                //     console.log(key);
+                //     console.log(obj);
+                //     var dom = val.domain.toString();
+                //     // if(!vm.domains.indexOf(val.domain)!=-1){
+                //     //     console.log(val.domain);
+                //     //     vm.domains.push(val.domain);
+                //     // };
+                //     if(_.contains(vm.domains, dom)!=-1){
+                //         console.log(vm.domains);
+                //         console.log(dom);
+                //         vm.domains.push(dom);
+                //     };
+                //     console.log(vm.domains);
+                // })
+                // console.log(vm.domains);
+            };
+
+            function getGoodsError(msg){
+                console.log('Goods Error '+ msg);
+            };          
         };
 
         vm.selectComp = function(company) {
@@ -115,6 +145,8 @@
             console.log(vm.offer);
             if(!vm.offer.delivery_address || vm.offer.delivery_address === 'Null'){
                 toastr.error('Please add a delivery address');
+            }else if(!vm.offer_domain){
+                toastr.error('Please add a domain');
             }else{
                 if(!vm.offer.offer_terms){
                     console.log(vm.offer);
@@ -122,6 +154,7 @@
                     console.log(vm.offer.offer_terms);
                 }
                 console.log(vm.offer.blank_item);
+                vm.offer['offer_domain'] = vm.offer_domain;
                 vm.offer['offer_item'] = vm.offer.blank_item;
                 vm.offer['blank_item'] = {};
                 vm.offer['offer_company'] = vm.order.order_company.id;

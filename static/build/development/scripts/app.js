@@ -267,7 +267,7 @@ angular
       url: '/profile/:username',
       controller: 'AccountController',
       controllerAs: 'vm',
-      templateUrl: static_path('views/authentication-views/profile.html'),
+      templateUrl: static_path('views/accounts/profile.html'),
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
@@ -280,7 +280,20 @@ angular
       url: '/company/:companyId',
       controller: 'CompanySettingsController',
       controllerAs: 'vm',
-      templateUrl: static_path('views/authentication-views/company-profile.html'),
+      templateUrl: static_path('views/accounts/company-profile.html'),
+      resolve: {
+        plugins: ['$ocLazyLoad', function($ocLazyLoad) {
+          return $ocLazyLoad.load([
+            static_path('scripts/vendor/filestyle/bootstrap-filestyle.min.js')
+          ]);
+        }]
+      }
+    })
+    .state('app.pages.company-create', {
+      url: '/create/company',
+      controller: 'CreateCompanyController',
+      controllerAs: 'vm',
+      templateUrl: static_path('views/accounts/company-create.html'),
       resolve: {
         plugins: ['$ocLazyLoad', function($ocLazyLoad) {
           return $ocLazyLoad.load([
@@ -328,7 +341,7 @@ angular
       url: '/login',
       controller: 'LoginController',
       controllerAs: 'vm',
-      templateUrl: static_path('views/authentication-views/login.html'),
+      templateUrl: static_path('views/authentication/login.html'),
       // data: {
       //   requireLogin: false
       // },

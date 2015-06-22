@@ -12,6 +12,7 @@
 
     var Company = {
       getAll: getAll,
+      create:create,
       destroy: destroy,
       get: get,
       update: update
@@ -35,14 +36,21 @@
         .catch(generalCallbackError);
     }
 
-    function destroy(companyId) {
-      return $http.delete('/api/v1/companies/' + companyId + '/')
+    function get(companyId) {
+      return $http.get('/api/v1/companies/' + companyId + '/')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    }
+    
+    function create(company) {
+      console.log(company);
+      return $http.post('/api/v1/companies/', company)
         .then(generalCallbackSuccess)
         .catch(generalCallbackError);
     }
 
-    function get(companyId) {
-      return $http.get('/api/v1/companies/' + companyId + '/')
+    function destroy(companyId) {
+      return $http.delete('/api/v1/companies/' + companyId + '/')
         .then(generalCallbackSuccess)
         .catch(generalCallbackError);
     }
