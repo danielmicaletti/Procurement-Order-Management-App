@@ -29,9 +29,9 @@
     };
 
     function activate() {
-      var authenticatedAccount = Authentication.getAuthenticatedAccount();
+      vm.authenticatedAccount = Authentication.getAuthenticatedAccount();
       console.log("AuthAcct Comp");
-      console.log(authenticatedAccount);
+      console.log(vm.authenticatedAccount);
 
       Company.get(companyId)
         .then(companySuccessFn)
@@ -39,7 +39,8 @@
 
       function companySuccessFn(data) {
         console.log(data);
-        if(authenticatedAccount.optiz || authenticatedAccount.user_company === data.id){
+        var authUserCo = parseInt(vm.authenticatedAccount.user_company);
+        if(vm.authenticatedAccount.optiz || authUserCo === data.id){
           vm.company = data;     
           console.log(vm.company);
         }else{

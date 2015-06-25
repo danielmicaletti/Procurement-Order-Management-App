@@ -32,6 +32,9 @@ class AccountViewSet(viewsets.ModelViewSet):
             acct = Account.objects.create_user(**serializer.validated_data)
             acct.user_company = company
             acct.user_created_by = self.request.user
+            acct.access_level = serializer.data['access_level']
+            acct.position = serializer.data['position']
+            acct.auth_amount = serializer.data['auth_amount']
             acct.save()
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
 

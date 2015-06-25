@@ -510,6 +510,12 @@
                   <div class="title-body">
                     <p ng-show="vm.account.tagline"><em>"{{ vm.account.tagline }}"</em></p>
                   </div>
+                    <p>
+                      <!-- <a href="#" class="icon icon-info icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-twitter"></i></a> -->
+                      <a ng-show="vm.facebook" href="https://www.facebook.com/{{vm.facebook}}" target="_blank" class="icon icon-primary icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-facebook"></i></a>
+<!--                       <a href="#" class="icon icon-lightred icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-google-plus"></i></a>
+                      <a href="#" class="icon icon-hotpink icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-dribbble"></i></a> -->
+                    </p>
                 </div>
               </tab>
 
@@ -646,12 +652,12 @@
 
                       <div class="form-group col-sm-6">
                         <label for="linkedin">LinkedIn</label>
-                        <input type="text" class="form-control" id="linkedin">
+                        <input type="text" class="form-control">
                       </div>
 
                       <div class="form-group col-sm-6">
                         <label for="facebook">Facebook</label>
-                        <input type="text" class="form-control" id="facebook">
+                        <input type="text" class="form-control" ng-model="vm.facebook">
                       </div>
 
                     </div>

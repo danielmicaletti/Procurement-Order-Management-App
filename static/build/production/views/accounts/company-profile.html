@@ -708,6 +708,32 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-6">
+                                <label for="first-name">WeASe Access Level</label>
+                                <select class="form-control" 
+                                        chosen width="'100%'" 
+                                        ng-model="vm.newUser.access_level" 
+                                        data-placeholder="Select Access Level">
+                                        <option value=""></option>
+                                        <option value="8">Administrator</option>
+                                        <option value="7">Manager</option>
+                                        <option value="6">Approval</option>
+                                        <option value="5">Submit</option>
+                                        <option value="2">View</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="job-title">User Job Title</label>
+                                <input type="text" class="form-control" placeholder="Enter a job title" ng-model="vm.newUser.position">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                                <label for="first-name">Authorization Amount</label>
+                                <input type="text" class="form-control" placeholder="Enter an authorization amount" ng-model="vm.newUser.auth_amount">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-6">
                                 <label for="first-name">First Name</label>
                                 <input type="text" class="form-control" id="first-name" placeholder="Enter a first name" ng-model="vm.newUser.first_name">
                             </div>

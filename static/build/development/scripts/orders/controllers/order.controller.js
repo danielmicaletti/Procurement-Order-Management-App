@@ -43,14 +43,14 @@
         .catch(getOrderError);
     }
 
-    function getOrderSuccess(data, status, headers, config) {
+    function getOrderSuccess(data) {
       vm.order = data;
-      console.log(vm.order); 
+      var authUserCo = parseInt(vm.authenticatedAccount.user_company);
       pageTitle(vm.order);
       if(vm.authenticatedAccount.optiz && vm.order.order_status === 'PEN'){
         toastr.info('Offer is needed for this order.');
       }
-      if(vm.authenticatedAccount.user_company === vm.order.order_company.id){
+      if(authUserCo === vm.order.order_company.id){
         vm.orderCompany = true;
       }else{
         vm.orderCompany = false;
