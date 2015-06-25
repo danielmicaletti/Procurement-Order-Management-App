@@ -65,15 +65,17 @@
             console.error('Epic failure!');
         }
 
-        function register(company, username, email, first_name, last_name, password, confirm_password) {
+        function register(company, newUser) {
+            console.log(company);
+            console.log(newUser);
             return $http.post('/api/v1/accounts/', {
                 company: company, 
-                username: username,
-                email: email,
-                first_name: first_name,
-                last_name: last_name,
-                password: password,
-                confirm_password: confirm_password
+                username: newUser.username,
+                email: newUser.email,
+                first_name: newUser.first_name,
+                last_name: newUser.last_name,
+                password: newUser.password,
+                confirm_password: newUser.confirm_password
             }).then(registerSuccessFn).catch(registerErrorFn);
         }
 

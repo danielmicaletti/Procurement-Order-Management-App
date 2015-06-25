@@ -20,6 +20,8 @@
     vm.destroy = destroy;
     vm.update = update;
 
+    vm.newUser = {};
+
     activate();
 
     $scope.page = {
@@ -49,7 +51,6 @@
       function companyErrorFn(errorMsg) {
         $state.go('app.dashboard');
         toastr.error('There was a problem retrieving your information '+errorMsg+'. Please contact Optiz.');
-        console.log("COMP ERROR");
       }
     }
 
@@ -57,9 +58,8 @@
       Company.destroy(vm.company.id).then(companySuccessFn, companyErrorFn);
 
       function companySuccessFn(data, status, headers, config) {
-        window.location = ('/dashboard');
+        $state.go('app.dashboard');
         toastr.warning('Your company has been deleted.');
-        console.log("COMP DESTROY NEED TO DESTROY>>>");
       }
 
       function companyErrorFn(data, status, headers, config) {
@@ -69,42 +69,31 @@
 
     function update() {
       var companyId = $stateParams.companyId;
-
-      Company.update(companyId, vm.company).then(companySuccessFn, companyErrorFn);
-      console.log("COMP UPDATE");
+      Company.update(companyId, vm.company)
+        .then(companySuccessFn)
+        .catch(companyErrorFn);
     }
 
-    function companySuccessFn(data, status, headers, config) {
+    function companySuccessFn(data) {
       toastr.success('Your account has been updated.');
-      console.log("COMP UPDATE SUCCESS");
-      $location.url('/app/pages/company-profile/'+companyId+'/'); 
+      vm.company = data;
     }
 
-    function companyErrorFn(data, status, headers, config) {
-      toastr.error(data.error);
+    function companyErrorFn(errorMsg) {
+      toastr.error(errorMsg);
     }
 
     vm.register = function() {
       Authentication.register(
         vm.company.id,
-        vm.username, 
-        vm.email, 
-        vm.first_name, 
-        vm.last_name, 
-        vm.password, 
-        vm.confirm_password)
+        vm.newUser)
         .then(registerSuccess)
         .catch(registerError);
     }
 
     function registerSuccess(data){
       console.log(data);
-      vm.username = {};
-      vm.email = {};
-      vm.first_name = {};
-      vm.last_name = {};
-      vm.password = {};
-      vm.confirm_password = {};
+      vm.newUser = {};
       activate();
     }
 

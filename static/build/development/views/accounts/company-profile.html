@@ -562,7 +562,8 @@
                         </div>
                         <div class="form-group col-sm-4">
                             <label for="country">Country</label>
-                            <select ui-jq="chosen" id="country" ui-options="{width: '100%'}" ng-model="vm.company.company_address.country">
+                            <select ui-jq="chosen" ui-options="{width: '100%'}" ng-model="vm.company.company_address.country">
+                                <option value=""></option>
                                 <option>France</option>
                                 <option>Morocco</option>
                                 <option>United States</option>
@@ -611,7 +612,8 @@
                             <h1 class="custom-font"><strong>{{ vm.company.name }}</strong> Addresses</h1>
                         </div>
                         <div class="title-body">
-                            <accordion close-others="oneAtATime">
+                          <address addresses="vm.company.address_company" user="au"></address>
+<!--                             <accordion close-others="oneAtATime">
                                 <accordion-group heading="{{address.addr_location}}" ng-repeat="address in vm.company.address_company">
                                     <form class="profile-settings" ng-submit="vm.update()">
                                         <div class="row">
@@ -623,9 +625,10 @@
                                             <div class="form-group col-sm-6">
                                                 <label for="address2">Address Type</label>
                                                 <select ui-jq="chosen" id="address_type" ui-options="{width: '100%'}" ng-model="address.addr_type">
-                                                <option>Office</option>
-                                                <option>Delivery</option>
-                                                <option>Other</option>
+                                                  <option value=""></option>
+                                                  <option>Office</option>
+                                                  <option>Delivery</option>
+                                                  <option>Other</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -648,8 +651,9 @@
                                             <div class="form-group col-sm-6">
                                                 <label for="country">Country</label>
                                                 <select ui-jq="chosen" id="country" ui-options="{width: '100%'}" ng-model="address.country">
+                                                <option value=""></option>
                                                 <option>France</option>
-                                                <option>Morocca</option>
+                                                <option>Morocco</option>
                                                 <option>United States</option>
                                                 <option>Germany</option>
                                                 <option>Spain</option>
@@ -679,7 +683,7 @@
                                         </div>
                                     </form>
                                 </accordion-group>
-                            </accordion>
+                            </accordion> -->
                         </div>
                     </div>
                 </tab>
@@ -695,31 +699,31 @@
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="username">Username</label>
-                                <input type="text" class="form-control" id="username" placeholder="Username must be unique" ng-model="vm.username">
+                                <input type="text" class="form-control" id="username" placeholder="Username must be unique" ng-model="vm.newUser.username">
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="Email must be unique" ng-model="vm.email">
+                                <input type="email" class="form-control" id="email" placeholder="Email must be unique" ng-model="vm.newUser.email">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="first-name">First Name</label>
-                                <input type="text" class="form-control" id="first-name" placeholder="Enter a first name" ng-model="vm.first_name">
+                                <input type="text" class="form-control" id="first-name" placeholder="Enter a first name" ng-model="vm.newUser.first_name">
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="last-name">Last Name</label>
-                                <input type="text" class="form-control" id="last-name" placeholder="Enter a last name" ng-model="vm.last_name">
+                                <input type="text" class="form-control" id="last-name" placeholder="Enter a last name" ng-model="vm.newUser.last_name">
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" placeholder="" ng-model="vm.password">
+                                <input type="password" class="form-control" id="password" placeholder="" ng-model="vm.newUser.password">
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="password_confirm">Password Confirm</label>
-                                <input type="password" class="form-control" id="confirm_password" placeholder="" ng-model="vm.confirm_password">
+                                <input type="password" class="form-control" id="confirm_password" placeholder="" ng-model="vm.newUser.confirm_password">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-lg btn-primary">Add New User</button>

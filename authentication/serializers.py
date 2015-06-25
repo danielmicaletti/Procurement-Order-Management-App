@@ -7,6 +7,9 @@ from authentication.models import Account, Company, Address
 class UserCompanySerializer(serializers.ModelSerializer):
     user_pic = serializers.CharField(read_only=True)
     user_company_full = serializers.CharField(source='user_company', required=False)
+    username = serializers.CharField(required=False)
+    email = serializers.CharField(required=False)
+
 
     class Meta:
         model = Account
@@ -53,14 +56,28 @@ class CompanySerializer(serializers.ModelSerializer):
         return comp
 
     def update(self, instance, validated_data):
+        print "SELF COMP UPD --- %s" % self
+        print "INST COMP UPD === %s" % instance
+        print "VAL-DATA COMP UPD === %s" % validated_data
+        company_address = validated_data.pop('company_address')
+        print "COMP ADDRE ---++ %s" % company_address
+        print "COMP ADDree id === %s" % company_address['id']
+        comp_addr = Address.objects.get(id=company_address['id'])
+        print "COMP ADDree id === %s" % comp_addr
+        comp_addr.street_addr1 = company_address.get('street_addr1', comp_addr.street_addr1)
+        print "COM ADD STR 1 === %s" % comp_addr.street_addr1
+        comp_addr.street_addr2 = company_address.get('street_addr2', comp_addr.street_addr2)
+        print "COM ADD STR 2 === %s" % comp_addr.street_addr2
+        comp_addr.city = company_address.get('city', comp_addr.city)
+        comp_addr.post_code = company_address.get('post_code', comp_addr.post_code)
+        comp_addr.country = company_address.get('country', comp_addr.country)
+        comp_addr.email = company_address.get('email', comp_addr.email)
+        comp_addr.phone_main = company_address.get('phone_main', comp_addr.phone_main)
+        comp_addr.addr_notes = company_address.get('addr_notes', comp_addr.addr_notes)
+        comp_addr.addr_location = company_address.get('addr_location', comp_addr.addr_location)
+        comp_addr.save()
         instance.name = validated_data.get('name', instance.name)
-        instance.street_addr1 = validated_data.get('street_addr1', instance.street_addr1)
-        instance.street_addr2 = validated_data.get('street_addr2', instance.street_addr2)
-        instance.city = validated_data.get('city', instance.city)
-        instance.post_code = validated_data.get('post_code', instance.post_code)
-        instance.country = validated_data.get('country', instance.country)
-        instance.email = validated_data.get('email', instance.email)
-        instance.phone_main = validated_data.get('phone_main', instance.phone_main)
+        instance.company_website = validated_data.get('company_website', instance.company_website)
         instance.company_assigned_to = validated_data.get('company_assigned_to', instance.company_assigned_to)
 
         instance.save()

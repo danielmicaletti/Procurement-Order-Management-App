@@ -69,7 +69,8 @@ class CompanyViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         print "COMP SELf === %s" % self
         print "COMP SERIAL === %s" % serializer 
-        serializer.save(addr_updated_by=request.user)
+        if serializer.is_valid():
+            serializer.save(user=self.request.user, **self.request.data)
 
 class AddressViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
