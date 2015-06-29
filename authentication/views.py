@@ -84,7 +84,8 @@ class AddressViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         print "COMP SELf === %s" % self
         print "COMP SERIAL === %s" % serializer 
-        serializer.save(addr_created_by=self.request.user)
+        if serializer.is_valid():
+            serializer.save(user=self.request.user, **self.request.data)
 
 class LoginView(views.APIView):
     def post(self, request, format=None):

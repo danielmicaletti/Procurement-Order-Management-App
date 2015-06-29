@@ -15,7 +15,8 @@
       create:create,
       destroy: destroy,
       get: get,
-      update: update
+      update: update,
+      newAddress: newAddress,
     };
 
     return Company;
@@ -60,6 +61,12 @@
         .then(generalCallbackSuccess)
         .catch(generalCallbackError);
     }      
+
+    function newAddress(addr) {
+      return $http.post('/api/v1/addresses/', addr)
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    } 
 
   }
 })();

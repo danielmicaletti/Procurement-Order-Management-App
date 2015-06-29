@@ -152,7 +152,7 @@
                     <div class="col-sm-10">
 
                         <select class="form-control mb-10" ng-model="ordStat">
-                            <option></option>
+                            <option value=""></option>
                             <option ng-hide="['WRQ','APN','PEN','OFR','REF'].indexOf(vm.order.order_status)!=-1" value="INP">In Progress</option>
                             <option ng-hide="['WRQ','APN','PEN','OFR','REF'].indexOf(vm.order.order_status)!=-1" value="COM">Complete</option>
                             <option ng-hide="['WRQ','APN','PEN','OFR','REF'].indexOf(vm.order.order_status)!=-1" value="INV">Invoice</option>

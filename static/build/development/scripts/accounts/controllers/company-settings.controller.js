@@ -10,18 +10,19 @@
   ];
 
   function CompanySettingsController($scope, $state, $stateParams, Authentication, Company, toastr) {
-    
+
     var companyId = $stateParams.companyId;
     console.log("companyId");
     console.log(companyId);
 
     var vm = this;
 
+    vm.companyPage = true;
+
     vm.destroy = destroy;
     vm.update = update;
 
     vm.newUser = {};
-
     activate();
 
     $scope.page = {
@@ -69,7 +70,6 @@
     }
 
     function update() {
-      var companyId = $stateParams.companyId;
       Company.update(companyId, vm.company)
         .then(companySuccessFn)
         .catch(companyErrorFn);
@@ -101,5 +101,41 @@
     function registerError(errorMsg){
       console.log(errorMsg);
     }
+
+    vm.setAddr = function(addr){
+      console.log(addr);
+      console.log(companyId);
+      var da = {};
+      da.default_address = {};
+      da.default_address['id'] = addr;
+      console.log(da);
+      Company.update(companyId, da)
+        .then(companySuccessFn)
+        .catch(companyErrorFn);
+    }
+
+    vm.newAddress = function(addr){
+      console.log(addr);
+      console.log(companyId);
+      addr['addr_company'] = companyId;
+      console.log(addr);
+      var na = {}
+      na['new_addr'] = addr;
+      console.log(na);
+      Company.newAddress(addr)
+        .then(newAddressSuccess)
+        .catch(newAddressError);
+    }
+
+    function newAddressSuccess(data) {
+      toastr.success('Your address has been added.');
+      activate();
+      vm.newAddr = {};
+    }
+
+    function newAddressError(errorMsg) {
+      toastr.error(errorMsg);
+    }
+
   }
 })();

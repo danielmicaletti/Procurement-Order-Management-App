@@ -17,6 +17,7 @@
                 // path: '=',
                 user: '=',
                 addresses: '=',
+                page: '=',
             },
             templateUrl: $sce.trustAsResourceUrl(static_path('views/directives/addr-directive.html')),
         }

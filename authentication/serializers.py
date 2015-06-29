@@ -26,11 +26,24 @@ class AddressSerializer(serializers.ModelSerializer):
         fields = ('id', 'addr_type', 'addr_location', 'addr_company', 'addr_user', 'street_addr1', 'street_addr2', 'city',
             'post_code', 'country', 'phone_main', 'email', 'addr_notes',)
 
+    def create(self, validated_data):
+        print "VAL-DATA ADDR === %s" % validated_data
+        user = validated_data.pop('user')
+        if 'addr_company' in validated_data:
+            addr_comp = validated_data.pop('addr_company')
+            print "ADDR COMP -- %s" % addr_comp
+            comp = Company.objects.get(id=addr_comp)
+        else:
+            addr_user = Account.objects.get(id=validated_data['addr_user'])
+        new_addr = Address.objects.create(addr_created_by=user, addr_company=comp, **validated_data)
+        new_addr.save()
+        return new_addr
+
 class CompanySerializer(serializers.ModelSerializer):
     wease_company = UserCompanySerializer(many=True, required=False)
     company_assigned_to = UserCompanySerializer(many=True, required=False)
     address_company = AddressSerializer(many=True, read_only=True)  
-    company_address = AddressSerializer()    
+    company_address = AddressSerializer(required=False)    
     company_created_by = serializers.CharField(read_only=True)
     company_updated_by = serializers.CharField(read_only=True)
     email = serializers.CharField(read_only=True, required=False)
@@ -59,26 +72,33 @@ class CompanySerializer(serializers.ModelSerializer):
         print "SELF COMP UPD --- %s" % self
         print "INST COMP UPD === %s" % instance
         print "VAL-DATA COMP UPD === %s" % validated_data
-        company_address = validated_data.pop('company_address')
-        print "COMP ADDRE ---++ %s" % company_address
-        print "COMP ADDree id === %s" % company_address['id']
-        comp_addr = Address.objects.get(id=company_address['id'])
-        print "COMP ADDree id === %s" % comp_addr
-        comp_addr.street_addr1 = company_address.get('street_addr1', comp_addr.street_addr1)
-        print "COM ADD STR 1 === %s" % comp_addr.street_addr1
-        comp_addr.street_addr2 = company_address.get('street_addr2', comp_addr.street_addr2)
-        print "COM ADD STR 2 === %s" % comp_addr.street_addr2
-        comp_addr.city = company_address.get('city', comp_addr.city)
-        comp_addr.post_code = company_address.get('post_code', comp_addr.post_code)
-        comp_addr.country = company_address.get('country', comp_addr.country)
-        comp_addr.email = company_address.get('email', comp_addr.email)
-        comp_addr.phone_main = company_address.get('phone_main', comp_addr.phone_main)
-        comp_addr.addr_notes = company_address.get('addr_notes', comp_addr.addr_notes)
-        comp_addr.addr_location = company_address.get('addr_location', comp_addr.addr_location)
-        comp_addr.save()
+        if 'default_address' in validated_data:
+            def_addr = validated_data.pop('default_address')
+            print "DEF ADDR === %s" % def_addr
+            comp_addr = Address.objects.get(id=def_addr['id'])
+            print "comp ADDR === %s" % comp_addr
+            instance.company_address = comp_addr
+        else:
+            company_address = validated_data.pop('company_address')
+            print "COMP ADDRE ---++ %s" % company_address
+            print "COMP ADDree id === %s" % company_address['id']
+            comp_addr = Address.objects.get(id=company_address['id'])
+            print "COMP ADDree id === %s" % comp_addr
+            comp_addr.street_addr1 = company_address.get('street_addr1', comp_addr.street_addr1)
+            print "COM ADD STR 1 === %s" % comp_addr.street_addr1
+            comp_addr.street_addr2 = company_address.get('street_addr2', comp_addr.street_addr2)
+            print "COM ADD STR 2 === %s" % comp_addr.street_addr2
+            comp_addr.city = company_address.get('city', comp_addr.city)
+            comp_addr.post_code = company_address.get('post_code', comp_addr.post_code)
+            comp_addr.country = company_address.get('country', comp_addr.country)
+            comp_addr.email = company_address.get('email', comp_addr.email)
+            comp_addr.phone_main = company_address.get('phone_main', comp_addr.phone_main)
+            comp_addr.addr_notes = company_address.get('addr_notes', comp_addr.addr_notes)
+            comp_addr.addr_location = company_address.get('addr_location', comp_addr.addr_location)
+            comp_addr.save()
         instance.name = validated_data.get('name', instance.name)
         instance.company_website = validated_data.get('company_website', instance.company_website)
-        instance.company_assigned_to = validated_data.get('company_assigned_to', instance.company_assigned_to)
+        # instance.company_assigned_to = validated_data.get('company_assigned_to', instance.company_assigned_to)
 
         instance.save()
         return instance

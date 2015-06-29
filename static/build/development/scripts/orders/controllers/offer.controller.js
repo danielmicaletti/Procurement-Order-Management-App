@@ -179,9 +179,8 @@
             vm.offer['offer_terms'] = '';
             console.log(vm.offer.offer_terms);
           }
-          // if(!vm.offer.offer_total){
-          //   vm.offer['offer_total'] = 0;
-          // }
+          console.log(vm.order.req_order[0].req_domain);
+          vm.offer['offer_domain'] = vm.order.req_order[0].req_domain;
           vm.offer['order'] = vm.orderId
           angular.forEach(vm.offer.blank_item, function (value, prop, obj) {
               console.log(value); 

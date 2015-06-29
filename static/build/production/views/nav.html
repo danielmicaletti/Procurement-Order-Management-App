@@ -8,7 +8,7 @@
       <ul id="navigation" nav-collapse ripple ng-transclude>
         <li ui-sref-active="active"><a ui-sref="app.dashboard"><fa name="dashboard"></fa> <span>Dashboard</span></a>
         </li>
-        <li ui-sref-active="active" ng-class="{'open':$state.includes('app.orders.blankoffer')}" ng-show="vm.user.optiz">
+        <li ui-sref-active="active" ng-show="vm.user.optiz">
           <a ui-sref="app.forms"><fa name="circle-o-notch"></fa> <span>Optiz</span></a>
           <ul>
             <li ui-sref-active="active" ng-controller="SearchCompanyModalCtrl"><a href="javascript:;" ng-click="open();"><fa name="caret-right"></fa> Search Company</a></li>

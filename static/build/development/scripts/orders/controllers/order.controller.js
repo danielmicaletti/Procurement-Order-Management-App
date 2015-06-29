@@ -45,6 +45,7 @@
 
     function getOrderSuccess(data) {
       vm.order = data;
+      console.log(vm.order);
       var authUserCo = parseInt(vm.authenticatedAccount.user_company);
       pageTitle(vm.order);
       if(vm.authenticatedAccount.optiz && vm.order.order_status === 'PEN'){

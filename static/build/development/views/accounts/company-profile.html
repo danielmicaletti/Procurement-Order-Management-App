@@ -612,78 +612,66 @@
                             <h1 class="custom-font"><strong>{{ vm.company.name }}</strong> Addresses</h1>
                         </div>
                         <div class="title-body">
-                          <address addresses="vm.company.address_company" user="au"></address>
-<!--                             <accordion close-others="oneAtATime">
-                                <accordion-group heading="{{address.addr_location}}" ng-repeat="address in vm.company.address_company">
-                                    <form class="profile-settings" ng-submit="vm.update()">
-                                        <div class="row">
-                                            <div class="form-group col-sm-6">
-                                                <label for="address_location">Address Location</label>
-                                                <input type="text" class="form-control" id="address_location" value="{{ address.addr_location}}" ng-model="address.addr_location">
-                                            </div>
+                          <!-- <address addresses="vm.company.address_company" user="au" page="vm.companyPage"></address> -->
+                          <div class="row">
+                              <div class="col-md-12 pl-20 pr-20 form-group">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <h4 class="p-20">Default Address: <span>{{vm.company.company_address.addr_location}}</span></h4>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <button ng-controller="NewAddrModalCtrl" ng-click="open('lg');"class="btn btn-rounded btn-sm btn-default pull-right">New Address</button>
+                                  </div>
+                                </div>
+                                  <div ng-controller="PillsDemoCtrl">
+                                  <div class="clearfix"></div>
+                                      <tabset class="pills" type="pills" justified="true">
 
-                                            <div class="form-group col-sm-6">
-                                                <label for="address2">Address Type</label>
-                                                <select ui-jq="chosen" id="address_type" ui-options="{width: '100%'}" ng-model="address.addr_type">
-                                                  <option value=""></option>
-                                                  <option>Office</option>
-                                                  <option>Delivery</option>
-                                                  <option>Other</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-sm-6">
-                                                <label for="address1">Address Line 1</label>
-                                                <input type="text" class="form-control" id="address1" value="{{ address.street_addr1 }}" ng-model="address.street_addr1">
-                                            </div>
-
-                                            <div class="form-group col-sm-6">
-                                                <label for="address2">Address Line 2</label>
-                                                <input type="text" class="form-control" id="address2" value="{{ address.street_addr2 }}" ng-model="address.street_addr2">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-sm-4">
-                                                <label for="city">City</label>
-                                                <input type="text" class="form-control" id="city" value="{{ address.city }}" ng-model="address.city">
-                                            </div>
-                                            <div class="form-group col-sm-6">
-                                                <label for="country">Country</label>
-                                                <select ui-jq="chosen" id="country" ui-options="{width: '100%'}" ng-model="address.country">
-                                                <option value=""></option>
-                                                <option>France</option>
-                                                <option>Morocco</option>
-                                                <option>United States</option>
-                                                <option>Germany</option>
-                                                <option>Spain</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-sm-4">
-                                                <label for="post_code">Post Code</label>
-                                                <input type="text" class="form-control" id="post_code" value="{{ address.post_code}}">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-sm-6">
-                                                <label for="email">E-mail</label>
-                                                <input type="email" class="form-control" id="email" value="{{ address.email }}" ng-model="address.email">
-                                            </div>
-                                            <div class="form-group col-sm-6">
-                                                <label for="addr_notes">Address Notes</label>
-                                                <textarea class="form-control" id="tagline" rows="2" ng-model="address.addr_notes">{{ address.addr_notes }}</textarea>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-sm-6">
-                                                <label for="phone">Phone</label>
-                                                <input type="text" class="form-control" id="phone" value="{{ address.phone_main }}" ng-model="address.phone_main">
-                                                <span class="help-block">+(34) 13 24 76 98</span>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </accordion-group>
-                            </accordion> -->
+                                          <tab ng-repeat="addr in vm.company.address_company" heading="{{addr.addr_location}}" active="addr.active">
+                                              <div class="row">
+<!--                                                   <h4 ng-show="vm.companyPage">Select Adddress for Default Location</h4>
+                                                  <label ng-model="vm.da" btn-radio="{{addr}}" class="btn btn-ef btn-ef-1 btn-ef-1-slategray btn-ef-1a mb-10" activate-button uncheckable><i class="fa fa-truck"></i><span ng-show="vm.da.id==={{addr.id}}"> Selected </span><span ng-hide="vm.da.id==={{addr.id}}">  Select {{addr.addr_location}} </span></label> -->
+                                                  <button class="btn btn-rounded btn-sm btn-slategray mb-10" ng-click="vm.setAddr(addr.id);">Set {{addr.addr_location}} as Default Address</button>
+                                              </div>
+                                              <div class="row">
+                                                  <div class="form-group col-md-8 mb-0">
+                                                      <label for="address1">Address 1: </label>
+                                                      <p class="well">{{ addr.street_addr1 }}</p>
+                                                  </div>
+                                                  <div class="form-group col-md-4 mb-0">
+                                                      <label for="address2">Address 2: </label>
+                                                      <p class="well">{{ addr.street_addr2 }}</p>
+                                                  </div>
+                                              </div>
+                                              <div class="row">
+                                                  <div class="form-group col-md-4">
+                                                      <label for="city">City: </label>
+                                                      <p class="well">{{ addr.city }}</p>
+                                                  </div>
+                                                  <div class="form-group col-md-4">
+                                                      <label for="country">Country: </label>
+                                                      <p class="well">{{ addr.country}}</p>
+                                                  </div>
+                                                  <div class="form-group col-md-4">
+                                                      <label for="post_code">Post Code: </label>
+                                                      <p class="well">{{ addr.post_code }}</p>
+                                                  </div>
+                                              </div>
+                                              <div class="row">
+                                                  <div class="form-group col-md-8">
+                                                      <label for="zip">Address Notes: </label>
+                                                      <p class="well">{{ addr.addr_notes }}</p>
+                                                  </div>
+                                                  <div class="form-group col-md-4">
+                                                      <label for="phone">Phone: </label>
+                                                      <p class="well">{{ addr.phone_main }}</p>                        
+                                                  </div>
+                                              </div>
+                                          </tab>
+                                      </tabset>
+                                  </div>
+                              </div>
+                          </div>
                         </div>
                     </div>
                 </tab>

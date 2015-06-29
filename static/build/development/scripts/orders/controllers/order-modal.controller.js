@@ -74,6 +74,34 @@ angular.module('minovateApp')
     };
   })
 
+  .controller('NewAddrModalCtrl', function ($scope, $modal, $log, $localStorage) {
+    var vm = this;
+
+    $scope.items = [];
+
+    $scope.open = function(size) {
+
+      var modalInstance = $modal.open({
+        templateUrl: static_path('views/modals/newaddress-modal.html'),
+        controller: 'ModalInstanceCtrl',
+        scope: $scope,
+        size: size,
+        resolve: {
+          items: function () {
+            return $scope.items;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    };
+  })
+
+
   .controller('SearchCompanyModalCtrl', function ($scope, $modal, $log) {
     var vm = this;
   
