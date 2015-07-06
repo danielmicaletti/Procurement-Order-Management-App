@@ -124,15 +124,15 @@
           <!-- tile body -->
           <div class="tile-body">
 
-            <div class="media" ng-repeat="user in vm.company.wease_company">
+            <div class="media team" ng-repeat="user in vm.company.wease_company" ui-sref="app.pages.profile({username:user.username})">
               
               <div class="pull-left thumb">
                 <img class="media-object img-circle" ng-src="{{path.static_files}}{{ user.user_pic }}" alt="">
               </div>
-              <div class="pull-right mt-10">
+<!--               <div class="pull-right mt-10">
                 <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><a ui-sref="app.pages.profile({username:user.username})"><i class="fa fa-eye" style="margin-left: -2px;"></i></a></button>
                 <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
-              </div>
+              </div> -->
               <div class="media-body">
                 <p class="media-heading mb-0 mt-10">{{ user.first_name }} <strong>{{ user.last_name }}</strong></p>
                 <small class="text-lightred">{{ user.position }}</small><br/>
@@ -285,7 +285,24 @@
                   <div class="tile-header">
                     <h1 class="custom-font"><strong>About</strong> {{ vm.company.name }}</h1>
                   </div>
-
+                  <div class="row">
+                    <div class="col-md-12 p-20">
+                      <!-- <span><a target="_blank" href="https://www.google.com/maps/place/?q={{vm.company.company_address.street_addr1}}+{{vm.company.company_address.city}}+{{vm.company.company_address.country}}+{{vm.company.company_address.post_code}}" class="icon icon-sm icon-lightred icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-map-marker"></i></a></span> -->
+                      <h4>{{vm.company.company_address.street_addr1}}</h4>
+                      <h4>{{vm.company.company_address.street_addr2}}</h4>
+                      <h4>{{vm.company.company_address.city}}, {{vm.company.company_address.country}} {{vm.company.company_address.post_code}}</h5>
+                      <h5>{{vm.company.company_address.phone_main}}</h5>
+                      <h5><a href="mailto:{{vm.company.company_address.email}}">{{vm.company.company_address.email}}</a></h4>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12 p-20 b-t">
+                      <div class="thumb" ng-show="vm.company.company_website">
+                        <a href="http://{{vm.company.company_website}}"><img class="media-object img-circle" ng-src="{{path.static_files}}{{vm.company.company_logo}}" alt="">
+                        {{vm.company.company_website}}</a>
+                      </div>
+                    </div>
+                  </div>
                   <!-- <div class="streamline-form">
                     <textarea class="form-control br-0 br-2-t" placeholder="What's up dude?" rows="5"></textarea>
                     <div class="post-toolbar">
@@ -515,7 +532,7 @@
                 </div>
               </tab>
 
-              <tab heading="Settings">
+              <tab heading="Settings" ng-if="vm.isAuth && admin">
                 <div class="wrap-reset">
 
                   <form class="profile-settings" ng-submit="vm.update()">
@@ -562,13 +579,12 @@
                         </div>
                         <div class="form-group col-sm-4">
                             <label for="country">Country</label>
-                            <select ui-jq="chosen" ui-options="{width: '100%'}" ng-model="vm.company.company_address.country">
-                                <option value=""></option>
-                                <option>France</option>
-                                <option>Morocco</option>
-                                <option>United States</option>
-                                <option>Germany</option>
-                                <option>Spain</option>
+                            <select class="form-control" 
+                                    chosen width="'100%'" 
+                                    ng-model="vm.company.company_address.country"
+                                    ng-options="country for country in countries"
+                                    data-placeholder="Choose a country">
+                                    <option value=""></option>
                             </select>
                         </div>
                     </div>
@@ -606,13 +622,12 @@
                   </form>
                 </div>
               </tab>
-                <tab heading="Addresses">
+                <tab heading="Addresses" ng-if="vm.isAuth && admin">
                     <div class="wrap-reset">
                         <div class="tile-header">
                             <h1 class="custom-font"><strong>{{ vm.company.name }}</strong> Addresses</h1>
                         </div>
                         <div class="title-body">
-                          <!-- <address addresses="vm.company.address_company" user="au" page="vm.companyPage"></address> -->
                           <div class="row">
                               <div class="col-md-12 pl-20 pr-20 form-group">
                                 <div class="row">
@@ -623,48 +638,65 @@
                                     <button ng-controller="NewAddrModalCtrl" ng-click="open('lg');"class="btn btn-rounded btn-sm btn-default pull-right">New Address</button>
                                   </div>
                                 </div>
-                                  <div ng-controller="PillsDemoCtrl">
+                                  <div>
                                   <div class="clearfix"></div>
                                       <tabset class="pills" type="pills" justified="true">
 
-                                          <tab ng-repeat="addr in vm.company.address_company" heading="{{addr.addr_location}}" active="addr.active">
+                                          <tab ng-repeat="addr in vm.company.address_company track by $index" heading="{{addr.addr_location}}" active="addr.active">
                                               <div class="row">
-<!--                                                   <h4 ng-show="vm.companyPage">Select Adddress for Default Location</h4>
-                                                  <label ng-model="vm.da" btn-radio="{{addr}}" class="btn btn-ef btn-ef-1 btn-ef-1-slategray btn-ef-1a mb-10" activate-button uncheckable><i class="fa fa-truck"></i><span ng-show="vm.da.id==={{addr.id}}"> Selected </span><span ng-hide="vm.da.id==={{addr.id}}">  Select {{addr.addr_location}} </span></label> -->
                                                   <button class="btn btn-rounded btn-sm btn-slategray mb-10" ng-click="vm.setAddr(addr.id);">Set {{addr.addr_location}} as Default Address</button>
+                                                  <button class="btn btn-rounded btn-sm btn-blue mb-10" ng-click="vm.editAddr($index, addr);" ng-hide="vm.hideStatic === $index">Edit {{addr.addr_location}}</button>
+                                                  <button class="btn btn-rounded btn-sm btn-greensea mb-10" ng-click="vm.updateAddr(vm.updAddr);" ng-if="vm.hideStatic === $index">Update {{addr.addr_location}}</button>
+                                                  <button class="btn btn-rounded btn-sm btn-drank mb-10" ng-click="vm.cancelEdit(addr);" ng-if="vm.hideStatic === $index">Cancel Update {{addr.addr_location}}</button>
+                                                  <button class="btn btn-rounded btn-sm btn-lightred mb-10 pull-right" ng-click="vm.delAddr(addr.id);">Delete {{addr.addr_location}}</button>
                                               </div>
                                               <div class="row">
                                                   <div class="form-group col-md-8 mb-0">
                                                       <label for="address1">Address 1: </label>
-                                                      <p class="well">{{ addr.street_addr1 }}</p>
+                                                      <p ng-hide="vm.hideStatic === $index" class="well">{{ addr.street_addr1 }}</p>
+                                                      <input ng-if="vm.hideStatic === $index" class="well form-control" ng-model="vm.updAddr.street_addr1">
                                                   </div>
                                                   <div class="form-group col-md-4 mb-0">
                                                       <label for="address2">Address 2: </label>
-                                                      <p class="well">{{ addr.street_addr2 }}</p>
+                                                      <p ng-hide="vm.hideStatic === $index" class="well">{{ addr.street_addr2 }}</p>
+                                                      <input ng-if="vm.hideStatic === $index" class="well form-control" ng-model="vm.updAddr.street_addr2">
                                                   </div>
                                               </div>
                                               <div class="row">
                                                   <div class="form-group col-md-4">
                                                       <label for="city">City: </label>
-                                                      <p class="well">{{ addr.city }}</p>
+                                                      <p ng-hide="vm.hideStatic === $index" class="well">{{ addr.city }}</p>
+                                                      <input ng-if="vm.hideStatic === $index" class="well form-control" ng-model="vm.updAddr.city">
                                                   </div>
                                                   <div class="form-group col-md-4">
                                                       <label for="country">Country: </label>
-                                                      <p class="well">{{ addr.country}}</p>
+                                                      <p ng-hide="vm.hideStatic === $index" class="well">{{ addr.country }}</p>
+                                                      <select ng-if="vm.hideStatic === $index"
+                                                            chosen 
+                                                            class="form-control"
+                                                            width="'100%'"
+                                                            ng-model="vm.updAddr.country"
+                                                            ng-options="country for country in countries"
+                                                            data-placeholder="Choose a country">
+                                                          <option value=""></option>
+                                                      </select>
                                                   </div>
                                                   <div class="form-group col-md-4">
                                                       <label for="post_code">Post Code: </label>
-                                                      <p class="well">{{ addr.post_code }}</p>
+                                                      <p ng-hide="vm.hideStatic === $index" class="well">{{ addr.post_code }}</p>
+                                                      <input ng-if="vm.hideStatic === $index" class="well form-control" ng-model="vm.updAddr.post_code">
                                                   </div>
                                               </div>
                                               <div class="row">
                                                   <div class="form-group col-md-8">
                                                       <label for="zip">Address Notes: </label>
-                                                      <p class="well">{{ addr.addr_notes }}</p>
+                                                      <p ng-hide="vm.hideStatic === $index" class="well">{{ addr.addr_notes }}</p>
+                                                      <textarea ng-if="vm.hideStatic === $index" class="well form-control" ng-model="vm.updAddr.addr_notes"></textarea>
                                                   </div>
                                                   <div class="form-group col-md-4">
                                                       <label for="phone">Phone: </label>
-                                                      <p class="well">{{ addr.phone_main }}</p>                        
+                                                      <p ng-hide="vm.hideStatic === $index" class="well">{{ addr.phone_main }}</p>
+                                                      <input ng-if="vm.hideStatic === $index" class="well form-control" ng-model="vm.updAddr.phone_main">
                                                   </div>
                                               </div>
                                           </tab>
@@ -675,7 +707,7 @@
                         </div>
                     </div>
                 </tab>
-                <tab heading="Add User">
+                <tab heading="Add User" ng-if="vm.isAuth && admin">
                     <div class="wrap-reset">
                     <form class="profile-settings" ng-submit="vm.register()">
                         <div class="row">
@@ -744,6 +776,40 @@
                     </form>
                     </div>
                 </tab>
+
+
+
+                <tab heading="Optiz" ng-if="au.optiz && mgr">
+                    <div class="wrap-reset">
+                    <form class="profile-settings" ng-submit="vm.assignOptiz(vm.addOptiz);">
+                        <div class="row">
+                            <div class="form-group col-md-12 legend">
+                                <h4>Assign <strong>Optiz</strong></h4>
+                                <p>Assign Optiz emplpoyee(s) to manage this account</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-sm-6">
+                              <h4>Company assigned to:</h4>
+                              <h5 ng-repeat="optizUser in vm.company.company_assigned_to"><a ui-sref="app.pages.profile({username:optizUser.username})">{{ optizUser.user_name_full }}</a></h5>
+                                <label for="first-name" class="mt-20">Select Optiz Employee</label>
+                                <select class="form-control" 
+                                        chosen multiple width="'100%'"
+                                        ng-init="vm.company.company_assigned_to" 
+                                        ng-model="vm.addOptiz"
+                                        ng-options="optiz.id as optiz.user_name_full for optiz in vm.optizUsers track by optiz.id" 
+                                        data-placeholder="Assign Optiz">
+                                        <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-rounded btn-primary">Update assigned</button>
+                    </form>
+                    </div>
+                </tab>
+
+
             </tabset>
 
           </div>
@@ -754,21 +820,8 @@
 
       </div>
       <!-- /col -->
-
-
-
-
-
-
-
-
-
-
-
     </div>
     <!-- /row -->
-
-
 
   </div>
   <!-- /page content -->

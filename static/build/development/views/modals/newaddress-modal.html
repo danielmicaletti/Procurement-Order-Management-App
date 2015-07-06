@@ -4,7 +4,6 @@
 </div>
 <div class="modal-body">
 	<div class="">
-		<p>{{vm.newAddr}}</p>
 	    <div class="row">
 	        <div class="form-group col-sm-6">
 	            <label for="addr_location">Address Title</label>
@@ -33,14 +32,15 @@
 	        </div>
 	        <div class="form-group col-sm-4">
 	            <label for="country">Country</label>
-	            <select ui-jq="chosen" ui-options="{width: '100%'}" ng-model="vm.newAddr.country">
-	                <option value=""></option>
-	                <option>France</option>
-	                <option>Morocco</option>
-	                <option>United States</option>
-	                <option>Germany</option>
-	                <option>Spain</option>
-	            </select>
+				<select ng-if="vm.hideStatic === $index"
+					chosen 
+					class="form-control"
+					width="'100%'"
+					ng-model="vm.newAddr.country"
+					ng-options="country for country in countries"
+					data-placeholder="Choose a country">
+					<option value=""></option>
+				</select>
 	        </div>
 	    </div>
 	    <div class="row">

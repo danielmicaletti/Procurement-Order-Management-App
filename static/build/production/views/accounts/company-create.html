@@ -14,7 +14,6 @@
         </div>
     </div>
     <!-- /page header -->
-
     <!-- page content -->
     <div class="pagecontent">
         <div class="add-nav">
@@ -66,12 +65,14 @@
                                     </div>
                                     <div class="form-group col-sm-4">
                                         <label for="country">Country</label>
-                                        <select ui-jq="chosen" id="country" ui-options="{width: '100%'}" ng-model="vm.company.company_address.country">
-                                            <option>France</option>
-                                            <option>Morocco</option>
-                                            <option>United States</option>
-                                            <option>Germany</option>
-                                            <option>Spain</option>
+                                        <select ng-if="vm.hideStatic === $index"
+                                            chosen 
+                                            class="form-control"
+                                            width="'100%'"
+                                            ng-model="vm.company.company_address.country"
+                                            ng-options="country for country in countries"
+                                            data-placeholder="Choose a country">
+                                            <option value=""></option>
                                         </select>
                                     </div>
                                 </div>
@@ -105,36 +106,6 @@
                                         <textarea class="form-control" rows="4" ng-model="vm.company.company_address.addr_notes"></textarea>
                                     </div>
                                 </div>
-<!--                                 <div class="row">
-                                    <div class="form-group col-md-12 legend">
-                                        <h4><strong>Social</strong> Settings</h4>
-                                        <p>Connect with your social profiles</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-sm-6">
-                                        <label for="linkedin">LinkedIn</label>
-                                        <input type="text" class="form-control" id="linkedin">
-                                    </div>
-                                    <div class="form-group col-sm-6">
-                                        <label for="facebook">Facebook</label>
-                                        <input type="text" class="form-control" id="facebook">
-                                    </div>
-                                </div>
-
-                                <div class="row">
-
-                                    <div class="form-group col-sm-6">
-                                        <label for="google-plus">Google+</label>
-                                        <input type="text" class="form-control" id="google-plus">
-                                    </div>
-
-                                    <div class="form-group col-sm-6">
-                                        <label for="github">GitHub</label>
-                                        <input type="text" class="form-control" id="github">
-                                    </div>
-
-                                </div> -->
                                 <button type="submit" class="btn btn-lg btn-primary">Create Company</button>
                             </form>
                         </div>

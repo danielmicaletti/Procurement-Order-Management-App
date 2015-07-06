@@ -12,8 +12,7 @@
 
                     <tab ng-repeat="addr in vm.order.order_company.address_company" heading="{{addr.addr_location}}" active="addr.active">
                         <div class="row">
-                            <!-- <label ng-click="toggle=!toggle" ng-model="vm.order.delivery_address" btn-radio="{{addr}}" class="btn btn-ef btn-ef-1 btn-ef-1-slategray btn-ef-1a mb-10" activate-button uncheckable><i class="fa fa-truck"></i><span ng-show="toggle"> Selected </span><span ng-hide="toggle">  Select {{addr.addr_location}} </span></label> -->
-                            <label ng-model="vm.da" btn-radio="{{addr}}" class="btn btn-ef btn-ef-1 btn-ef-1-slategray btn-ef-1a mb-10" activate-button uncheckable><i class="fa fa-truck"></i><span ng-show="vm.da.id==={{addr.id}}"> Selected </span><span ng-hide="vm.da.id==={{addr.id}}">  Select {{addr.addr_location}} </span></label>
+                            <button class="btn btn-rounded btn-sm btn-slategray mb-10" ng-click="vm.addAddr(addr); cancel()">Set {{addr.addr_location}} as Default Address</button>
                         </div>
                         <div class="row">
                             <div class="form-group col-md-8 mb-0">
@@ -58,5 +57,4 @@
 </div>
 <div class="modal-footer">
     <button class="btn btn-slategray btn-ef btn-ef-4 btn-ef-4c" ng-click="cancel()"><i class="fa fa-arrow-left"></i> Return</button>
-    <button ng-click="vm.addAddr(vm.da); cancel()" class="btn btn-primary btn-ef btn-ef-4 btn-ef-4c" ng-show="!vm.order.order_offer"><i class="fa fa-pencil"></i> Update Delivery Address</button>
 </div>

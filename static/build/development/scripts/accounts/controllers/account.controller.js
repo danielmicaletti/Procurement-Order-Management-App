@@ -33,19 +33,25 @@
                 .then(accountSuccessFn)
                 .catch(accountErrorFn);
 
-            function accountSuccessFn(data, status, headers, config) {
+            function accountSuccessFn(data) {
                 vm.account = data;  
                 console.log(vm.account); 
                 getCompany();
+                if(vm.authAcct.id === vm.account.id){
+                    vm.isUser = true;
+                }else{
+                    vm.isUser = false;
+                }
             }
 
-            function accountErrorFn(data, status, headers, config) {
+            function accountErrorFn(errorMsg) {
                 $state.go('app.dashboard');
                 toastr.error('That user does not exist.');
             }
         }
 
         function getCompany(){
+            console.log(vm.account.user_company);
             Company.get(vm.account.user_company)
               .then(companySuccessFn)
               .catch(companyErrorFn);  
@@ -76,8 +82,8 @@
             toastr.warning('Your account has been deleted.');
         }
 
-        function destroyErrorFn(data, status, headers, config) {
-            toastr.error(data.error);
+        function destroyErrorFn(errorMsg) {
+            toastr.error(errorMsg);
         }
 
         // Update Account with success/error callbacks
@@ -89,17 +95,19 @@
 
         function updateSuccessFn(data, status, headers, config) {
             console.log(data);
-            console.log(data.data);
             if(vm.account.id === vm.authAcct.id){
-                vm.account = data.data;
-                Authentication.setAuthenticatedAccount(data.data)
+                vm.account = data;
+                Authentication.setAuthenticatedAccount(data)
             }
             getCompany();
             toastr.success('Your account has been updated.');
         }
 
         function updateErrorFn(data, status, headers, config) {
-            toastr.error(data.error);
+            toastr.error('There was an issue to update your account '+errorMsg+'. Please contact Optiz.');
         }
+        // vm.showPass = function(){
+
+        // }
     };
 })();

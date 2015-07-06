@@ -13,10 +13,10 @@
             <h5 class="text-strong text-uppercase custom-font">customer</h5>
             <ul class="list-unstyled">
                 <li>{{ vm.order.order_company.name }}</li>
-                <li>{{ vm.order.order_company.street_addr1 }}</li>
-                <li ng-show="vm.order.order_company.street_addr2">{{ vm.order.order_company.street_addr2 }}</li>
-                <li>{{ vm.order.order_company.city }}, {{ vm.order.order_company.country }} {{ vm.order.order_company.post_code }}</li>
-                <li>{{ vm.order.order_company.phone_main }}</li>
+                <li>{{ vm.order.order_company.company_address.street_addr1 }}</li>
+                <li ng-show="vm.order.order_company.company_address.street_addr2">{{ vm.order.order_company.company_address.street_addr2 }}</li>
+                <li>{{ vm.order.order_company.company_address.city }}, {{ vm.order.order_company.company_address.country }} {{ vm.order.order_company.company_address.post_code }}</li>
+                <li>{{ vm.order.order_company.company_address.phone_main }}</li>
             </ul>
         </div>
         <div class="col-md-4">

@@ -25,7 +25,6 @@
             if (!$cookies.authenticatedAccount) {
                 return;
             }
-            // console.log($cookies.authenticatedAccount);
             return JSON.parse($cookies.authenticatedAccount);
         }
 

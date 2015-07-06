@@ -11,12 +11,15 @@
   function Company($http, $q) {
 
     var Company = {
+      getOptiz: getOptiz,
       getAll: getAll,
+      get: get,
       create:create,
       destroy: destroy,
-      get: get,
       update: update,
       newAddress: newAddress,
+      updAddress: updAddress,
+      destroyAddress: destroyAddress,
     };
 
     return Company;
@@ -29,6 +32,12 @@
 
     function generalCallbackError(response){
       return $q.reject('Error '+response.status+'');
+    }
+
+    function getOptiz(){
+      return $http.get('api/v1/optiz')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
     }
 
     function getAll() {
@@ -67,6 +76,18 @@
         .then(generalCallbackSuccess)
         .catch(generalCallbackError);
     } 
+
+    function updAddress(addr) {
+      return $http.put('/api/v1/addresses/'+addr.id+'/', addr)
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    } 
+
+    function destroyAddress(addr){
+      return $http.delete('api/v1/addresses/'+addr+'/')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    }
 
   }
 })();

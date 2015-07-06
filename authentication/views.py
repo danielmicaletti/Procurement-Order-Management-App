@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from django.utils import timezone
 from ipware.ip import get_ip
 from authentication.models import Account, Activity, Company, Address
-from authentication.serializers import AccountSerializer, CompanySerializer, AddressSerializer
+from authentication.serializers import AccountSerializer, CompanySerializer, AddressSerializer, UserCompanySerializer
 
 class AccountViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
@@ -86,6 +86,12 @@ class AddressViewSet(viewsets.ModelViewSet):
         print "COMP SERIAL === %s" % serializer 
         if serializer.is_valid():
             serializer.save(user=self.request.user, **self.request.data)
+
+class OptizViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = Account.objects.filter(optiz=True)
+    serializer_class = UserCompanySerializer
+
 
 class LoginView(views.APIView):
     def post(self, request, format=None):

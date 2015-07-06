@@ -6,14 +6,14 @@ from authentication.models import Account, Company, Address
 
 class UserCompanySerializer(serializers.ModelSerializer):
     user_pic = serializers.CharField(read_only=True)
+    user_name_full = serializers.CharField(source='get_full_name', required=False)
     user_company_full = serializers.CharField(source='user_company', required=False)
     username = serializers.CharField(required=False)
     email = serializers.CharField(required=False)
 
-
     class Meta:
         model = Account
-        fields = ('id', 'email', 'username', 'user_created', 'user_created_by','user_updated','updated_user',
+        fields = ('id', 'email', 'username', 'user_name_full', 'user_created', 'user_created_by','user_updated','updated_user',
                   'first_name', 'last_name', 'optiz', 'lang', 'user_company', 'user_company_full', 'position', 'access_level', 'auth_amount',
                   'street_addr1', 'street_addr2', 'city', 'post_code', 'country',
                   'phone_main', 'phone_mobile', 'user_pic',)
@@ -78,7 +78,7 @@ class CompanySerializer(serializers.ModelSerializer):
             comp_addr = Address.objects.get(id=def_addr['id'])
             print "comp ADDR === %s" % comp_addr
             instance.company_address = comp_addr
-        else:
+        elif 'company_address' in validated_data:
             company_address = validated_data.pop('company_address')
             print "COMP ADDRE ---++ %s" % company_address
             print "COMP ADDree id === %s" % company_address['id']
@@ -96,6 +96,12 @@ class CompanySerializer(serializers.ModelSerializer):
             comp_addr.addr_notes = company_address.get('addr_notes', comp_addr.addr_notes)
             comp_addr.addr_location = company_address.get('addr_location', comp_addr.addr_location)
             comp_addr.save()
+        if 'assign_optiz' in validated_data:
+            instance.company_assigned_to.clear()
+            for optiz in validated_data['assign_optiz']:
+                print "OPTIZ === %s" % optiz
+                optiz_user = Account.objects.get(id=optiz)
+                instance.company_assigned_to.add(optiz_user);
         instance.name = validated_data.get('name', instance.name)
         instance.company_website = validated_data.get('company_website', instance.company_website)
         # instance.company_assigned_to = validated_data.get('company_assigned_to', instance.company_assigned_to)

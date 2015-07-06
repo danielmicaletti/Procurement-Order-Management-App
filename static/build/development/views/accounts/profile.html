@@ -115,22 +115,22 @@
 
           <!-- tile header -->
           <div class="tile-header">
-            <h1 class="custom-font"><strong>Team</strong> {{ vm.account.user_company.name }}</h1>
+            <h1 class="custom-font"><strong>Team</strong> {{ vm.account.user_company_full }}</h1>
           </div>
           <!-- /tile header -->
 
           <!-- tile body -->
           <div class="tile-body">
 
-            <div class="media" ng-repeat="user in vm.company.wease_company">
+            <div class="media team" ng-repeat="user in vm.company.wease_company" ui-sref="app.pages.profile({username:user.username})">
               
               <div class="pull-left thumb">
                 <img class="media-object img-circle" ng-src="{{path.static_files}}{{ user.user_pic }}" alt="">
               </div>
-              <div class="pull-right mt-10">
+<!--               <div class="pull-right mt-10">
                 <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><a ui-sref="app.pages.profile({username:user.username})"><i class="fa fa-eye" style="margin-left: -2px;"></i></a></button>
                 <button type="button" class="btn btn-rounded-20 btn-default btn-sm mr-5" style="width:30px;"><i class="fa fa-pencil"></i></button>
-              </div>
+              </div> -->
               <div class="media-body">
                 <p class="media-heading mb-0 mt-10">{{ user.first_name }} <strong>{{ user.last_name }}</strong></p>
                 <small class="text-lightred">{{ user.position }}</small><br/>
@@ -283,7 +283,37 @@
                   <div class="tile-header">
                     <h1 class="custom-font"><strong>About</strong> {{ vm.account.first_name }}</h1>
                   </div>
-
+                  <div class="title-body">
+                      <p ng-show="vm.account.tagline"><em>"{{ vm.account.tagline }}"</em></p>
+                    
+                      <!-- <p> -->
+                        <!-- <a href="#" class="icon icon-info icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-twitter"></i></a> -->
+                        <!-- <a ng-show="vm.facebook" href="https://www.facebook.com/{{vm.facebook}}" target="_blank" class="icon icon-primary icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-facebook"></i></a> -->
+  <!--                       <a href="#" class="icon icon-lightred icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-google-plus"></i></a>
+                        <a href="#" class="icon icon-hotpink icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-dribbble"></i></a> -->
+                      <!-- </p> -->
+                    <div class="row">
+                      <div class="col-md-12 p-20">
+                        <!-- <span><a target="_blank" href="https://www.google.com/maps/place/?q={{vm.account.street_addr1}}+{{vm.account.city}}+{{vm.account.country}}+{{vm.account.post_code}}" class="icon icon-sm icon-lightred icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-map-marker"></i></a></span> -->
+                        <h4>{{vm.account.street_addr1}}</h4>
+                        <h4>{{vm.account.street_addr2}}</h4>
+                        <h4>{{vm.account.city}}, {{vm.account.country}} {{vm.account.post_code}}</h5>
+                        <h5>{{vm.account.phone_main}}</h4>
+                        <h5><a href="mailto:{{vm.account.email}}">{{vm.account.email}}</a></h5>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 p-20 b-t">
+                        <div class="thumb" ng-show="vm.company.company_website">
+                          <a href="http://{{vm.company.company_website}}"><img class="media-object img-circle" ng-src="{{path.static_files}}{{vm.company.company_logo}}" alt="">
+                          {{vm.company.company_website}}</a>
+                        </div>
+                        <div class="thumb" ng-show="vm.facebook">
+                          <a href="https://www.facebook.com/{{vm.facebook}}" target="_blank" class="icon icon-primary icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-facebook"></i></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <!-- <div class="streamline-form">
                     <textarea class="form-control br-0 br-2-t" placeholder="What's up dude?" rows="5"></textarea>
                     <div class="post-toolbar">
@@ -507,19 +537,10 @@
                     </div>
 
                   </div> -->
-                  <div class="title-body">
-                    <p ng-show="vm.account.tagline"><em>"{{ vm.account.tagline }}"</em></p>
-                  </div>
-                    <p>
-                      <!-- <a href="#" class="icon icon-info icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-twitter"></i></a> -->
-                      <a ng-show="vm.facebook" href="https://www.facebook.com/{{vm.facebook}}" target="_blank" class="icon icon-primary icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-facebook"></i></a>
-<!--                       <a href="#" class="icon icon-lightred icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-google-plus"></i></a>
-                      <a href="#" class="icon icon-hotpink icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-dribbble"></i></a> -->
-                    </p>
                 </div>
               </tab>
 
-              <tab heading="Settings">
+              <tab heading="Settings" ng-if="vm.isUser">
                 <div class="wrap-reset">
 
                   <form class="profile-settings" ng-submit="vm.update()">
@@ -532,115 +553,85 @@
                     </div>
 
                     <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="first-name">First Name</label>
+                            <input type="text" class="form-control" ng-model="vm.account.first_name">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" class="form-control" ng-model="vm.account.last_name">
+                        </div>
+                    </div>
+                    <div class="row">
 
-                      <div class="form-group col-sm-6">
-                        <label for="first-name">First Name</label>
-                        <input type="text" class="form-control" id="first-name" value="{{ vm.account.first_name }}" ng-model="vm.account.first_name">
-                      </div>
+                        <div class="form-group col-sm-6">
+                            <label for="email">E-mail</label>
+                            <input type="email" class="form-control" ng-model="vm.account.email">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="position">Position</label>
+                            <input type="text" class="form-control" ng-model="vm.account.position">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="address1">Address Line 1</label>
+                            <input type="text" class="form-control" ng-model="vm.account.street_addr1">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="address2">Address Line 2</label>
+                            <input type="text" class="form-control" ng-model="vm.account.street_addr2">
+                        </div>
+                    </div>
+                    <div class="row">
 
-                      <div class="form-group col-sm-6">
-                        <label for="last-name">Last Name</label>
-                        <input type="text" class="form-control" id="last-name" value="{{ vm.account.last_name }}" ng-model="vm.account.last_name">
-                      </div>
-
+                        <div class="form-group col-sm-4">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" ng-model="vm.account.city">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="zip">Zip Code</label>
+                            <input type="text" class="form-control" ng-model="vm.account.post_code">
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="country">Country</label>
+                            <select class="form-control" 
+                                    chosen width="'100%'" 
+                                    ng-model="vm.account.country"
+                                    ng-options="country for country in countries"
+                                    data-placeholder="Choose a country">
+                                    <option value=""></option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="row">
-
-                      <div class="form-group col-sm-6">
-                        <label for="address1">Address Line 1</label>
-                        <input type="text" class="form-control" id="address1" value="{{ vm.account.street_addr1 }}" ng-model="vm.account.street_addr1">
-                      </div>
-
-                      <div class="form-group col-sm-6">
-                        <label for="address2">Address Line 2</label>
-                        <input type="text" class="form-control" id="address2" value="{{ vm.account.street_addr2 }}" ng-model="vm.account.street_addr2">
-                      </div>
-
+                        <div class="form-group col-sm-6">
+                            <label for="avatar">Profile Picture</label>
+                            <input ui-jq="filestyle" type="file" class="filestyle" ui-options="{
+                            buttonText: 'Find file',
+                            iconName: 'fa fa-inbox'
+                            }" ng-model="vm.account.user_pic">
+                            <span class="help-block">Allowed files: gif, png, jpg. Max file size 1Mb</span>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="tagline">Tag line</label>
+                            <textarea class="form-control" rows="2" ng-model="vm.account.tagline">{{ vm.account.tagline }}</textarea>
+                        </div>
                     </div>
 
                     <div class="row">
-
-                      <div class="form-group col-sm-4">
-                        <label for="city">City</label>
-                        <input type="text" class="form-control" id="city" value="{{ vm.account.city }}" ng-model="vm.account.city">
-                      </div>
-
-                      <div class="form-group col-sm-6">
-                        <label for="country">Country</label>
-                        <select ui-jq="chosen" id="country" ui-options="{width: '100%'}" ng-model="vm.account.country">
-                          <option>France</option>
-                          <option>Morocco</option>
-                          <option>United States</option>
-                          <option>Germany</option>
-                          <option>Spain</option>
-                        </select>
-                      </div>
-
-                      <div class="form-group col-sm-4">
-                        <label for="zip">Zip Code</label>
-                        <input type="text" class="form-control" id="zip" value="{{ vm.account.post_code }}" ng-model="vm.account.post_code">
-                      </div>
-
+                        <div class="form-group col-sm-6">
+                            <label for="phone">Phone Main</label>
+                            <input type="text" class="form-control" ng-model="vm.account.phone_main">
+                            <span class="help-block">+(34) 13 24 76 98</span>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="phone">Phone Mobile</label>
+                            <input type="text" class="form-control" ng-model="vm.account.phone_mobile">
+                            <span class="help-block">+(34) 13 24 76 98</span>
+                        </div>
                     </div>
-
-                    <div class="row">
-
-                      <div class="form-group col-sm-6">
-                        <label for="email">E-mail</label>
-                        <input type="email" class="form-control" id="email" value="{{ vm.account.email }}" ng-model="vm.account.email">
-                      </div>
-
-                      <div class="form-group col-sm-6">
-                        <label for="tagline">Tag line</label>
-                        <textarea class="form-control" id="tagline" rows="2" ng-model="vm.account.tagline">{{ vm.account.tagline }}</textarea>
-                      </div>
-<!--                       <div class="form-group col-sm-6">
-                        <label for="tagline">Tag line</label>
-                        <input type="text" class="form-control" id="tagline" value="{{ vm.account.tagline }}"/>
-                      </div> -->
-
-                    </div>
-
-                    <div class="row">
-
-                      <div class="form-group col-sm-6">
-                        <label for="phone">Phone Main</label>
-                        <input type="text" class="form-control" id="phone" value="{{ vm.account.phone_main }}" ng-model="vm.account.phone_main">
-                        <span class="help-block">+(34) 13 24 76 98</span>
-                      </div>
-
-                      <div class="form-group col-sm-6">
-                        <label for="phone">Phone Mobile</label>
-                        <input type="text" class="form-control" id="phone" value="{{ vm.account.phone_mobile }}" ng-model="vm.account.phone_mobile">
-                        <span class="help-block">+(34) 13 24 76 98</span>
-                      </div>
-
-                      <div class="form-group col-sm-6">
-                        <label for="avatar">Profile Picture</label>
-                        <input ui-jq="filestyle" type="file" class="filestyle" ui-options="{
-                          buttonText: 'Find file',
-                          iconName: 'fa fa-inbox'
-                        }" id="avatar" ng-model="vm.account.user_pic">
-                        <span class="help-block">Allowed files: gif, png, jpg. Max file size 1Mb</span>
-                      </div>
-
-                    </div>
-
-                    <div class="row">
-
-                      <div class="form-group col-sm-6">
-                        <label for="website">Website</label>
-                        <input type="text" class="form-control" id="website" value="http://www.optiz.fr">
-                      </div>
-
-                      <div class="form-group col-sm-6">
-                        <label for="bio">Bio</label>
-                        <textarea class="form-control" id="bio" rows="4"></textarea>
-                      </div>
-
-                    </div>
-
                     <div class="row">
                       <div class="form-group col-md-12 legend">
                         <h4><strong>Social</strong> Settings</h4>
@@ -689,47 +680,37 @@
                       </div>
 
                     </div> -->
-
+                    <!-- <button class="btn btn-rounded btn-default" ng-click="vm.showPass();">Update Username / Password</button> -->
                     <div class="row">
-                      <div class="form-group col-md-12 legend">
-                        <h4><strong>Security</strong> Settings</h4>
-                        <p>Secure your account</p>
-                      </div>
+                        <div class="form-group col-md-12 legend">
+                            <h4><strong>Security</strong> Settings</h4>
+                            <p>Secure your account</p>
+                        </div>
                     </div>
-
                     <div class="row">
-
-                      <div class="form-group col-sm-6">
-                        <label for="username">Username</label>
-                        <input type="text" class="form-control" id="username" value="Johny.d" ng-model="vm.account.username">
-                      </div>
-
-
-                      <div class="form-group col-sm-6">
-                        <label for="password">Current Password</label>
-                        <input type="password" class="form-control" id="password" value="secretpassword" readonly>
-                      </div>
-
+                        <div class="form-group col-sm-6">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" value="Johny.d" ng-model="vm.account.username">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="password">Current Password</label>
+                            <input type="password" class="form-control" id="password" value="secretpassword" readonly>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="new-password">New Password</label>
+                            <input type="password" class="form-control" id="new-password" ng-model="vm.account.password">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="new-password-repeat">New Password Repeat</label>
+                            <input type="password" class="form-control" id="new-password-repeat" ng-model="vm.account.confirm_password">
+                        </div>
                     </div>
-
-                    <div class="row">
-
-                      <div class="form-group col-sm-6">
-                        <label for="new-password">New Password</label>
-                        <input type="password" class="form-control" id="new-password" ng-model="vm.account.password">
-                      </div>
-
-                      <div class="form-group col-sm-6">
-                        <label for="new-password-repeat">New Password Repeat</label>
-                        <input type="password" class="form-control" id="new-password-repeat" ng-model="vm.account.confirm_password">
-                      </div>
-
-                    </div>
-                    <button type="submit" class="btn btn-lg btn-primary">Update Profile</button>
+                    <button type="submit" class="btn btn-rounded btn-primary">Update Profile</button>
                   </form>
                 </div>
               </tab>
-              <tab heading="Preferences">
+
+              <tab heading="Preferences" ng-if="vm.isUser">
                 <div class="wrap-reset">
                   <div class="tile-header">
                     <h1 class="custom-font">Email and Notification <strong>Preferences</strong>:</h1>
@@ -739,42 +720,41 @@
 
                       <div class="form-group col-sm-6">
                         <label class="checkbox checkbox-custom">
-                          <input type="checkbox" checked=""><i></i> New/Updated Requests
+                          <input type="checkbox" ng-model="vm.account.request_email"><i></i> New/Updated Requests
                         </label>
                         <label class="checkbox checkbox-custom">
-                          <input type="checkbox" checked=""><i></i> Request Approval Needed
+                          <input type="checkbox" ng-model="vm.account.approval_email"><i></i> Request Approval Needed
                         </label>
                         <label class="checkbox checkbox-custom">
-                          <input type="checkbox"><i></i> New/Updated Offers
+                          <input type="checkbox" ng-model="vm.account.offer_email"><i></i> New/Updated Offers
                         </label>
                         <label class="checkbox checkbox-custom">
-                          <input type="checkbox"><i></i> Validated Offer
+                          <input type="checkbox" ng-model="vm.account.validated_email"><i></i> Validated Offer
                         </label>
                         <label class="checkbox checkbox-custom">
-                          <input type="checkbox"><i></i> Refused Offer
+                          <input type="checkbox" ng-model="vm.account.refused_email"><i></i> Refused Offer
                         </label>                        
                       </div>
 
                       <div class="form-group col-sm-6">
                         <label class="checkbox checkbox-custom">
-                          <input type="checkbox" checked=""><i></i> Completed Order
+                          <input type="checkbox" ng-model="vm.account.order_email"><i></i> Completed Order
                         </label>
                         <label class="checkbox checkbox-custom">
-                          <input type="checkbox" checked=""><i></i> Canceled Request
+                          <input type="checkbox" ng-model="vm.account.canceled_email"><i></i> Canceled Request
                         </label>
                         <label class="checkbox checkbox-custom">
-                          <input type="checkbox"><i></i> New Team Member
+                          <input type="checkbox" ng-model="vm.account.new_user_email"><i></i> New Team Member
                         </label>
                         <label class="checkbox checkbox-custom">
-                          <input type="checkbox"><i></i> Personal Data Change
+                          <input type="checkbox" ng-model="vm.account.info_change_email"><i></i> Personal Data Change
                         </label>                        
                       </div>
-                      <button class="btn btn-primary">Update Preferences</button>
+                      <button class="btn btn-rounded btn-primary" ng-click="vm.update();">Update Preferences</button>
                     </div>
                   </div>
                 </div>
               </tab>
-
 
             </tabset>
 
@@ -786,16 +766,6 @@
 
       </div>
       <!-- /col -->
-
-
-
-
-
-
-
-
-
-
 
     </div>
     <!-- /row -->
