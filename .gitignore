@@ -57,9 +57,7 @@ uploads/
 *local_settings.py
 local_settings.py
 local_settings
-*email_info.py
-email_info.py
-email_info
+wease/email_info.py
 *.db
 *db
 db
