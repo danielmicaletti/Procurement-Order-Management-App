@@ -4,11 +4,13 @@ boto==2.38.0
 dj-database-url==0.3.0
 dj-static==0.0.6
 django-ipware==0.1.0
+django-jsonfield==0.9.13
 django-storages==1.1.8
 django-toolbelt==0.0.1
 djangorestframework==3.0.5
 drf-nested-routers==0.9.0
 ecdsa==0.13
+eventlog==0.11.0
 gunicorn==19.3.0
 paramiko==1.15.2
 psycopg2==2.6
