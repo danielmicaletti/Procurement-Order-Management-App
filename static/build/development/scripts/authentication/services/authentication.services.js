@@ -45,8 +45,10 @@
             $state.go('app.dashboard');
         }
 
-        function loginErrorFn(data, status, headers, config) {
-            console.error('Epic failure!');
+        function loginErrorFn(response) {
+            console.log(response.data.message);
+            console.log(response.status);
+            return $q.reject(response.data.message);
         }
 
         function logout() {
@@ -60,8 +62,8 @@
             $state.go('core.login');
         }
 
-        function logoutErrorFn(data, status, headers, config) {
-            console.error('Epic failure!');
+        function logoutErrorFn(response) {
+            return $q.reject(response.status);
         }
 
         function register(company, newUser) {

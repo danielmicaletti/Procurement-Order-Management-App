@@ -24,7 +24,18 @@
       }
 
       function login() {
-        Authentication.login(vm.email, vm.password);
+        Authentication.login(vm.email, vm.password)
+          .then(loginSuccess)
+          .catch(loginError);
+      }
+
+      function loginSuccess(data){
+
+      }
+
+      function loginError(errorMsg){
+        console.log(errorMsg);
+        $scope.error = errorMsg;
       }
   }
 })();

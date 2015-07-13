@@ -146,7 +146,7 @@ class LoginView(views.APIView):
         else:
             return Response({
                 'status': 'Unauthorized',
-                'message': 'Username/password combination invalid.'
+                'message': 'Username or password invalid'
             }, status=status.HTTP_401_UNAUTHORIZED)
 
 class LogoutView(views.APIView):

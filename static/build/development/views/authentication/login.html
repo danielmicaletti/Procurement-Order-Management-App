@@ -8,7 +8,7 @@
     <h2 class="text-light text-greensea">Log In</h2>
 
     <form name="form" class="form-validation mt-20" ng-submit="vm.login()" novalidate>
-      <div class="alert alert-danger" ng-show="error" ng-bind="error"></div>
+      <div class="alert alert-danger login-alert" ng-show="error" ng-bind="error"></div>
 
       <div class="form-group">
         <input type="email" class="form-control underline-input" placeholder="Email" ng-model="vm.email" required>
@@ -29,33 +29,6 @@
     </form>
 
     <hr class="b-3x"/>
-
-<!--     <div class="social-login text-left">
-
-      <ul class="pull-right list-unstyled list-inline">
-				<li class="p-0">
-					<a class="btn btn-sm btn-primary b-0 btn-rounded-20" href="javascript:;"><i class="fa fa-facebook"></i></a>
-				</li>
-				<li class="p-0">
-					<a class="btn btn-sm btn-info b-0 btn-rounded-20" href="javascript:;"><i class="fa fa-twitter"></i></a>
-				</li>
-				<li class="p-0">
-					<a class="btn btn-sm btn-lightred b-0 btn-rounded-20" href="javascript:;"><i class="fa fa-google-plus"></i></a>
-				</li>
-				<li class="p-0">
-					<a class="btn btn-sm btn-primary b-0 btn-rounded-20" href="javascript:;"><i class="fa fa-linkedin"></i></a>
-				</li>
-			</ul>
-
-			<h5>Or login with</h5>
-
-		</div>
-
-    <div class="bg-slategray lt wrap-reset mt-40">
-      <p class="m-0">
-				<a ui-sref="core.signup" class="text-uppercase">Create an account</a>
-			</p>
-    </div> -->
 
   </div>
 
