@@ -124,19 +124,19 @@ class LoginView(views.APIView):
                 user = self.request.user
                 ip = get_ip(request)
                 print "IP --- %s" %ip
-                log(
-                    user=user,
-                    company=user.user_company,
-                    action='user login',
-                    obj=user,
-                    extra={
-                        'account_id':user.id,
-                        'account_first_name':user.first_name,
-                        'account_last_name':user.last_name,
-                        'login_ip':ip,
-                    }
-                )
-                print "LOG === %s" % log
+                # log(
+                #     user=user,
+                #     company=user.user_company,
+                #     action='user login',
+                #     obj=user,
+                #     extra={
+                #         'account_id':user.id,
+                #         'account_first_name':user.first_name,
+                #         'account_last_name':user.last_name,
+                #         'login_ip':ip,
+                #     }
+                # )
+                # print "LOG === %s" % log
                 return Response(serialized.data)
             else:
                 return Response({
