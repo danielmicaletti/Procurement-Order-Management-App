@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from authentication.models import Account, Company, Address, Activity
+from authentication.models import Account, Company, Address
 
 # class AccountAdmin(admin.ModelAdmin):
 #   class Meta:
@@ -131,9 +131,3 @@ class CompanyAdmin(admin.ModelAdmin):
     list_filter = ('name',)
        
 admin.site.register(Company, CompanyAdmin)
-
-class ActivityAdmin(admin.ModelAdmin):
-   class Meta:
-       model = Activity
-       
-admin.site.register(Activity, ActivityAdmin)

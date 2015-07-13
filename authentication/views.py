@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.utils import timezone
 from ipware.ip import get_ip
 from eventlog.models import log
-from authentication.models import Account, Activity, Company, Address
+from authentication.models import Account, Company, Address
 from authentication.serializers import AccountSerializer, CompanySerializer, AddressSerializer, UserCompanySerializer
 
 class AccountViewSet(viewsets.ModelViewSet):
@@ -116,13 +116,14 @@ class LoginView(views.APIView):
         password = data.get('password', None)
 
         account = authenticate(email=email, password=password)
+        print "ACCT -- %s" account
         if account is not None:
             if account.is_active:
                 login(request, account)
                 serialized = AccountSerializer(account)
                 user = self.request.user
                 ip = get_ip(request)
-                obj, created = Activity.objects.get_or_create(active_user=user, user_login_date=timezone.now(), user_ip=ip)
+                print "IP --- %s" %ip
                 log(
                     user=user,
                     company=user.user_company,
@@ -135,6 +136,7 @@ class LoginView(views.APIView):
                         'login_ip':ip,
                     }
                 )
+                print "LOG === %s" % log
                 return Response(serialized.data)
             else:
                 return Response({

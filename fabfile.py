@@ -21,7 +21,7 @@ def deploy():
     
     # local('git push')
     
-    # local('./manage.py collectstatic')
+    local('./manage.py collectstatic')
     
     local('heroku maintenance:on')
     
