@@ -154,6 +154,7 @@ class LogoutView(views.APIView):
 
     def post(self, request, format=None):
         user = self.request.user
+        print "USER LOGOUT --- %s"%user
         ip = get_ip(request)
         log(
             user=user,
