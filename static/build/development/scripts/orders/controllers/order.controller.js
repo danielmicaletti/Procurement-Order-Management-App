@@ -6,16 +6,15 @@
     .controller('OrderController', OrderController);
 
   OrderController.$inject = [
-    '$scope', '$location', '$stateParams', '$state', '$log', 'Authentication', 'Account', 'Company', 'Order', 'toastr',
+    '$scope', '$location', '$stateParams', '$state', '$log', 'Authentication', 'Account', 'Company', 'Order', 'Messages', 'toastr',
   ];
 
-  function OrderController($scope, $location, $stateParams, $state, $log, Authentication, Account, Company, Order, toastr) {
+  function OrderController($scope, $location, $stateParams, $state, $log, Authentication, Account, Company, Order, Messages, toastr) {
     var vm = this;
 
     activate();
 
     $scope.stati = {
-
       'WRQ':'text-cyan',
       'PEN':'text-warning',
       'OFR':'text-drank',
@@ -46,7 +45,7 @@
     function getOrderSuccess(data) {
       vm.order = data;
       console.log(vm.order);
-      var authUserCo = parseInt(vm.authenticatedAccount.user_company);
+      var authUserCo = parseInt(vm.authenticatedAccount.user_company, 10);
       pageTitle(vm.order);
       if(vm.authenticatedAccount.optiz && vm.order.order_status === 'PEN'){
         toastr.info('Offer is needed for this order.');
@@ -58,14 +57,43 @@
       }
       if(vm.order.order_offer){
         vm.curOfferTab = true;
+        vm.auth_amount = false;
+        console.log(vm.authenticatedAccount.auth_amount);
+        var user_auth = parseInt(vm.authenticatedAccount.auth_amount, 10);
+        console.log(user_auth);
+        console.log(vm.order.order_total);
+        var offer_total = parseInt(vm.order.order_total, 10);
+        if(user_auth >= offer_total){
+          vm.auth_amount = true;
+        }else if(vm.authenticatedAccount.access_level >= 6){
+          vm.auth_amount = true; 
+        }
       }else{
         vm.reqTab = true;
       }
+
+      getActivity();
+
     }
 
     function getOrderError(errorMsg) {
       $state.go('app.dashboard');
       toastr.error('Your request can not be processed '+errorMsg+' . Please contact Optiz');
+    }
+
+    function getActivity(){
+      Messages.orderActivity(vm.order.id)
+        .then(orderActivitySuccess)
+        .catch(orderActivityError);
+    }
+
+    function orderActivitySuccess(data){
+      console.log(data);
+      vm.orderActivity = data;
+    }
+
+    function orderActivityError(errorMsg){
+      console.log(errorMsg);
     }
 
     function pageTitle(ordInfo){
@@ -103,7 +131,7 @@
       } else {
         toastr.success('Your Request has been submitted to '+vm.order.order_company.name+' management for approval.');
       }
-
+      getActivity();
     }
 
     function confirmReqError(errorMsg) {
@@ -122,6 +150,7 @@
     function updateReqStatusSuccess(data){
       console.log(data);
       vm.order = data;
+      getActivity();
       // toastr.info('Your response has been sent to Optiz'); 
     }
 
@@ -157,7 +186,8 @@
       console.log(data);
       vm.order = data;
       pageTitle(vm.order);
-      toastr.info('Your response has been sent to Optiz');   
+      toastr.info('Your response has been sent to Optiz');
+      getActivity();   
     }
 
     function updateOfferError(errorMsg) {

@@ -6,10 +6,10 @@
         .controller('OfferController', OfferController);
 
     OfferController.$inject = [
-        '$scope', '$filter', '$state', '$stateParams', '$log', '$cookies', 'Authentication', 'Account', 'Company', 'Order', 'toastr',
+        '$scope', '$filter', '$state', '$stateParams', '$log', '$cookies', 'Authentication', 'Account', 'Company', 'Order', 'Messages', 'toastr',
     ];
 
-    function OfferController($scope, $filter, $state, $stateParams, $log, $cookies, Authentication, Account, Company, Order, toastr) {
+    function OfferController($scope, $filter, $state, $stateParams, $log, $cookies, Authentication, Account, Company, Order, Messages, toastr) {
 
         var vm = this;
      
@@ -72,12 +72,29 @@
                     ref_title: 'Request',
                 };
             }
+            getActivity();
         }
 
         function getOrderError(errorMsg) {
             $state.go('app.dashboard');
             toastr.error('Your request can not be processed '+errorMsg+'');          
         }
+
+        function getActivity(){
+          Messages.orderActivity(vm.order.id)
+            .then(orderActivitySuccess)
+            .catch(orderActivityError);
+        }
+
+        function orderActivitySuccess(data){
+          console.log(data);
+          vm.orderActivity = data;
+        }
+
+        function orderActivityError(errorMsg){
+          console.log(errorMsg);
+        }
+
         console.log(vm.offer);
 
         vm.reqTab = true;

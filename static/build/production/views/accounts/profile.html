@@ -34,11 +34,6 @@
     <!-- row -->
     <div class="row">
 
-
-
-
-
-
       <!-- col -->
       <div class="col-md-4">
 
@@ -49,7 +44,7 @@
           <div class="tile-widget p-30 text-center">
 
             <div class="thumb thumb-xl">
-              <img class="img-circle" ng-src="{{path.static_files}}{{ vm.account.user_pic }}" alt=""/>
+              <img class="img-circle" ng-src="{{ path.static_files }}{{ vm.account.user_pic }}" alt=""/>
             </div>
             <h4 class="mb-0"><strong>{{ vm.account.first_name }}</strong> {{ vm.account.last_name }}</h4>
             <span class="text-muted">{{ vm.account.position }}</span>
@@ -125,7 +120,7 @@
             <div class="media team" ng-repeat="user in vm.company.wease_company" ui-sref="app.pages.profile({username:user.username})">
               
               <div class="pull-left thumb">
-                <img class="media-object img-circle" ng-src="{{path.static_files}}{{ user.user_pic }}" alt="">
+                <img class="media-object img-circle" ng-src="{{ path.static_files }}{{ user.user_pic }}" alt="">
               </div>
 <!--               <div class="pull-right mt-10">
                 <button type="button" class="btn btn-rounded-20 btn-default btn-sm" style="width:30px;"><a ui-sref="app.pages.profile({username:user.username})"><i class="fa fa-eye" style="margin-left: -2px;"></i></a></button>
@@ -607,19 +602,59 @@
 
                     <div class="row">
                         <div class="form-group col-sm-6">
-                            <label for="avatar">Profile Picture</label>
+                            <label for="company_logo">Company Logo</label>
+                            <!-- Example: nv-file-select="" uploader="{Object}" options="{Object}" filters="{String}" -->
+                            <!-- <input type="file" nv-file-select="" uploader="uploader" /> -->
                             <input ui-jq="filestyle" type="file" class="filestyle" ui-options="{
                             buttonText: 'Find file',
-                            iconName: 'fa fa-inbox'
-                            }" ng-model="vm.account.user_pic">
-                            <span class="help-block">Allowed files: gif, png, jpg. Max file size 1Mb</span>
+                            iconName: 'glyphicon-file'
+                            }" nv-file-select="" uploader="uploader">
+                            <span class="help-block">Allowed files: gif, png, jpg</span>
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="tagline">Tag line</label>
                             <textarea class="form-control" rows="2" ng-model="vm.account.tagline">{{ vm.account.tagline }}</textarea>
                         </div>
                     </div>
-
+                    <div class="row" ng-show="vm.isFile">
+                        <div class="col-md-9 mb-20" >
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                    <th width="50%">Name</th>
+                                    <th ng-show="uploader.isHTML5">Size</th>
+                                    <th ng-show="uploader.isHTML5">Progress</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in uploader.queue">
+                                    <td><strong>{{ item.file.name }}</strong></td>
+                                    <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                    <td ng-show="uploader.isHTML5">
+                                        <div class="progress" style="margin-bottom: 0;">
+                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                    </td>
+                                    <td nowrap>
+                                        <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                        <span class="glyphicon glyphicon-trash"></span> Remove
+                                        </button>
+                                    </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group col-sm-6">
                             <label for="phone">Phone Main</label>

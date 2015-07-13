@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import permissions, status, views, viewsets
@@ -5,6 +6,7 @@ from rest_framework.response import Response
 # from authentication.permissions import IsAccountOwner
 from django.utils import timezone
 from ipware.ip import get_ip
+from eventlog.models import log
 from authentication.models import Account, Activity, Company, Address
 from authentication.serializers import AccountSerializer, CompanySerializer, AddressSerializer, UserCompanySerializer
 
@@ -22,20 +24,30 @@ class AccountViewSet(viewsets.ModelViewSet):
         return (permissions.IsAuthenticated(),)
 
     def perform_create(self, serializer):
-        # serializer = self.serializer_class(data=request.data)
-        # print "SER --- %s" % serializer.data
         if serializer.is_valid():
             print "ser --- %s" % serializer.data
             print "SRD --- %s" % self.request.data['company']
-            company = Company.objects.get(id=self.request.data['company'])
-            print "COMPANY ==== %s" % company
+            user = self.request.user
+            user_company = Company.objects.get(id=self.request.data['company'])
+            print "COMPANY ==== %s" % user_company
             acct = Account.objects.create_user(**serializer.validated_data)
-            acct.user_company = company
-            acct.user_created_by = self.request.user
+            acct.user_company = user_company
+            acct.user_created_by = user
             acct.access_level = serializer.data['access_level']
             acct.position = serializer.data['position']
             acct.auth_amount = serializer.data['auth_amount']
             acct.save()
+            log(
+                user=user,
+                company=user_company,
+                action='user created',
+                obj=acct,
+                extra={
+                    'account_id':acct.id,
+                    'account_first_name':acct.first_name,
+                    'account_last_name':acct.last_name,
+                }
+            )
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
 
         return Response({
@@ -44,8 +56,13 @@ class AccountViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def perform_update(self, serializer):
+        print "ACCOUNT SRD --- %s" % self.request.data
         if serializer.is_valid():
-            serializer.save(user=self.request.user, **self.request.data)
+            if 'file' in self.request.data:
+                user_pic = self.request.data['file']
+                serializer.save(user=self.request.user, user_pic=user_pic, **self.request.data)
+            else:
+                serializer.save(user=self.request.user, **self.request.data)
 
 class CompanyViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
@@ -54,13 +71,8 @@ class CompanyViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
-        print "COMP SELF == %s" % self
-        print "COMP Ser == %s" % serializer
-        # serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            # Company.objects.create(**serializer.validated_data)
             user = self.request.user
-
             serializer.save(user=user, **self.request.data)
 
         #     return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
@@ -70,10 +82,13 @@ class CompanyViewSet(viewsets.ModelViewSet):
         # }, status=status.HTTP_400_BAD_REQUEST)
 
     def perform_update(self, serializer):
-        print "COMP SELf === %s" % self
-        print "COMP SERIAL === %s" % serializer 
         if serializer.is_valid():
-            serializer.save(user=self.request.user, **self.request.data)
+            if 'file' in self.request.data:
+                company_logo = self.request.data['file']
+                print "COMP LOGO == %s" % company_logo
+                serializer.save(user=self.request.user, company_logo=company_logo, **self.request.data)
+            else:    
+                serializer.save(user=self.request.user, **self.request.data)
 
 class AddressViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
@@ -108,7 +123,18 @@ class LoginView(views.APIView):
                 user = self.request.user
                 ip = get_ip(request)
                 obj, created = Activity.objects.get_or_create(active_user=user, user_login_date=timezone.now(), user_ip=ip)
-
+                log(
+                    user=user,
+                    company=user.user_company,
+                    action='user login',
+                    obj=user,
+                    extra={
+                        'account_id':user.id,
+                        'account_first_name':user.first_name,
+                        'account_last_name':user.last_name,
+                        'login_ip':ip,
+                    }
+                )
                 return Response(serialized.data)
             else:
                 return Response({
@@ -125,6 +151,19 @@ class LogoutView(views.APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
+        user = self.request.user
+        ip = get_ip(request)
+        log(
+            user=user,
+            company=user.user_company,
+            action='user logout',
+            obj=user,
+            extra={
+                'account_id':user.id,
+                'account_first_name':user.first_name,
+                'account_last_name':user.last_name,
+                'login_ip':ip,
+            }
+        )
         logout(request)
-        print "logout --- %s" % request
         return Response({}, status=status.HTTP_204_NO_CONTENT)

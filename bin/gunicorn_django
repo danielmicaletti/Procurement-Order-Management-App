@@ -1,4 +1,4 @@
-#!/Users/danielmicaletti/Documents/VirtualEnvs/devel_wease/bin/python
+#!/Users/danielmicaletti/Documents/VirtualEnvs/wease_before_do/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'gunicorn==19.3.0','console_scripts','gunicorn_django'
 __requires__ = 'gunicorn==19.3.0'
 import sys

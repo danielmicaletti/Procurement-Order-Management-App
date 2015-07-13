@@ -45,8 +45,10 @@ INSTALLED_APPS = (
     'storages',
     'boto',
     'rest_framework',
+    'eventlog',
     'authentication',
-    'orders',   
+    'orders', 
+    # 'messages',  
 )
 
 MIDDLEWARE_CLASSES = (

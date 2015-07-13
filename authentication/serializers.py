@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 from django.contrib.auth import update_session_auth_hash
 from django.forms import widgets
 from rest_framework import serializers
+from eventlog.models import log
 from authentication.models import Account, Company, Address
 
 
@@ -13,10 +15,9 @@ class UserCompanySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ('id', 'email', 'username', 'user_name_full', 'user_created', 'user_created_by','user_updated','updated_user',
-                  'first_name', 'last_name', 'optiz', 'lang', 'user_company', 'user_company_full', 'position', 'access_level', 'auth_amount',
-                  'street_addr1', 'street_addr2', 'city', 'post_code', 'country',
-                  'phone_main', 'phone_mobile', 'user_pic',)
+        fields = ('id', 'email', 'username', 'user_name_full', 'first_name', 'last_name', 'optiz', 'lang', 
+                'user_company', 'user_company_full', 'position', 'access_level', 'auth_amount', 'street_addr1',
+                'street_addr2', 'city', 'post_code', 'country', 'phone_main', 'phone_mobile', 'user_pic',)
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -35,9 +36,21 @@ class AddressSerializer(serializers.ModelSerializer):
             comp = Company.objects.get(id=addr_comp)
         else:
             addr_user = Account.objects.get(id=validated_data['addr_user'])
+            comp = addr_user.user_company
         new_addr = Address.objects.create(addr_created_by=user, addr_company=comp, **validated_data)
         new_addr.save()
+        log(
+            user=user,
+            company=comp,
+            action='address created',
+            obj=new_addr,
+            extra={
+                'address_id':new_addr.id,
+                'company_name':new_addr.addr_location,
+            }
+        )
         return new_addr
+
 
 class CompanySerializer(serializers.ModelSerializer):
     wease_company = UserCompanySerializer(many=True, required=False)
@@ -47,7 +60,6 @@ class CompanySerializer(serializers.ModelSerializer):
     company_created_by = serializers.CharField(read_only=True)
     company_updated_by = serializers.CharField(read_only=True)
     email = serializers.CharField(read_only=True, required=False)
-    # company_assigned_to = serializers.StringRelatedField(many=True, read_only=True)
     company_logo = serializers.CharField(read_only=True)
 
     class Meta:
@@ -60,59 +72,96 @@ class CompanySerializer(serializers.ModelSerializer):
         print "VAL-DATA COMP === %s" % validated_data
         user = validated_data.pop('user')
         addr = validated_data.pop('company_address')
+        comp_assign = validated_data.pop('assign_optiz')
+        print "assign_optiz === %s" % comp_assign
         comp = Company.objects.create(company_created_by=user, **validated_data)
+        for optiz in comp_assign:
+            optiz_user = Account.objects.get(id=optiz)
+            comp.company_assigned_to.add(optiz_user)
         comp.save()
         comp_addr = Address.objects.create(addr_created_by=user, addr_company=comp, **addr)
         comp_addr.save()
         comp.company_address = comp_addr
         comp.save()
+        log(
+            user=user,
+            company=comp,
+            action='company registered',
+            obj=comp,
+            extra={
+                'company_id':comp.id,
+                'company_name':comp.name,
+            }
+        )
         return comp
 
     def update(self, instance, validated_data):
-        print "SELF COMP UPD --- %s" % self
-        print "INST COMP UPD === %s" % instance
-        print "VAL-DATA COMP UPD === %s" % validated_data
+        user = validated_data.pop('user')
         if 'default_address' in validated_data:
             def_addr = validated_data.pop('default_address')
-            print "DEF ADDR === %s" % def_addr
             comp_addr = Address.objects.get(id=def_addr['id'])
-            print "comp ADDR === %s" % comp_addr
             instance.company_address = comp_addr
         elif 'company_address' in validated_data:
             company_address = validated_data.pop('company_address')
-            print "COMP ADDRE ---++ %s" % company_address
-            print "COMP ADDree id === %s" % company_address['id']
-            comp_addr = Address.objects.get(id=company_address['id'])
-            print "COMP ADDree id === %s" % comp_addr
-            comp_addr.street_addr1 = company_address.get('street_addr1', comp_addr.street_addr1)
-            print "COM ADD STR 1 === %s" % comp_addr.street_addr1
-            comp_addr.street_addr2 = company_address.get('street_addr2', comp_addr.street_addr2)
-            print "COM ADD STR 2 === %s" % comp_addr.street_addr2
-            comp_addr.city = company_address.get('city', comp_addr.city)
-            comp_addr.post_code = company_address.get('post_code', comp_addr.post_code)
-            comp_addr.country = company_address.get('country', comp_addr.country)
-            comp_addr.email = company_address.get('email', comp_addr.email)
-            comp_addr.phone_main = company_address.get('phone_main', comp_addr.phone_main)
-            comp_addr.addr_notes = company_address.get('addr_notes', comp_addr.addr_notes)
-            comp_addr.addr_location = company_address.get('addr_location', comp_addr.addr_location)
-            comp_addr.save()
+            if 'id' in company_address:
+                comp_addr = Address.objects.get(id=company_address['id'])
+                comp_addr.street_addr1 = company_address.get('street_addr1', comp_addr.street_addr1)
+                comp_addr.street_addr2 = company_address.get('street_addr2', comp_addr.street_addr2)
+                comp_addr.city = company_address.get('city', comp_addr.city)
+                comp_addr.post_code = company_address.get('post_code', comp_addr.post_code)
+                comp_addr.country = company_address.get('country', comp_addr.country)
+                comp_addr.email = company_address.get('email', comp_addr.email)
+                comp_addr.phone_main = company_address.get('phone_main', comp_addr.phone_main)
+                comp_addr.addr_notes = company_address.get('addr_notes', comp_addr.addr_notes)
+                comp_addr.addr_location = company_address.get('addr_location', comp_addr.addr_location)
+                comp_addr.save()
         if 'assign_optiz' in validated_data:
-            instance.company_assigned_to.clear()
-            for optiz in validated_data['assign_optiz']:
-                print "OPTIZ === %s" % optiz
-                optiz_user = Account.objects.get(id=optiz)
-                instance.company_assigned_to.add(optiz_user);
+            opt_users = validated_data['assign_optiz']
+            for ou in instance.company_assigned_to.all():
+                if not ou.id in opt_users:
+                    instance.company_assigned_to.remove(ou)
+            for optiz in opt_users:
+                if not instance.company_assigned_to.all().filter(id=optiz).exists():
+                    optiz_user = Account.objects.get(id=optiz)
+                    print "OPTIZ ASS === %s" % optiz_user
+                    instance.company_assigned_to.add(optiz_user);
+                    log(
+                        user=user,
+                        company=instance,
+                        action='optiz assigned',
+                        obj=instance,
+                        extra={
+                            'company_id':instance.id,
+                            'company_name':instance.name,
+                            'optiz_assigned':optiz_user.username,
+                            'optiz_assigned_name': ''.join([str(optiz_user.first_name),' ',str(optiz_user.last_name)])
+                        }
+                    )
+        else:
+            log(
+                user=user,
+                company=instance,
+                action='company updated',
+                obj=instance,
+                extra={
+                    'company_id':instance.id,
+                    'company_name':instance.name,
+                }
+            )            
         instance.name = validated_data.get('name', instance.name)
         instance.company_website = validated_data.get('company_website', instance.company_website)
-        # instance.company_assigned_to = validated_data.get('company_assigned_to', instance.company_assigned_to)
-
+        instance.company_logo = validated_data.get('company_logo', instance.company_logo)
+        instance.company_updated_by = user
         instance.save()
+
         return instance
 
 
 class AccountSerializer(serializers.ModelSerializer):
     user_company_full = serializers.CharField(source='user_company.get_name', read_only=True, required=False)
     user_company = serializers.CharField(source='user_company.id',required=False)
+    username = serializers.CharField(required=False)
+    email = serializers.CharField(required=False)
     password = serializers.CharField(write_only=True, required=False)
     confirm_password = serializers.CharField(write_only=True, required=False)
     user_created_by = serializers.CharField(read_only=True)
@@ -136,6 +185,7 @@ class AccountSerializer(serializers.ModelSerializer):
         print "SELF === %s" % self
         print "INST === %s" % instance
         print "VAL-DATA === %s" % validated_data
+        user = validated_data.pop('user')
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
         instance.first_name = validated_data.get('first_name', instance.first_name)
@@ -163,7 +213,7 @@ class AccountSerializer(serializers.ModelSerializer):
         instance.canceled_email = validated_data.get('canceled_email', instance.canceled_email)
         instance.new_user_email = validated_data.get('new_user_email', instance.new_user_email)
         instance.info_change_email = validated_data.get('info_change_email', instance.info_change_email)
-
+        instance.user_updated_by = user
         instance.save()
         password = validated_data.get('password', None)
         confirm_password = validated_data.get('confirm_password', None)
@@ -173,5 +223,15 @@ class AccountSerializer(serializers.ModelSerializer):
             instance.save()
 
             update_session_auth_hash(self.context.get('request'), instance)
-
+        log(
+            user=user,
+            company=instance.user_company,
+            action='user updated',
+            obj=instance,
+            extra={
+                'account_id':instance.id,
+                'account_first_name':instance.first_name,
+                'account_last_name':instance.last_name,
+            }
+        )
         return instance

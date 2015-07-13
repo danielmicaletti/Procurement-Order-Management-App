@@ -82,13 +82,7 @@
         "chosen.jquery.js",
         "chosen.css"
       ]
-    },
-    // "chosen": {
-    //   "main": [
-    //     "chosen.jquery.js",
-    //     "chosen.css"
-    //   ]
-    // },    
+    },  
     "rickshaw": {
       "main": [
         "rickshaw.js",

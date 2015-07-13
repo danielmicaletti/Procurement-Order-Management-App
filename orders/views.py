@@ -153,16 +153,6 @@ class OfferViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         if serializer.is_valid():
             serializer.save(user=self.request.user, **self.request.data)
-            # return super(OrderViewSet, self).perform_create(serializer)
-
-# class OffersViewSet(viewsets.ModelViewSet):
-#     lookup_field = 'id'
-#     queryset = Offer.objects.all()
-#     serializer_class = OfferSerializer
-
-#     def perform_create(self, serializer):
-#         if serializer.is_valid():
-#             serializer.save(user=self.request.user, **self.request.data)
 
 class OfferItemViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'

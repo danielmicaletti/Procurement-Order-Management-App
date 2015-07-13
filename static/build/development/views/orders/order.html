@@ -52,7 +52,7 @@
               <a href="javascript:window.print()" class="btn btn-ef btn-ef-1 btn-ef-1-default btn-ef-1a btn-rounded-20" tooltip="Print"><i class="fa fa-print"></i></a>
             </span>
           </div>
-          <div class="col-md-4" ng-if="vm.order.order_status === 'OFR' && vm.orderCompany && apv">
+          <div class="col-md-4" ng-if="vm.order.order_status === 'OFR' && vm.orderCompany && vm.auth_amount">
             <span class="controls" ng-controller="OfferApvlModalCtrl">
               <p class="text-uppercase text-strong mb-10 custom-font">Approve Current Offer</p>
               <a ng-click="open('lg', 'Approval')" class="btn btn-ef btn-ef-1 btn-ef-1-success btn-ef-1a btn-rounded-20 mr-5" tooltip="View and Approve Offer"><i class="fa fa-check"></i></a>
@@ -324,7 +324,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-4 form-group m-20 pull-right" ng-controller="OfferApvlModalCtrl" ng-if="vm.order.order_status === 'OFR' && vm.orderCompany && apv">
+                    <div class="col-md-4 form-group m-20 pull-right" ng-controller="OfferApvlModalCtrl" ng-if="vm.order.order_status === 'OFR' && vm.orderCompany &&  vm.auth_amount">
                         <button ng-click="open('lg', 'Approval')" class="btn btn-rounded btn-success btn-block">Approve</button>
                         <button ng-click="open('lg', 'Refusal')" class="btn btn-rounded btn-lightred btn-block">Refuse</button>
                     </div>
@@ -397,108 +397,6 @@
           <!-- /row -->
 
         </tab>
-
-        <tab heading="Order Items" ng-show="vm.order.order_status === 'IDK'">
-
-          <!-- row -->
-          <div class="row">
-            <!-- col -->
-            <div class="col-md-12">
-
-              <!-- tile -->
-              <section class="tile tile-simple">
-
-                <!-- tile body -->
-                <div class="tile-body p-0">
-
-                  <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                      <thead>
-                        <tr>
-                          <th>Family</th>
-                          <th>SubFamily</th>
-                          <th>Item Status</th>
-                          <th>Price</th>
-                          <th>Quantity</th>
-                          <th>Unit</th>
-                          <th>Discount %</th>
-                          <th>Discount Amount</th>
-                          <th>Total</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><a href="javascript:;">0000156</a></td>
-                          <td>Onions</td>
-                          <td><span class="label label-success">Available</span></td>
-                          <td>{{ 1.56 | currency }}</td>
-                          <td>3</td>
-                          <td>kg</td>
-                          <td>5%</td>
-                          <td>{{ (1.56*3)*0.05 | number:2 }}</td>
-                          <td>{{ (1.56*3) - (1.56*3)*0.05 | currency }}</td>
-                        </tr>
-                        <tr>
-                          <td><a href="javascript:;">0496116</a></td>
-                          <td>Peppers</td>
-                          <td><span class="label label-success">Available</span></td>
-                          <td>{{ 2.29 | currency }}</td>
-                          <td>5</td>
-                          <td>kg</td>
-                          <td>8%</td>
-                          <td>{{ (2.29*5)*0.08 | number:2 }}</td>
-                          <td>{{ (2.29*5) - (2.29*5)*0.08 | currency }}</td>
-                        </tr>
-                        <tr>
-                          <td><a href="javascript:;">9611159</a></td>
-                          <td>Carrots</td>
-                          <td><span class="label label-danger">Not Available</span></td>
-                          <td>{{ 0.99 | currency }}</td>
-                          <td>1</td>
-                          <td>kg</td>
-                          <td>20%</td>
-                          <td>{{ (0.99*1)*0.2 | number:2 }}</td>
-                          <td>{{ (0.99*1) - (0.99*1)*0.2 | currency }}</td>
-                        </tr>
-                        <tr>
-                          <td><a href="javascript:;">6621148</a></td>
-                          <td>Apples</td>
-                          <td><span class="label label-success">Available</span></td>
-                          <td>{{ 3.90 | currency }}</td>
-                          <td>18</td>
-                          <td>kg</td>
-                          <td>33%</td>
-                          <td>{{ (3.90*18)*0.33 | number:2 }}</td>
-                          <td>{{ (3.90*18) - (3.90*18)*0.33 | currency }}</td>
-                        </tr>
-                        <tr>
-                          <td><a href="javascript:;">9621485</a></td>
-                          <td>Lemons</td>
-                          <td><span class="label label-success">Available</span></td>
-                          <td>{{ 4.20 | currency }}</td>
-                          <td>2</td>
-                          <td>kg</td>
-                          <td>18%</td>
-                          <td>{{ (4.20*2)*0.18 | number:2 }}</td>
-                          <td>{{ (4.20*2) - (4.20*2)*0.18 | currency }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                </div>
-                <!-- /tile body -->
-
-              </section>
-              <!-- /tile -->
-
-            </div>
-            <!-- /col -->
-          </div>
-          <!-- /row -->
-
-        </tab>
-
         <tab heading="Comments">
 
           <!-- row -->
@@ -524,67 +422,8 @@
             <!-- col -->
             <div class="col-md-12">
               <!-- tile -->
-              <section class="tile tile-simple">
-
-                <!-- tile body -->
-                <div class="tile-body p-0">
-
-                  <div class="table-responsive">
-                    <table class="table table-hover table-striped">
-                      <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Desription</th>
-                        <th>Date</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr>
-                        <td><a href="javascript:;">1</a></td>
-                        <td>Order Created</td>
-                        <td>Jan 20, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Order Received</td>
-                        <td>Jan 20, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Order Shipped</td>
-                        <td>Jan 21, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Invoice Created</td>
-                        <td>Jan 21, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Invoice Sent</td>
-                        <td>Jan 21, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Payment Received</td>
-                        <td>Jan 23, 2015</td>
-                      </tr>
-                      <tr>
-                        <td><a href="javascript:;">2</a></td>
-                        <td>Order Completed</td>
-                        <td>Jan 23, 2015</td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                </div>
-                <!-- /tile body -->
-
-              </section>
+              <order-activity stati='stati' activity='vm.orderActivity'></order-activity>
               <!-- /tile -->
-
-
             </div>
             <!-- /col -->
           </div>

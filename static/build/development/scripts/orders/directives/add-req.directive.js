@@ -1,26 +1,23 @@
 (function () {
-  'use strict';
+    'use strict';
 
-  angular
-    .module('orders.directives')
-    .directive('addReq', addReq);
+    angular
+        .module('orders.directives')
+        .directive('addReq', addReq);
 
-  function addReq($sce) {
+    function addReq($sce) {
 
-	var directive = {
-		// replace: true,
-		// transclude:true,
-    controller: 'AddRequestController',
-    controllerAs: 'vm',
-		restrict: 'E',
-		scope: {
-			req: '=',
-      comp: '=',
-		},
-        templateUrl: $sce.trustAsResourceUrl(static_path('views/directives/addreq-directive.html')),
-	}
+        var directive = {
+            controller: 'AddRequestController',
+            controllerAs: 'vm',
+            restrict: 'E',
+            scope: {
+                req: '=',
+                comp: '=',
+            },
+            templateUrl: $sce.trustAsResourceUrl(static_path('views/directives/addreq-directive.html')),
+        }
 
-    return directive;
-  }
-
+        return directive;
+    }
 })();

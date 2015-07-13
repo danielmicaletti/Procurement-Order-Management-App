@@ -6,10 +6,10 @@
         .controller('CompanySettingsController', CompanySettingsController);
 
     CompanySettingsController.$inject = [
-        '$scope', '$state', '$stateParams', 'Authentication', 'Company', 'toastr',
+        '$scope', '$state', '$stateParams', '$cookies', 'Authentication', 'Company', 'FileUploader', 'toastr',
     ];
 
-    function CompanySettingsController($scope, $state, $stateParams, Authentication, Company, toastr) {
+    function CompanySettingsController($scope, $state, $stateParams, $cookies, Authentication, Company, FileUploader, toastr) {
 
         var companyId = $stateParams.companyId;
         console.log("companyId");
@@ -96,8 +96,12 @@
         }
 
         function companySuccessFn(data) {
-            toastr.success('Your account has been updated.');
             vm.company = data;
+            if (uploader.queue.length>0){
+                uploader.uploadAll()
+            }else{
+                toastr.success('Your account has been updated.');
+            }
         }
 
         function companyErrorFn(errorMsg) {
@@ -205,9 +209,11 @@
         }
 
         vm.assignOptiz = function(optiz){
-            console.log(optiz);
             var ao = {};
-            ao['assign_optiz'] = optiz;
+            ao.assign_optiz = [];
+            angular.forEach(optiz, function(v,k,o){
+                ao.assign_optiz.push(v.id);
+            })
             Company.update(companyId, ao)
                 .then(assignOptizSuccess)
                 .catch(assignOptizError);
@@ -224,5 +230,61 @@
             console.log(errorMsg);
         }
 
+        var csrf_token = $cookies.csrftoken;
+        var uploader = $scope.uploader = new FileUploader({
+            method: 'PUT',
+            url: '/api/v1/companies/'+companyId+'/',
+            headers : {
+                'X-CSRFToken': csrf_token 
+            },
+        });
+
+        // FILTERS
+        uploader.filters.push({
+            name: 'customFilter',
+            fn: function(item /*{File|FileLikeObject}*/, options) {
+                return this.queue.length < 10;
+            }
+        });
+
+        // CALLBACKS
+        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+            console.info('onWhenAddingFileFailed', item, filter, options);
+        };
+        uploader.onAfterAddingFile = function(fileItem) {
+            console.info('onAfterAddingFile', fileItem);
+            vm.isFile = true;
+        };
+        uploader.onAfterAddingAll = function(addedFileItems) {
+            console.info('onAfterAddingAll', addedFileItems);
+        };
+        uploader.onBeforeUploadItem = function(item) {
+            console.info('onBeforeUploadItem', item);
+        };
+        uploader.onProgressItem = function(fileItem, progress) {
+            console.info('onProgressItem', fileItem, progress);
+        };
+        uploader.onProgressAll = function(progress) {
+            console.info('onProgressAll', progress);
+        };
+        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            console.info('onSuccessItem', fileItem, response, status, headers);
+        };
+        uploader.onErrorItem = function(fileItem, response, status, headers) {
+            console.info('onErrorItem', fileItem, response, status, headers);
+        };
+        uploader.onCancelItem = function(fileItem, response, status, headers) {
+            console.info('onCancelItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            console.info('onCompleteItem', fileItem, response, status, headers);
+            vm.company.company_logo = response.company_logo; 
+        };
+        uploader.onCompleteAll = function() {
+            console.info('onCompleteAll');
+            toastr.success('Your account has been updated.');
+        };
+
+        console.info('uploader', uploader);
     }
 })();

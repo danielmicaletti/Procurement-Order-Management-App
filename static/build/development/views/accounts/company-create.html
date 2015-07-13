@@ -23,11 +23,10 @@
                     <!-- col -->
                     <div class="col-md-12">
                         <div class="wrap-reset">
-                            <form class="profile-settings" ng-submit="vm.createCompany();">
+                            <form class="profile-settings form-validation" name="createCompForm" ng-submit="vm.createCompany();" novalidate>
                                 <div class="row">
                                     <div class="form-group col-md-12 legend">
                                         <h4>Create WeASe <strong>Company</strong></h4>
-                                        <!-- <p>Your personal account settings</p> -->
                                     </div>
                                 </div>
                                 <div class="row">
@@ -35,8 +34,6 @@
                                         <label for="company-name">Company Name</label>
                                         <input type="text" class="form-control" ng-model="vm.company.name">
                                     </div>
-                                <!-- </div>
-                                <div class="row"> -->
                                     <div class="form-group col-sm-6">
                                         <label for="addr_location">Address Title</label>
                                         <input type="text" class="form-control" ng-model="vm.company.company_address.addr_location">
@@ -89,12 +86,19 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-sm-4">
-                                        <label for="company_logo">Company Logo</label>
-                                        <input ui-jq="filestyle" type="file" class="filestyle" ui-options="{
-                                        buttonText: 'Find file',
-                                        iconName: 'fa fa-inbox'
-                                        }" id="avatar" ng-model="vm.company.company_logo">
-                                        <span class="help-block">Allowed files: gif, png, jpg. Max file size 1Mb</span>
+                                        <label for="assign_optiz">Assign Optiz</label>
+                                        <select class="form-control" 
+                                                chosen 
+                                                multiple 
+                                                width="'100%'"
+                                                name="assignOptiz" 
+                                                ng-model="vm.company.assign_optiz"
+                                                ng-options="optiz.id as optiz.user_name_full for optiz in vm.optizUsers" 
+                                                data-placeholder="Assign Optiz"
+                                                required>
+                                                <option value=""></option>
+                                        </select>
+                                        <span class="text-red" ng-show="assignOptizForm.assignOptiz.$invalid">Required</span>
                                     </div>
                                     <div class="form-group col-sm-4">
                                         <label for="company_website">Website</label>
@@ -106,7 +110,7 @@
                                         <textarea class="form-control" rows="4" ng-model="vm.company.company_address.addr_notes"></textarea>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-lg btn-primary">Create Company</button>
+                                <button type="submit" class="btn btn-rounded btn-primary">Create Company</button>
                             </form>
                         </div>
                     </div>

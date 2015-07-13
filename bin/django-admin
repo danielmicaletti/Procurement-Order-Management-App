@@ -1,4 +1,4 @@
-#!/Users/danielmicaletti/Documents/VirtualEnvs/devel_wease/bin/python
+#!/Users/danielmicaletti/Documents/VirtualEnvs/wease_before_do/bin/python
 # EASY-INSTALL-ENTRY-SCRIPT: 'Django==1.7.5','console_scripts','django-admin'
 __requires__ = 'Django==1.7.5'
 import sys
