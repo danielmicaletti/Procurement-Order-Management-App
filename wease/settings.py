@@ -167,7 +167,7 @@ if not DEBUG:
 
 # from .email_info import EMAIL_USE_TLS, EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT
 # For gmail and google apps
-EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
+EMAIL_USE_TLS = True
 EMAIL_HOST = os.environ['EMAIL_HOST']
 EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
