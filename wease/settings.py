@@ -124,8 +124,6 @@ STATICFILES_FINDERS = (
 
 UPLOAD_FILE_PATTERN = "uploads/%s_%s"
 
-# MEDIA_ROOT = 'uploads/'
-
 TEMPLATE_DIRS = (
     
     os.path.join(BASE_DIR, 'templates'),
