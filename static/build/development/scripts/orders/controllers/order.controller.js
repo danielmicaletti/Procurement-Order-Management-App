@@ -151,7 +151,6 @@
       console.log(data);
       vm.order = data;
       getActivity();
-      // toastr.info('Your response has been sent to Optiz'); 
     }
 
     function updateReqStatusError(errorMsg){
