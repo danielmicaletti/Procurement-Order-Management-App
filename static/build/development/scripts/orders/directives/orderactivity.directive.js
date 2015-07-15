@@ -5,6 +5,8 @@
         .module('orders.directives')
         .directive('orderActivity', orderActivity);
 
+    orderActivity.$inject = ['$sce',];
+
     function orderActivity($sce) {
 
         var directive = {

@@ -5,7 +5,7 @@
         .module('layout.controllers')
         .controller('HeaderController', HeaderController);
 
-    HeaderController.$inject = ['$scope', '$state', 'Authentication', 'Messages'];
+    HeaderController.$inject = ['$scope', '$state', 'Authentication', 'Messages',];
 
     function HeaderController($scope, $state, Authentication, Messages) { 
     

@@ -5,7 +5,7 @@
         .module('messages.services')
         .factory('Messages', Messages);
 
-    Messages.$inject = ['$http', '$q'];
+    Messages.$inject = ['$http', '$q',];
 
     function Messages($http, $q) {
 

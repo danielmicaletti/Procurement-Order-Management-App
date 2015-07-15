@@ -30,9 +30,10 @@ jsSources = [
 	'build/development/scripts/accounts/**/*.js',
 	'build/development/scripts/orders/**/*.js',	
 	'build/development/scripts/layout/**/*.js',
+  'build/development/scripts/messages/**/*.js',
 	'build/development/scripts/controllers/**/*.js',
 	'build/development/scripts/directives/**/*.js',
-	'build/development/scripts/modules/**/*.js'
+	'build/development/scripts/modules/**/*.js', 
 
 ];
 sassSources = [
