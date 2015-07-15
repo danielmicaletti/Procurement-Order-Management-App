@@ -234,29 +234,30 @@
 
       <a href class="dropdown-toggle" dropdown-toggle>
         <fa name="bell"></fa>
-        <span class="badge bg-lightred">3</span>
+        <span class="badge bg-lightred">{{ vm.notifications.length }}</span>
       </a>
 
       <div class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInLeft">
 
         <div class="panel-heading">
-          You have <strong>3</strong> notifications
+          You have <strong> {{ vm.notifications.length }} </strong> notifications
         </div>
 
         <ul class="list-group">
 
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <span class="pull-left media-object media-icon bg-danger">
-                <fa name="ban"></fa>
+          <li class="list-group-item" ng-repeat="notification in vm.notifications | orderBy: '-timestamp'">
+            <div class="media" ng-click="vm.goTo(notification.content_type, notification.object_id);">
+              <span class="pull-left media-object media-icon" ng-class="vm.notColor[notification.content_type];">
+                <i ng-class="vm.icon[notification.content_type]"></i>
               </span>
               <div class="media-body">
-                <span class="block">User Imrich cancelled account</span>
-                <small class="text-muted">6 minutes ago</small>
+                <span class="block">{{notification.action | uppercase}}</span>
+                <small class="block">by <a ui-sref="app.pages.profile({username:notification.user.username})">{{notification.user.user_name_full}}</a></small>
+                <small class="text-muted">{{notification.timestamp | date:"d MMM y 'at' h:mm a"}}</small>
               </div>
-            </a>
+            </div>
           </li>
-
+<!-- 
           <li class="list-group-item">
             <a href="javascript:;" class="media">
               <span class="pull-left media-object media-icon bg-primary">
@@ -279,7 +280,7 @@
                 <small class="text-muted">18 minutes ago</small>
               </div>
             </a>
-          </li>
+          </li> -->
 
         </ul>
 

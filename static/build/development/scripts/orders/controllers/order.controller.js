@@ -6,10 +6,10 @@
     .controller('OrderController', OrderController);
 
   OrderController.$inject = [
-    '$scope', '$location', '$stateParams', '$state', '$log', 'Authentication', 'Account', 'Company', 'Order', 'Messages', 'toastr',
+    '$scope', '$stateParams', '$state', '$log', 'Authentication', 'Account', 'Company', 'Order', 'Messages', 'toastr',
   ];
 
-  function OrderController($scope, $location, $stateParams, $state, $log, Authentication, Account, Company, Order, Messages, toastr) {
+  function OrderController($scope, $stateParams, $state, $log, Authentication, Account, Company, Order, Messages, toastr) {
     var vm = this;
 
     activate();

@@ -44,6 +44,7 @@ class AddressSerializer(serializers.ModelSerializer):
             company=comp,
             action='address created',
             obj=new_addr,
+            notification=False,
             extra={
                 'address_id':new_addr.id,
                 'company_name':new_addr.addr_location,
@@ -88,6 +89,7 @@ class CompanySerializer(serializers.ModelSerializer):
             company=comp,
             action='company registered',
             obj=comp,
+            notification=True,
             extra={
                 'company_id':comp.id,
                 'company_name':comp.name,
@@ -130,6 +132,7 @@ class CompanySerializer(serializers.ModelSerializer):
                         company=instance,
                         action='optiz assigned',
                         obj=instance,
+                        notification=True,
                         extra={
                             'company_id':instance.id,
                             'company_name':instance.name,
@@ -143,6 +146,7 @@ class CompanySerializer(serializers.ModelSerializer):
                 company=instance,
                 action='company updated',
                 obj=instance,
+                notification=True,
                 extra={
                     'company_id':instance.id,
                     'company_name':instance.name,
@@ -228,6 +232,7 @@ class AccountSerializer(serializers.ModelSerializer):
             company=instance.user_company,
             action='user updated',
             obj=instance,
+            notification=False,
             extra={
                 'account_id':instance.id,
                 'account_first_name':instance.first_name,

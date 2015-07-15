@@ -213,7 +213,7 @@
 
         function addOfferSuccess(data){
             $log.info(data);
-            $state.go('app.orders.order', {orderId:vm.orderId})  
+            $state.go('app.orders.order', {orderId:vm.orderId});  
         }
 
         function addOfferError(errorMsg){

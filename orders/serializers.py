@@ -82,6 +82,7 @@ class OfferSerializer(serializers.ModelSerializer):
             company=order.order_company,
             action='offer created',
             obj=order,
+            notification=True,
             extra={
                 'order_id':order.id,
                 'order_number':order.order_number,
@@ -143,6 +144,7 @@ class ReqItemSerializer(serializers.ModelSerializer):
             company=order.order_company,
             action='request item created',
             obj=order,
+            notification=False,
             extra={
                 'order_id':order.id,
                 'order_number':order.order_number,
@@ -172,6 +174,7 @@ class ReqItemSerializer(serializers.ModelSerializer):
             company=order.order_company,
             action='request item updated',
             obj=order,
+            notification=False,
             extra={
                 'order_id':order.id,
                 'order_number':order.order_number,
@@ -245,6 +248,7 @@ class OrderSerializer(serializers.ModelSerializer):
                         company=instance.order_company,
                         action='request submitted',
                         obj=instance,
+                        notification=True,
                         extra={
                             'order_id':instance.id,
                             'order_number':instance.order_number,
@@ -260,6 +264,7 @@ class OrderSerializer(serializers.ModelSerializer):
                         company=instance.order_company,
                         action='request created',
                         obj=instance,
+                        notification=True,
                         extra={
                             'order_id':instance.id,
                             'order_number':instance.order_number,
@@ -279,6 +284,7 @@ class OrderSerializer(serializers.ModelSerializer):
                         company=instance.order_company,
                         action='order status updated',
                         obj=instance,
+                        notification=True,
                         extra={
                             'order_id':instance.id,
                             'order_number':instance.order_number,
@@ -305,17 +311,18 @@ class OrderSerializer(serializers.ModelSerializer):
         if 'delivery_address' in validated_data:
             addr = Address.objects.get(id=validated_data['delivery_address'])
             instance.delivery_address = addr
-            # log(
-            #     user=user,
-            #     company=instance.order_company,
-            #     action='order_delivery_address',
-            #     obj=instance,
-            #     extra={
-            #         'order_id':instance.id,
-            #         'order_number':instance.order_number,
-            #         'order_delivery_address':instance.delivery_address.addr_location,
-            #     }
-            # )
+            log(
+                user=user,
+                company=instance.order_company,
+                action='order delivery address',
+                obj=instance,
+                notification=False,
+                extra={
+                    'order_id':instance.id,
+                    'order_number':instance.order_number,
+                    'order_delivery_address':instance.delivery_address.addr_location,
+                }
+            )
         if 'comment_body' in validated_data:
             comment = Comment.objects.create(order=instance, created_by=user, body=validated_data['comment_body'])
             comment.save()
@@ -324,6 +331,7 @@ class OrderSerializer(serializers.ModelSerializer):
                 company=instance.order_company,
                 action='commant added',
                 obj=instance,
+                notification=True,
                 extra={
                     'order_id':instance.id,
                     'order_number':instance.order_number,

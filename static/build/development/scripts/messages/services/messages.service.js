@@ -11,6 +11,7 @@
 
         var Messages = {
             orderActivity: orderActivity,
+            getNotifications: getNotifications,
         };
 
         return Messages;
@@ -30,6 +31,12 @@
                 .then(generalCallbackSuccess)
                 .catch(generalCallbackError);
         }    
+
+        function getNotifications() {
+            return $http.get('/api/v1/notifications/')
+                .then(generalCallbackSuccess)
+                .catch(generalCallbackError);
+        }
 
     }
 })();

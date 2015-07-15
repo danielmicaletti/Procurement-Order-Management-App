@@ -42,6 +42,7 @@ class AccountViewSet(viewsets.ModelViewSet):
                 company=user_company,
                 action='user created',
                 obj=acct,
+                notification=False,
                 extra={
                     'account_id':acct.id,
                     'account_first_name':acct.first_name,
@@ -97,8 +98,6 @@ class AddressViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
 
     def perform_create(self, serializer):
-        print "COMP SELf === %s" % self
-        print "COMP SERIAL === %s" % serializer 
         if serializer.is_valid():
             serializer.save(user=self.request.user, **self.request.data)
 
@@ -129,6 +128,7 @@ class LoginView(views.APIView):
                     company=user.user_company,
                     action='user login',
                     obj=user,
+                    notification=False,
                     extra={
                         'account_id':user.id,
                         'account_first_name':user.first_name,
@@ -161,6 +161,7 @@ class LogoutView(views.APIView):
             company=user.user_company,
             action='user logout',
             obj=user,
+            notification=False,
             extra={
                 'account_id':user.id,
                 'account_first_name':user.first_name,

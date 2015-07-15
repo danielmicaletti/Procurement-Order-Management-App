@@ -27,6 +27,7 @@ class EventLogMixin(object):
             action=self.action,
             extra=self.extra_data,
             obj=self.object
+            notification=self.notification
         )
 
     def form_valid(self, form):

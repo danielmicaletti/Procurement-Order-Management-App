@@ -5,7 +5,7 @@ from rest_framework_nested import routers
 from authentication.views import AccountViewSet, CompanyViewSet, AddressViewSet, LoginView, LogoutView, OptizViewSet
 from orders.views import OrderViewSet, OrderSimpleViewSet, GoodViewSet, DetailViewSet, RequestViewSet, ReqItemViewSet, ReqProductViewSet, ReqFileViewSet, OfferViewSet, OfferItemViewSet
 from wease.views import IndexView
-from messages.views import OrderActivityViewSet
+from messages.views import OrderActivityViewSet, NotificationViewSet
 import settings
 from django.contrib import admin
 
@@ -23,6 +23,7 @@ router.register(r'offer-items', OfferItemViewSet)
 router.register(r'goods', GoodViewSet)
 router.register(r'optiz', OptizViewSet)
 router.register(r'order-activity', OrderActivityViewSet)
+router.register(r'notifications', NotificationViewSet)
 
 accounts_router = routers.NestedSimpleRouter(
     router, r'accounts', lookup='account',
@@ -54,6 +55,9 @@ optiz_router = routers.NestedSimpleRouter(
 order_activity_router = routers.NestedSimpleRouter(
     router, r'order-activity', lookup='object_id',
 )
+notification_router = routers.NestedSimpleRouter(
+    router, r'notifications', lookup='company_id',
+)
 
 orders_router.register(r'requests', RequestViewSet)
 orders_router.register(r'offers', OfferViewSet)
@@ -73,11 +77,10 @@ urlpatterns = patterns(
     url(r'^api/v1/', include(offer_router.urls)), 
     url(r'^api/v1/', include(order_simple_router.urls)), 
     url(r'^api/v1/', include(optiz_router.urls)),
-    url(r'^api/v1/', include(order_activity_router.urls)),          
+    url(r'^api/v1/', include(order_activity_router.urls)), 
+    url(r'^api/v1/', include(notification_router.urls)),          
     url(r'^api/v1/auth/login/$', LoginView.as_view(), name='login'),
     url(r'^api/v1/auth/logout/$', LogoutView.as_view(), name='logout'),
-
-    # url(r'^app/.*$', IndexView.as_view(), name='index'),
 
     url(r'^$',  IndexView.as_view(), name='index'),    
     url(r'^/$',  IndexView.as_view(), name='index'),

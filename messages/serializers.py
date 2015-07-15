@@ -16,4 +16,5 @@ class LogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Log
-        fields = ('id', 'timestamp', 'user', 'company', 'company_name', 'action', 'content_type', 'object_id', 'extra',)
+        fields = ('id', 'timestamp', 'user', 'company', 'company_name', 'action', 'content_type', 'object_id',
+				'notification', 'notification_read', 'extra',)

@@ -27,3 +27,26 @@ class OrderActivityViewSet(viewsets.ModelViewSet):
         queryset = self.queryset.filter(object_id=object_id)
         serializer = LogSerializer(queryset, many=True)
         return Response(serializer.data)
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    lookup_field = 'company_id'
+    queryset = Log.objects.all()
+    serializer_class = LogSerializer
+
+    def get_permissions(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return (permissions.AllowAny(),)
+        return (permissions.IsAuthenticated(),)
+
+    def list(self, request, notification=None):
+        if self.request.user.optiz:
+            queryset = self.queryset.filter(notification=True)
+        else:
+            queryset = self.queryset.filter(company=self.request.user.user_company, notification=True)
+        serializer = LogSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, id=None, company_id=None):      
+        queryset = self.queryset.filter(company_id=company_id, notification=True)
+        serializer = LogSerializer(queryset, many=True)
+        return Response(serializer.data)
