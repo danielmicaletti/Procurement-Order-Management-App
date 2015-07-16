@@ -123,7 +123,7 @@ class Company(models.Model):
     company_created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='created_company', unique=False)
     company_updated = models.DateTimeField(auto_now_add=False, auto_now=True)
     company_updated_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='updated_company', null=True, blank=True, unique=False)
-    company_assigned_to = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='assigned_to', null=True, blank=True)
+    company_assigned_to = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='assigned_to', limit_choices_to={'optiz': True}, null=True, blank=True)
 
     def __unicode__(self):
       return smart_unicode(self.name)

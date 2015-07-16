@@ -56,7 +56,7 @@ order_activity_router = routers.NestedSimpleRouter(
     router, r'order-activity', lookup='object_id',
 )
 notification_router = routers.NestedSimpleRouter(
-    router, r'notifications', lookup='company_id',
+    router, r'notifications', lookup='id',
 )
 
 orders_router.register(r'requests', RequestViewSet)

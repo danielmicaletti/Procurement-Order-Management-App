@@ -29,8 +29,8 @@ class OrderActivityViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 class NotificationViewSet(viewsets.ModelViewSet):
-    lookup_field = 'company_id'
-    queryset = Log.objects.all()
+    lookup_field = 'id'
+    queryset = Log.objects.filter(notification=True)
     serializer_class = LogSerializer
 
     def get_permissions(self):
@@ -40,13 +40,17 @@ class NotificationViewSet(viewsets.ModelViewSet):
 
     def list(self, request, notification=None):
         if self.request.user.optiz:
-            queryset = self.queryset.filter(notification=True)
+            queryset = self.queryset.filter(company__company_assigned_to=self.request.user).exclude(viewed_by=self.request.user)
         else:
-            queryset = self.queryset.filter(company=self.request.user.user_company, notification=True)
+            queryset = self.queryset.filter(company=self.request.user.user_company).exclude(viewed_by=self.request.user)
         serializer = LogSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, id=None, company_id=None):      
-        queryset = self.queryset.filter(company_id=company_id, notification=True)
+    def retrieve(self, request, id=None):      
+        queryset = self.queryset.filter(id=id, notification=True)
         serializer = LogSerializer(queryset, many=True)
         return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        if serializer.is_valid():
+            serializer.save(user=self.request.user, **self.request.data)

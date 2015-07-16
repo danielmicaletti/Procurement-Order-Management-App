@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 
 import jsonfield
-from authentication.models import Company
+from authentication.models import Account, Company
 from .signals import event_logged
 
 
@@ -22,7 +22,8 @@ class Log(models.Model):
     content_type = models.ForeignKey(ContentType, null=True)
     object_id = models.PositiveIntegerField(null=True)
     notification = models.BooleanField(default=False)
-    notification_read = models.BooleanField(default=False)
+    # dashboard = models.BooleanField(default=False)
+    viewed_by = models.ManyToManyField(Account, related_name='user_viewed', null=True, blank=True)
     extra = jsonfield.JSONField()
 
     @property

@@ -37,5 +37,20 @@
 
         $scope.countries = ['France', 'Morocco', 'United States', 'Spain', 'Germany'];
         console.log($scope.countries);
+
+        $scope.stati = {
+            'WRQ':'text-cyan',
+            'PEN':'text-warning',
+            'OFR':'text-drank',
+            'APN':'text-dutch',
+            'VAL':'text-greensea',
+            'REF':'text-lightred',
+            'APV':'text-success',
+            'COM':'text-amethyst',
+            'CAN':'text-red',
+            'ARC':'text-darkgray',
+            'INP':'text-primary',
+            'INV':'text-info',
+        }  
     }
 })();

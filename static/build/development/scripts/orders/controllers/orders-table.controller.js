@@ -16,21 +16,21 @@
     
     vm.orders = [];
 
-    $scope.stati = {
+    // $scope.stati = {
 
-      'WRQ':'text-cyan',
-      'PEN':'text-warning',
-      'OFR':'text-drank',
-      'APN':'text-dutch',
-      'VAL':'text-greensea',
-      'REF':'text-lightred',
-      'APV':'text-success',
-      'COM':'text-amethyst',
-      'CAN':'text-red',
-      'ARC':'text-darkgray',
-      'INP':'text-primary',
-      'INV':'text-info',
-    }
+    //   'WRQ':'text-cyan',
+    //   'PEN':'text-warning',
+    //   'OFR':'text-drank',
+    //   'APN':'text-dutch',
+    //   'VAL':'text-greensea',
+    //   'REF':'text-lightred',
+    //   'APV':'text-success',
+    //   'COM':'text-amethyst',
+    //   'CAN':'text-red',
+    //   'ARC':'text-darkgray',
+    //   'INP':'text-primary',
+    //   'INV':'text-info',
+    // }
 
     Order.getAllSimple().then(getAllSuccess, getAllError);
 

@@ -124,6 +124,7 @@
 
         function registerError(errorMsg){
             console.log(errorMsg);
+            vm.error = errorMsg;
         }
 
         vm.setAddr = function(addr){

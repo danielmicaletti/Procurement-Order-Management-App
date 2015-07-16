@@ -88,7 +88,9 @@
         }
 
         function registerErrorFn(response) {
-            return $q.reject('Error '+response.status+'');
+            console.log(response.data.message);
+            console.log(response);
+            return $q.reject(response.data.message);
         }
 
         function setAuthenticatedAccount(account) {

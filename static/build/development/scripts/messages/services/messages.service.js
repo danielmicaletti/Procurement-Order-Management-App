@@ -12,13 +12,12 @@
         var Messages = {
             orderActivity: orderActivity,
             getNotifications: getNotifications,
+            notificationViewed: notificationViewed,
         };
 
         return Messages;
 
         function generalCallbackSuccess(response){
-            console.log(response.data)
-            console.log(response)
             return response.data;
         }
 
@@ -36,6 +35,12 @@
             return $http.get('/api/v1/notifications/')
                 .then(generalCallbackSuccess)
                 .catch(generalCallbackError);
+        }
+
+        function notificationViewed(notId){
+            return $http.put('/api/v1/notifications/'+notId+'/')
+                .then(generalCallbackSuccess)
+                .catch(generalCallbackError);            
         }
 
     }

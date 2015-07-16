@@ -42,7 +42,7 @@ class AccountViewSet(viewsets.ModelViewSet):
                 company=user_company,
                 action='user created',
                 obj=acct,
-                notification=False,
+                notification=True,
                 extra={
                     'account_id':acct.id,
                     'account_first_name':acct.first_name,

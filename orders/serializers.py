@@ -329,7 +329,7 @@ class OrderSerializer(serializers.ModelSerializer):
             log(
                 user=user,
                 company=instance.order_company,
-                action='commant added',
+                action='comment added',
                 obj=instance,
                 notification=True,
                 extra={
