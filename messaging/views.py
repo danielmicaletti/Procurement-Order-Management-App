@@ -1,10 +1,12 @@
 import json
+from django.db.models import Q
 from rest_framework import permissions, status, viewsets, generics
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.decorators import list_route, api_view, detail_route
 from eventlog.models import Log, log
-from messages.serializers import LogSerializer
+from messaging.models import Mail
+from messaging.serializers import LogSerializer, MailSerializer
 from django.utils import timezone
 from datetime import date
 
@@ -54,3 +56,25 @@ class NotificationViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         if serializer.is_valid():
             serializer.save(user=self.request.user, **self.request.data)
+
+class MailViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = Mail.objects.all()
+    serializer_class = MailSerializer
+
+    def get_permissions(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return (permissions.AllowAny(),)
+        return (permissions.IsAuthenticated(),)
+
+    def list(self, request, mail=None):
+        queryset = self.queryset.filter(Q(mail_to=self.request.user) | Q(mail_created_by=self.request.user))
+        print "MAILS QS ==== %s" % queryset
+        serializer = MailSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, id=None):      
+        queryset = self.queryset.filter(id=id)
+        serializer = MailSerializer(queryset)
+        return Response(serializer.data)
+

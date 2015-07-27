@@ -241,14 +241,14 @@
 
           <li class="list-group-item team" ng-repeat="notification in vm.notifications | orderBy: '-timestamp'">
             <div class="media" ng-click="vm.goTo(notification.id);">
-              <span class="pull-left media-object media-icon" ng-class="vm.notColor[notification.action];">
-                <i ng-class="vm.icon[notification.action]"></i>
+              <span class="pull-left media-object media-icon" ng-class="notColor[notification.action];">
+                <i class="fa" ng-class="notIcon[notification.action]"></i>
               </span>
               <div class="media-body">
                 <p>{{notification.action | uppercase}}</p>
                 <span class="block" ng-if="notification.content_type === 'order'">Number: {{notification.extra.order_number}}</span>
                 <span class="block" ng-if="notification.content_type === 'order'">Status: <span ng-class="stati[notification.extra.order_status]">{{notification.extra.order_status_full}}</span></span>
-                <span class="block text-lightred" ng-if="['WRQ','APN'].indexOf(notification.extra.order_status)!=-1">Manager Approval Needed</span>
+                <span class="block text-lightred" ng-show="apvNeeded.indexOf(notification.extra.order_status)!=-1">Management Approval Needed</span>
                 <span class="block" ng-if="notification.action === 'optiz assigned'"><a ui-sref="app.pages.profile({username:notification.extra.optiz_assigned})">{{notification.extra.optiz_assigned_name}}</a></span>
                 <span class="block" ng-if="notification.content_type === 'company'">{{notification.extra.company_name}}</span>
                 <small class="block">by <a ui-sref="app.pages.profile({username:notification.user.username})">{{notification.user.user_name_full}}</a></small>

@@ -532,6 +532,7 @@
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <label for="first-name">Authorization Amount</label>
+                                <span class="input-group-addon">€</span>
                                 <input type="number" class="form-control" name="auth_amount" placeholder="Enter an authorization amount" ng-model="vm.newUser.auth_amount" ng-minlength=1 ng-maxlength=7 required>
                                 <span class="text-red" ng-show="newUserForm.auth_amount.$invalid">Required</span>
                             </div>

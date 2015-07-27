@@ -16,21 +16,27 @@
     
     vm.orders = [];
 
-    // $scope.stati = {
+    vm.setFilter = setFilter;
 
-    //   'WRQ':'text-cyan',
-    //   'PEN':'text-warning',
-    //   'OFR':'text-drank',
-    //   'APN':'text-dutch',
-    //   'VAL':'text-greensea',
-    //   'REF':'text-lightred',
-    //   'APV':'text-success',
-    //   'COM':'text-amethyst',
-    //   'CAN':'text-red',
-    //   'ARC':'text-darkgray',
-    //   'INP':'text-primary',
-    //   'INV':'text-info',
-    // }
+    var fp = $stateParams.filterParam
+    vm.filPar = {
+      'WRQ': 'Demandes en attente',
+      'PEN': 'Demandes à traiter',
+      'OFR': 'Offre disponible',
+      'APV': 'Approuvé',
+      'REF': 'Refusé',
+      'INP': 'In Progress',
+      'COM': 'Completed',
+      'INV': 'Invoiced',
+      'CAN': 'Annulé',
+      'ARC': 'Archived',
+      'BOR': 'Backorder',
+    }
+    
+    console.log(vm.filPar);
+    console.log(fp);
+    console.log(vm.filPar.fp);
+    vm.filterInfo = vm.filPar[fp];
 
     Order.getAllSimple().then(getAllSuccess, getAllError);
 
@@ -47,6 +53,7 @@
     vm.dtOptions = DTOptionsBuilder.newOptions()
       .withBootstrap()
       .withOption('order', [[2, 'desc']])
+      .withOption('search', { 'search': vm.filterInfo })
       .withDOM('<"row"<"col-md-8 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"pull-right"f>>>t<"row"<"col-md-4 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"inline-controls text-center"i>><"col-md-4 col-sm-12"p>>')
       .withLanguage({
         "sLengthMenu": 'View _MENU_ records',
@@ -64,8 +71,8 @@
 
 
     vm.dtColumnDefs = [
-      // DTColumnDefBuilder.newColumnDef(0).notSortable(),
-      DTColumnDefBuilder.newColumnDef(8).notSortable()
+      DTColumnDefBuilder.newColumnDef(9).notSortable(),
+      DTColumnDefBuilder.newColumnDef(10).notVisible()
     ];
 
     vm.selectedAll = false;
@@ -82,5 +89,25 @@
         order.selected = $scope.selectedAll;
       });
     };
+
+    function setFilter(fltr){
+      console.log(fltr);
+      vm.filterInfo = fltr;
+      vm.dtOptions = DTOptionsBuilder.newOptions()
+        .withBootstrap()
+        .withOption('order', [[2, 'desc']])
+        .withOption('search', { 'search': vm.filterInfo })
+        .withDOM('<"row"<"col-md-8 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"pull-right"f>>>t<"row"<"col-md-4 col-sm-12"<"inline-controls"l>><"col-md-4 col-sm-12"<"inline-controls text-center"i>><"col-md-4 col-sm-12"p>>')
+        .withLanguage({
+          "sLengthMenu": 'View _MENU_ records',
+          "sInfo":  'Found _TOTAL_ records',
+          "oPaginate": {
+            "sPage":    "Page",
+            "sPageOf":  "of"
+          }
+        })
+        .withPaginationType('input')
+        .withColumnFilter();
+    }
   }
 })();

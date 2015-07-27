@@ -47,7 +47,7 @@
               <img class="img-circle" ng-src="{{ path.static_files }}{{ vm.account.user_pic }}" alt=""/>
             </div>
             <h4 class="mb-0"><strong>{{ vm.account.first_name }}</strong> {{ vm.account.last_name }}</h4>
-            <span class="text-muted">{{ vm.account.position }}</span>
+            <span class="text-muted text-lightred">{{ vm.account.position }}</span>
             <div class="mt-10">
               <button class="btn btn-rounded-20 btn-sm btn-greensea">Chat</button>
               <button class="btn btn-rounded-20 btn-sm btn-lightred">Message</button>
@@ -295,6 +295,7 @@
                         <h4>{{vm.account.city}}, {{vm.account.country}} {{vm.account.post_code}}</h5>
                         <h5>{{vm.account.phone_main}}</h4>
                         <h5><a href="mailto:{{vm.account.email}}">{{vm.account.email}}</a></h5>
+                        <h5 ng-show="au.id === vm.acount.id || mgr || admin">Authorized Amount: € {{vm.account.auth_amount}}</h5>
                       </div>
                     </div>
                     <div class="row">
@@ -302,9 +303,6 @@
                         <div class="thumb" ng-show="vm.company.company_website">
                           <a href="http://{{vm.company.company_website}}"><img class="media-object img-circle" ng-src="{{path.static_files}}{{vm.company.company_logo}}" alt="">
                           {{vm.company.company_website}}</a>
-                        </div>
-                        <div class="thumb" ng-show="vm.facebook">
-                          <a href="https://www.facebook.com/{{vm.facebook}}" target="_blank" class="icon icon-primary icon-ef-3 icon-ef-3b icon-color"><i class="fa fa-facebook"></i></a>
                         </div>
                       </div>
                     </div>
@@ -538,7 +536,7 @@
               <tab heading="Info" ng-if="vm.isUser">
                 <div class="wrap-reset">
 
-                  <form class="profile-settings" ng-submit="vm.update()">
+                  <form class="profile-settings form-validation" name="userProfForm" ng-submit="vm.update()" novalidate>
 
                     <div class="row">
                       <div class="form-group col-md-12 legend">
@@ -550,22 +548,53 @@
                     <div class="row">
                         <div class="form-group col-sm-6">
                             <label for="first-name">First Name</label>
-                            <input type="text" class="form-control" ng-model="vm.account.first_name">
+                            <input type="text" class="form-control" name="first_name" ng-model="vm.account.first_name" required>
+                            <span class="text-red" ng-show="userProfForm.first_name.$invalid">Required</span>
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="last-name">Last Name</label>
-                            <input type="text" class="form-control" ng-model="vm.account.last_name">
+                            <input type="text" class="form-control" name="last_name" ng-model="vm.account.last_name" required>
+                            <span class="text-red" ng-show="userProfForm.last_name.$invalid">Required</span>
                         </div>
                     </div>
                     <div class="row">
 
                         <div class="form-group col-sm-6">
                             <label for="email">E-mail</label>
-                            <input type="email" class="form-control" ng-model="vm.account.email">
+                            <input type="email" class="form-control" name="email" ng-model="vm.account.email" required>
+                            <span class="text-red" ng-show="userProfForm.email.$invalid">Required</span>
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="position">Position</label>
-                            <input type="text" class="form-control" ng-model="vm.account.position">
+                            <input type="text" class="form-control" name="position" ng-model="vm.account.position" required>
+                            <span class="text-red" ng-show="userProfForm.position.$invalid">Required</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <label for="first-name">WeASe Access Level</label>
+                            <select class="form-control" 
+                                    chosen width="'100%'" 
+                                    name="access_level"
+                                    ng-model="vm.account.access_level" 
+                                    data-placeholder="Select Access Level"
+                                    required>
+                                    <option value=""></option>
+                                    <option value="8">Administrator</option>
+                                    <option value="7">Manager</option>
+                                    <option value="6">Approval</option>
+                                    <option value="5">Submit</option>
+                                    <option value="2">View</option>
+                            </select>
+                            <span class="text-red" ng-show="userProfForm.access_level.$invalid">Required</span>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label for="position">Authorization Amount</label>
+                            <div class="input-group">
+                              <span class="input-group-addon">€</span>
+                              <input type="text" class="form-control" name="auth_amount" placeholder="Enter an authorization amount" ng-model="vm.account.auth_amount" ng-minlength=1 ng-maxlength=7 required>
+                            </div>
+                            <span class="text-red" ng-show="userProfForm.auth_amount.$invalid">Required</span>
                         </div>
                     </div>
                     <div class="row">
@@ -602,7 +631,7 @@
 
                     <div class="row">
                         <div class="form-group col-sm-6">
-                            <label for="company_logo">Company Logo</label>
+                            <label for="company_logo">Profile Picture</label>
                             <!-- Example: nv-file-select="" uploader="{Object}" options="{Object}" filters="{String}" -->
                             <!-- <input type="file" nv-file-select="" uploader="uploader" /> -->
                             <input ui-jq="filestyle" type="file" class="filestyle" ui-options="{
@@ -668,55 +697,6 @@
                         </div>
                     </div>
                     <div class="row">
-                      <div class="form-group col-md-12 legend">
-                        <h4><strong>Social</strong> Settings</h4>
-                        <p>Connect with your social profiles</p>
-                      </div>
-                    </div>
-
-                    <div class="row">
-
-                      <div class="form-group col-sm-6">
-                        <label for="linkedin">LinkedIn</label>
-                        <input type="text" class="form-control">
-                      </div>
-
-                      <div class="form-group col-sm-6">
-                        <label for="facebook">Facebook</label>
-                        <input type="text" class="form-control" ng-model="vm.facebook">
-                      </div>
-
-                    </div>
-
-                    <div class="row">
-
-                      <div class="form-group col-sm-6">
-                        <label for="google-plus">Google+</label>
-                        <input type="text" class="form-control" id="google-plus">
-                      </div>
-
-                      <div class="form-group col-sm-6">
-                        <label for="github">GitHub</label>
-                        <input type="text" class="form-control" id="github">
-                      </div>
-
-                    </div>
-
-                    <!-- <div class="row">
-
-                      <div class="form-group col-sm-6">
-                        <label for="dribbble">Dribbble</label>
-                        <input type="text" class="form-control" id="dribbble">
-                      </div>
-
-                      <div class="form-group col-sm-6">
-                        <label for="github">GitHub</label>
-                        <input type="text" class="form-control" id="github">
-                      </div>
-
-                    </div> -->
-                    <!-- <button class="btn btn-rounded btn-default" ng-click="vm.showPass();">Update Username / Password</button> -->
-                    <div class="row">
                         <div class="form-group col-md-12 legend">
                             <h4><strong>Security</strong> Settings</h4>
                             <p>Secure your account</p>
@@ -725,19 +705,21 @@
                     <div class="row">
                         <div class="form-group col-sm-6">
                             <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" value="Johny.d" ng-model="vm.account.username">
+                            <input type="text" class="form-control" name="username" ng-model="vm.account.username" required>
+                            <span class="text-red" ng-show="userProfForm.username.$invalid">Required</span>
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="password">Current Password</label>
-                            <input type="password" class="form-control" id="password" value="secretpassword" readonly>
+                            <input type="password" class="form-control" value="secretpassword" readonly>
                         </div>
                         <div class="form-group col-sm-6">
                             <label for="new-password">New Password</label>
-                            <input type="password" class="form-control" id="new-password" ng-model="vm.account.password">
+                            <input type="password" class="form-control" name="password" ng-model="vm.account.password">
                         </div>
                         <div class="form-group col-sm-6">
-                            <label for="new-password-repeat">New Password Repeat</label>
-                            <input type="password" class="form-control" id="new-password-repeat" ng-model="vm.account.confirm_password">
+                            <label for="new-password-repeat">New Password Confirm</label>
+                            <input type="password" class="form-control" name="confirm_password" ng-model="vm.account.confirm_password" ui-validate=" '$value==vm.account.password' " ui-validate-watch=" 'vm.account.password' ">
+                            <span class="text-red" ng-show='userProfForm.confirm_password.$error.validator'>Passwords don't match!</span>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-rounded btn-primary">Update Profile</button>

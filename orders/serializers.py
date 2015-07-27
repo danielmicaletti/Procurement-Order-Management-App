@@ -86,7 +86,7 @@ class OfferSerializer(serializers.ModelSerializer):
             extra={
                 'order_id':order.id,
                 'order_number':order.order_number,
-                'offer_version':order.offer_version,
+                'order_version':order.offer_version,
                 'offer_total':offer.offer_total,
                 'order_status':order.order_status,
                 'order_status_full':order.get_order_status_display(),
@@ -148,6 +148,7 @@ class ReqItemSerializer(serializers.ModelSerializer):
             extra={
                 'order_id':order.id,
                 'order_number':order.order_number,
+                'order_version':order.order_version,
                 'request_item_id':req_item.id,
                 'request_item_subfam':req_item.item_subfam,
                 'order_status':order.order_status,
@@ -178,6 +179,7 @@ class ReqItemSerializer(serializers.ModelSerializer):
             extra={
                 'order_id':order.id,
                 'order_number':order.order_number,
+                'order_version':order.order_version,
                 'request_item_id':instance.id,
                 'request_item_subfam':instance.item_subfam,
                 'order_status':order.order_status,
@@ -252,22 +254,28 @@ class OrderSerializer(serializers.ModelSerializer):
                         extra={
                             'order_id':instance.id,
                             'order_number':instance.order_number,
+                            'order_version':instance.order_version,
                             'order_status':instance.order_status,
                             'order_status_full':instance.get_order_status_display(),
                         }
                     )
                 else:
-                    instance.company_approval_status = 'APN'
-                    instance.order_status = 'APN'
+                    if instance.company_approval_status == 'APN':
+                        req_action = 'request updated'
+                    else:
+                        instance.company_approval_status == 'APN'
+                        instance.order_status = 'APN'
+                        req_action = 'request created'
                     log(
                         user=user,
                         company=instance.order_company,
-                        action='request created',
+                        action=req_action,
                         obj=instance,
                         notification=True,
                         extra={
                             'order_id':instance.id,
                             'order_number':instance.order_number,
+                            'order_version':instance.order_version,
                             'order_status':instance.order_status,
                             'order_status_full':instance.get_order_status_display(),
                         }
@@ -288,6 +296,7 @@ class OrderSerializer(serializers.ModelSerializer):
                         extra={
                             'order_id':instance.id,
                             'order_number':instance.order_number,
+                            'order_version':instance.order_version,
                             'order_status':instance.order_status,
                             'order_status_full':order_status_full,
                         }
@@ -320,6 +329,7 @@ class OrderSerializer(serializers.ModelSerializer):
                 extra={
                     'order_id':instance.id,
                     'order_number':instance.order_number,
+                    'order_version':instance.order_version,
                     'order_delivery_address':instance.delivery_address.addr_location,
                 }
             )
@@ -335,6 +345,7 @@ class OrderSerializer(serializers.ModelSerializer):
                 extra={
                     'order_id':instance.id,
                     'order_number':instance.order_number,
+                    'order_version':instance.order_version,
                     'comment':comment.body,
                 }
             )

@@ -11,6 +11,7 @@
   	var Order = {
           getAll: getAll,
           getAllSimple: getAllSimple,
+          getAllApv: getAllApv,
           getOrder: getOrder,
           createOffer: createOffer,
           createBlankOffer: createBlankOffer,
@@ -20,19 +21,6 @@
     };
 
     return Order;
-
-    // Get all orders
-    function getAll() {
-      return $http.get('api/v1/orders/')
-        .then(generalCallbackSuccess)
-        .catch(generalCallbackError);
-    }
-
-    function getAllSimple() {
-      return $http.get('api/v1/order-simple/')
-        .then(generalCallbackSuccess)
-        .catch(generalCallbackError);
-    }
 
     function generalCallbackSuccess(response){
       console.log("order")
@@ -45,6 +33,27 @@
       return $q.reject('Error retrieving order details '+response.status+'');
     }
 
+    // Get all orders
+    function getAll() {
+      return $http.get('api/v1/orders/')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    }
+
+    // Get simple orders
+    function getAllSimple() {
+      return $http.get('api/v1/order-simple/')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    }
+
+    // Get orders need approval
+    function getAllApv(){
+      return $http.get('api/v1/order-apv/')
+        .then(generalCallbackSuccess)
+        .catch(generalCallbackError);
+    } 
+       
     // Get single order details
     function getOrder(orderId) {
       return $http.get('api/v1/orders/'+orderId+'/')

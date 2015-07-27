@@ -47,9 +47,27 @@ class OrderSimpleViewSet(viewsets.ModelViewSet):
 
     def list(self, request, order_id=None):
         if self.request.user.optiz:
-            queryset = Order.objects.all()
+            queryset = Order.objects.filter(order_company__company_assigned_to=self.request.user)
         else:
             queryset = self.queryset.filter(order_company=self.request.user.user_company)
+        serializer = OrderSimpleSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+class OrderApvViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = Order.objects.all()
+    serializer_class = OrderSimpleSerializer
+
+    def get_permissions(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return (permissions.AllowAny(),)
+        return (permissions.IsAuthenticated(),)
+
+    def list(self, request, order_id=None):
+        if self.request.user.optiz:
+            queryset = Order.objects.filter(order_company__company_assigned_to=self.request.user).filter(order_status__in=['APN','OFR'])
+        else:
+            queryset = self.queryset.filter(order_company=self.request.user.user_company).filter(order_status__in=['APN','OFR'])
         serializer = OrderSimpleSerializer(queryset, many=True)
         return Response(serializer.data)
 

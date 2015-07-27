@@ -1,12 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name minovateApp.controller:MailInboxCtrl
- * @description
- * # MailInboxCtrl
- * Controller of the minovateApp
- */
 angular.module('minovateApp')
   .controller('MailInboxCtrl', function ($scope, $resource) {
     $scope.mails = $resource(static_path('scripts/jsons/mails.json')).query();

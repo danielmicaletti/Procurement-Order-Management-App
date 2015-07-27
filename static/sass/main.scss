@@ -4,6 +4,30 @@
 // Bourbon
 @import 'inc/bourbon/bourbon';  // bourbon plugin
 
+//@include font-face("Dosis", "/fonts/Dosis/Dosis-Bold");
+//@include font-face("Dosis", "/fonts/Dosis/Dosis-ExtraBold");
+//@include font-face("Dosis", "/fonts/Dosis/Dosis-ExtraLight");
+//@include font-face("Dosis", "/fonts/Dosis/Dosis-Light");
+//@include font-face("Dosis", "/fonts/Dosis/Dosis-Medium");
+//@include font-face("Dosis", "/fonts/Dosis/Dosis-Regular");
+//@include font-face("Dosis", "/fonts/Dosis/Dosis-SemiBold");
+
+//@include font-face("Lato", "/fonts/Lato/Lato-Black");
+//@include font-face("Lato", "/fonts/Lato/Lato-BlackItalic");
+//@include font-face("Lato", "/fonts/Lato/Lato-Bold");
+//@include font-face("Lato", "/fonts/Lato/Lato-BoldItalic");
+//@include font-face("Lato", "/fonts/Lato/Lato-Hairline");
+//@include font-face("Lato", "/fonts/Lato/Lato-HairlineItalic");
+//@include font-face("Lato", "/fonts/Lato/Lato-Italic");
+//@include font-face("Lato", "/fonts/Lato/Lato-Light");
+//@include font-face("Lato", "/fonts/Lato/Lato-LightItalic");
+//@include font-face("Lato", "/fonts/Lato/Lato-Regular");
+
+//@include font-face("UbuntuMono", "/fonts/Ubuntu_mono/UbuntuMono-Bold");
+//@include font-face("UbuntuMono", "/fonts/Ubuntu_mono/UbuntuMono-BoldItalic");
+//@include font-face("UbuntuMono", "/fonts/Ubuntu_mono/UbuntuMono-Italic");
+//@include font-face("UbuntuMono", "/fonts/Ubuntu_mono/UbuntuMono-Regular");
+
 // My variables, mixins and colors
 @import "inc/mixins"; // main mixins
 @import "inc/colors"; // colors variables

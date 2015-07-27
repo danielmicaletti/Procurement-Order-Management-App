@@ -48,7 +48,7 @@ INSTALLED_APPS = (
     'eventlog',
     'authentication',
     'orders', 
-    # 'messages',  
+    'messaging',  
 )
 
 MIDDLEWARE_CLASSES = (

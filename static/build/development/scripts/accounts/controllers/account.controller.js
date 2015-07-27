@@ -20,7 +20,7 @@
         activate();
 
         $scope.page = {
-        title: 'Profile Page',
+            title: 'Profile Page',
         };
 
         // activate function to initialize on page/controller load

@@ -13,6 +13,7 @@
             orderActivity: orderActivity,
             getNotifications: getNotifications,
             notificationViewed: notificationViewed,
+            getAllMail: getAllMail,
         };
 
         return Messages;
@@ -41,6 +42,12 @@
             return $http.put('/api/v1/notifications/'+notId+'/')
                 .then(generalCallbackSuccess)
                 .catch(generalCallbackError);            
+        }
+
+        function getAllMail(){
+            return $http.get('api/v1/mail/')
+                .then(generalCallbackSuccess)
+                .catch(generalCallbackError);
         }
 
     }

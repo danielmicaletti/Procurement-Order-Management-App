@@ -45,6 +45,7 @@ class AccountViewSet(viewsets.ModelViewSet):
                 notification=True,
                 extra={
                     'account_id':acct.id,
+                    'account_username':acct.username,
                     'account_first_name':acct.first_name,
                     'account_last_name':acct.last_name,
                 }

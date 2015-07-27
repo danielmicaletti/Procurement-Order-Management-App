@@ -145,7 +145,10 @@ angular
       template: '<div ui-view></div>'
     })
     .state('app.orders.all', {
-      url: '/all',
+      url: '/all/{filterParam}',
+      params: {
+        filterParam: {value: ''}
+      },
       controller: 'OrdersController',
       controllerAs: 'vm',
       templateUrl: static_path('views/orders/orders.html'),
@@ -305,27 +308,30 @@ angular
     })
     //mail
     .state('app.mail', {
-      abstract: true,
+      // abstract: true,
       url: '/mail',
-      controller: 'MailCtrl',
-      templateUrl: static_path('views/tmpl/mail/mail.html')
+      controller: 'MailController',
+      controllerAs: 'vm',      
+      templateUrl: static_path('views/messages/mail.html')
     })
     //mail/inbox
-    .state('app.mail.inbox', {
-      url: '/inbox',
-      controller: 'MailInboxCtrl',
-      templateUrl: static_path('views/tmpl/mail/inbox.html')
-    })
+    // .state('app.mail.inbox', {
+    //   url: '/inbox',
+    //   controller: 'InboxController',
+    //   templateUrl: static_path('views/messages/inbox.html')
+    // })
     //mail/compose
     .state('app.mail.compose', {
       url: '/compose',
       controller: 'MailComposeCtrl',
+      controllerAs: 'vm',
       templateUrl: static_path('views/tmpl/mail/compose.html')
     })
     //mail/single
     .state('app.mail.single', {
       url: '/single',
       controller: 'MailSingleCtrl',
+      controllerAs: 'vm',
       templateUrl: static_path('views/tmpl/mail/single.html')
     })
     //app core pages (errors, login,signup)
