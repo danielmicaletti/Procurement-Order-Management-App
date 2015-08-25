@@ -26,6 +26,7 @@ var env,
 jsSources = [
 	'build/development/scripts/app.js',
 	'build/development/scripts/**/**.module.js',
+  'build/development/scripts/filters/**/*.js',
 	'build/development/scripts/authentication/**/*.js',
 	'build/development/scripts/accounts/**/*.js',
 	'build/development/scripts/orders/**/*.js',	

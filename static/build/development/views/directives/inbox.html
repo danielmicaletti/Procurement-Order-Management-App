@@ -22,10 +22,9 @@
 
 <!-- right side body -->
 <div>
-
   <!-- mails -->
   <ul class="list-group no-radius no-border" id="mails-list">
-    <li ng-repeat="mail in msgs | orderBy: '-mail_created'" class="list-group-item b-{{mail.label.color}}">
+    <li ng-repeat="mail in vm.messages | orderBy: '-mail_created'" class="list-group-item b-{{mail.label.color}}">
 
       <div class="media">
         <div class="pull-left">

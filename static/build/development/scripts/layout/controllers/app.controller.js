@@ -1,4 +1,3 @@
-
 (function () {
     'use strict';
 
@@ -6,9 +5,9 @@
         .module('layout.controllers')
         .controller('AppController', AppController);
 
-    AppController.$inject = ['$scope', '$cookies', 'Authentication', 'Order'];
+    AppController.$inject = ['$scope', '$cookies', 'Authentication', 'Order', 'Messages', 'toastr'];
 
-    function AppController($scope, $cookies, Authentication, Order) {
+    function AppController($scope, $cookies, Authentication, Order, Messages, toastr) {
         var vm = this;
 
         vm.isAuthenticated = Authentication.isAuthenticated();
@@ -38,11 +37,9 @@
         $scope.countries = ['France', 'Morocco', 'United States', 'Spain', 'Germany'];
         console.log($scope.countries);
 
-        // function apvOrders(){
         Order.getAllApv()
             .then(getAllApvSuccess)
             .catch(getAllApvError);
-        // }
 
         function getAllApvSuccess(data){
             console.log(data);
@@ -57,18 +54,32 @@
             console.log(errorMsg);
         }
 
+        Messages.getAllMail($scope.au)
+            .then(getAllMailSuccess)
+            .catch(getAllMailError);
+
+        function getAllMailSuccess(data){
+            console.log(data);
+            $scope.msgs = data;
+        }
+
+        function getAllMailError(errorMsg){
+            console.log(errorMsg);
+            toastr.error('There was an issue retreivingn your messages...');
+        }
+
         $scope.stati = {
             'WRQ':'text-cyan',
             'PEN':'text-warning',
             'OFR':'text-drank',
             'APN':'text-dutch',
             'REF':'text-lightred',
-            'APV':'text-success',
-            'COM':'text-greensea',
+            'APV':'text-greensea',
+            'COM':'text-success',
             'CAN':'text-red',
             'ARC':'text-darkgray',
             'INP':'text-primary',
-            'INV':'text-amethyst',
+            'INV':'text-slategray',
         } 
 
         $scope.statiBg = {
@@ -77,12 +88,12 @@
             'OFR':'bg-drank',
             'APN':'bg-dutch',
             'REF':'bg-lightred',
-            'APV':'bg-success',
-            'COM':'bg-greensea',
+            'APV':'bg-greensea',
+            'COM':'bg-success',
             'CAN':'bg-red',
             'ARC':'bg-darkgray',
             'INP':'bg-primary',
-            'INV':'bg-amethyst',
+            'INV':'bg-slategray',
         }
 
         $scope.notIcon = {

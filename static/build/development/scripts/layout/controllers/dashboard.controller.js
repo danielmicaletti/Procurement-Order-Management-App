@@ -5,9 +5,9 @@
         .module('layout.controllers')
         .controller('DashboardController', DashboardController);
 
-    DashboardController.$inject = ['$scope', '$state', 'Authentication', 'Order', 'Messages'];
+    DashboardController.$inject = ['$scope', '$filter', '$state', 'Authentication', 'Order', 'Messages'];
 
-    function DashboardController($scope, $state, Authentication, Order, Messages) {
+    function DashboardController($scope, $filter, $state, Authentication, Order, Messages) {
         var vm = this;
 
         vm.isAuthenticated = Authentication.isAuthenticated();
@@ -19,6 +19,8 @@
         $scope.page = {
             title: 'Dashboard',
         }
+
+        vm.dashOrder = ['PEN', 'OFR', 'APV', 'INV'];
 
         function getOrderDetails(){
             Order.getAllSimple()
@@ -44,7 +46,7 @@
             vm.verbiage = {
                 'WRQ': 'Demandes en attente',
                 'APN': 'Waiting Approval',
-                'PEN': 'Demandes en cours de traitement',
+                'PEN': 'Demandes a traiter',
                 'APV': 'Commandes validées',
                 'REF': 'Offres refusées',
                 'OFR': 'Offres disponibles',
@@ -77,7 +79,6 @@
         vm.getDashInfo = function(dashItem){
             
             if(dashItem.action === 'comment added'){
-                // console.log(dashItem);
                 return 'A comment "'+dashItem.extra.comment+'" was added to #: '
             }else if(dashItem.action === 'request submitted'){
                 return ' has submitted a new request # '

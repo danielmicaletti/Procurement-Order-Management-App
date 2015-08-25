@@ -5,15 +5,20 @@
         .module('messages.services')
         .factory('Messages', Messages);
 
-    Messages.$inject = ['$http', '$q',];
+    Messages.$inject = ['$http', '$q', '$timeout'];
 
-    function Messages($http, $q) {
+    function Messages($http, $q, $timeout) {
 
         var Messages = {
             orderActivity: orderActivity,
             getNotifications: getNotifications,
             notificationViewed: notificationViewed,
+            getAllMessages: getAllMessages,
+            getSingleMessage: getSingleMessage,  
             getAllMail: getAllMail,
+            newMessage: newMessage,
+            updateMessage: updateMessage,
+            replyMessage: replyMessage,
         };
 
         return Messages;
@@ -23,6 +28,7 @@
         }
 
         function generalCallbackError(response){
+            console.log(response)
             return $q.reject('Error '+response.status+'');
         }
 
@@ -44,8 +50,76 @@
                 .catch(generalCallbackError);            
         }
 
-        function getAllMail(){
+        function getAllMail(user){
             return $http.get('api/v1/mail/')
+                .then((function (user){
+                    return function (response){
+                        console.log(user, response);
+                        Messages.allMessages = {};
+                        Messages.allMessages.inbox = [];
+                        Messages.allMessages.sent = [];
+                        Messages.allMessages.draft = [];
+                        Messages.allMessages.trash = [];
+                        angular.forEach(response.data, function (v, k, o){
+                            console.log(v);
+                            if(v.mail_created_by.username === user.username){
+                                console.log('sent');
+                                if(v.mail_draft === false){
+                                    Messages.allMessages.sent.push(v);
+                                }
+                            }
+                            if(v.mail_draft === true){
+                                console.log('draft');
+                                Messages.allMessages.draft.push(v);
+                            }
+                            if(v.trash === true){
+                                console.log('trash');
+                                Messages.allMessages.trash.push(v);
+                            }
+                            angular.forEach(v.mail_to, function (val, key, obj){
+                                console.log(val);
+                                if(val.username === user.username){
+                                    console.log('inbox');
+                                    // if(!v.mail_draft){
+                                    Messages.allMessages.inbox.push(v);
+                                    // }
+                                }
+                            }) 
+                        })
+                        console.log(Messages.allMessages);
+                        return Messages.allMessages;
+                    }
+                })(user))
+                .catch(generalCallbackError);
+        }
+
+        function getAllMessages(){
+            console.log(Messages.allMessages);
+            return $timeout(function() {
+                return Messages.allMessages; 
+            }, 1000);
+        }
+
+        function getSingleMessage(mailId){
+            return $http.get('api/v1/mail/'+mailId+'/')
+                .then(generalCallbackSuccess)
+                .catch(generalCallbackError);
+        }
+
+        function newMessage(msg){
+            return $http.post('api/v1/mail/', msg)
+                .then(generalCallbackSuccess)
+                .catch(generalCallbackError);
+        }
+
+        function updateMessage(msgId, msg){
+            return $http.put('api/v1/mail/'+msgId+'/', msg)
+                .then(generalCallbackSuccess)
+                .catch(generalCallbackError);
+        }
+
+        function replyMessage(msgId, replyMsg){
+            return $http.post('api/v1/mail/'+msgId+'/mail-reply/', replyMsg)
                 .then(generalCallbackSuccess)
                 .catch(generalCallbackError);
         }

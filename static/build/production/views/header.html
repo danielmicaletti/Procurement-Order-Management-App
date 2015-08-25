@@ -155,61 +155,26 @@
 
       <a href class="dropdown-toggle" dropdown-toggle>
         <fa name="envelope"></fa>
-        <span class="badge bg-lightred">4</span>
+        <span class="badge bg-lightred">{{msgs.inbox.length}}</span>
       </a>
 
       <div class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInDown">
 
         <div class="panel-heading">
-          You have <strong>4</strong> messages
+          You have <strong>{{msgs.inbox.length}}</strong> messages
         </div>
 
         <ul class="list-group">
 
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
+          <li class="list-group-item" ng-repeat="mail in msgs.inbox">
+            <a ui-sref="app.mail.single({mailId:mail.id})" class="media">
               <span class="pull-left media-object thumb thumb-sm">
-                <img ng-src="{{path.static_files}}images/ici-avatar.jpg" alt="" class="img-circle">
+                <img ng-src="{{path.static_files}}{{mail.mail_created_by.user_pic}}" alt="" class="img-circle">
               </span>
               <div class="media-body">
-                <span class="block">Imrich sent you a message</span>
-                <small class="text-muted">12 minutes ago</small>
-              </div>
-            </a>
-          </li>
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <span class="pull-left media-object  thumb thumb-sm">
-                <img ng-src="{{path.static_files}}images/peter-avatar.jpg" alt="" class="img-circle">
-              </span>
-              <div class="media-body">
-                <span class="block">Peter sent you a message</span>
-                <small class="text-muted">46 minutes ago</small>
-              </div>
-            </a>
-          </li>
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <span class="pull-left media-object  thumb thumb-sm">
-                <img ng-src="{{path.static_files}}images/random-avatar1.jpg" alt="" class="img-circle">
-              </span>
-              <div class="media-body">
-                <span class="block">Bill sent you a message</span>
-                <small class="text-muted">1 hour ago</small>
-              </div>
-            </a>
-          </li>
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <span class="pull-left media-object  thumb thumb-sm">
-                <img ng-src="{{path.static_files}}images/random-avatar3.jpg" alt="" class="img-circle">
-              </span>
-              <div class="media-body">
-                <span class="block">Ken sent you a message</span>
-                <small class="text-muted">3 hours ago</small>
+                <span class="block">{{mail.subject | limitTo:30}}</span>
+                <small class="text-muted">by {{mail.mail_created_by.user_name_full}}</small>
+                <small class="text-muted">{{ mail.mail_created | date:"d MMM y 'at' h:mm a" }}</small>
               </div>
             </a>
           </li>
@@ -217,7 +182,7 @@
         </ul>
 
         <div class="panel-footer">
-          <a href="javascript:;">Show all messages <fa name="angle-right" class="pull-right"></fa></a>
+          <a ui-sref="app.mail.inbox">Show all messages <fa name="angle-right" class="pull-right"></fa></a>
         </div>
 
       </div>
@@ -256,30 +221,6 @@
               </div>
             </div>
           </li>
-<!-- 
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <span class="pull-left media-object media-icon bg-primary">
-                <fa name="bolt"></fa>
-              </span>
-              <div class="media-body">
-                <span class="block">New user registered</span>
-                <small class="text-muted">12 minutes ago</small>
-              </div>
-            </a>
-          </li>
-
-          <li class="list-group-item">
-            <a href="javascript:;" class="media">
-              <span class="pull-left media-object media-icon bg-greensea">
-                <fa name="lock"></fa>
-              </span>
-              <div class="media-body">
-                <span class="block">User Robert locked account</span>
-                <small class="text-muted">18 minutes ago</small>
-              </div>
-            </a>
-          </li> -->
 
         </ul>
 

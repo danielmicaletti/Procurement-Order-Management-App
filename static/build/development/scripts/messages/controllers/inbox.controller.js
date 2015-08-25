@@ -5,21 +5,22 @@
     .module('messages.controllers')
     .controller('InboxController', InboxController);
 
-  InboxController.$inject = ['$scope', 'Messages'];
+  InboxController.$inject = ['$scope', '$state', '$stateParams', 'Messages'];
 
-  function InboxController($scope, Messages) {
+  function InboxController($scope, $state, $stateParams, Messages) {
     var vm = this;
 
-    // vm.isAuthenticated = Authentication.isAuthenticated();
+    vm.fp = $stateParams.filterParam;
+    console.log(vm.fp);
+    vm.mail = {};
+	vm.mail['selected'] = false;
 
-	$scope.selectedAll = false;
+	vm.selectAll = function() {
 
-	$scope.selectAll = function() {
-
-		if ($scope.selectedAll) {
-			$scope.selectedAll = false;
+		if (vm.selectedAll === true) {
+			vm.mail['selected'] = true;
 		} else {
-			$scope.selectedAll = true;
+			vm.mail['selected'] = false;
 		}
 
 		angular.forEach($scope.mails, function(mail) {
@@ -27,7 +28,26 @@
 		});
 	};
 
-	
+    Messages.getAllMessages()
+        .then(getAllMessagesSuccess)
+        .catch(getAllMessagesError);
 
+    function getAllMessagesSuccess(response){
+        console.log(response);
+        if(vm.fp === 'sent'){
+        	vm.messages = response.sent;
+        }else if(vm.fp === 'draft'){
+        	vm.messages = response.draft;
+        }else if(vm.fp === 'trash'){
+        	vm.messages = response.trash;
+    	}else{
+    		vm.messages = response.inbox;
+    	}
+        console.log(vm.messages);
+    }
+
+    function getAllMessagesError(errorMsg){
+        console.log(errorMsg);
+    }
   }
 })();

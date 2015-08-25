@@ -11,6 +11,7 @@
 
         var Account = {
             destroy: destroy,
+            getAll: getAll,
             get: get,
             update: update
         };
@@ -44,6 +45,12 @@
                 .then(generalCallbackSuccess)
                 .catch(generalCallbackError);
         }    
+
+        function getAll(){
+            return $http.get('api/v1/accounts/')
+                .then(generalCallbackSuccess)
+                .catch(generalCallbackError);
+        }
 
     }
 })();

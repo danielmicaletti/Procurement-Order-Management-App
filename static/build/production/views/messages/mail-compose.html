@@ -1,0 +1,59 @@
+<!-- right side header -->
+<div class="p-15 bg-white b-b">
+
+  <div class="btn-toolbar">
+    <div class="btn-group">
+      <button class="btn btn-default btn-sm br-2-l w-60"><i class="fa fa-file"></i></button>
+      <button class="btn btn-default btn-sm br-2-r w-60"><i class="fa fa-trash"></i></button>
+    </div>
+  </div>
+
+</div>
+<!-- /right side header -->
+
+<!-- right side body -->
+<div class="p-15">
+{{vm.newMail | json}}
+  <form name="newMail" class="form-horizontal mt-20 form-validation" ng-submit="vm.sendMail(vm.newMail)" novalidate>
+
+    <div class="form-group">
+      <label class="col-lg-2 control-label">To:</label>
+      <div class="col-lg-8">
+        <select chosen multiple 
+                width="'100%'" 
+                name="toUser"
+                ng-model="vm.newMail.mailTo"
+                ng-options="toUser.id as toUser.user_name_full group by toUser.user_company_full for toUser in vm.toUsers"
+                data-placeholder="Select recipients"
+                required>
+                <option value=""></option>
+        </select>
+        <span class="text-red" ng-show="newMail.toUser.$invalid">Required</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-lg-2 control-label">Subject:</label>
+      <div class="col-lg-8">
+        <input type="text" class="form-control" name="subject" ng-model="vm.newMail.subject" required>
+        <span class="text-red" ng-show="newMail.subject.$invalid">Required</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-lg-2 control-label">Content:</label>
+      <div class="col-lg-8">
+         <text-angular ng-model="vm.newMail.body" ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['justifyLeft','justifyCenter','justifyRight'],['ul','ol']]"></text-angular>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-lg-8 col-lg-offset-2">
+        <button class="btn btn-greensea btn-ef btn-ef-7 btn-ef-7b b-0 br-2" activate-button=""><i class="fa fa-envelope"></i> Send Message</button>
+      </div>
+    </div>
+  </form>
+
+</div>
+<!-- /right side body -->
+

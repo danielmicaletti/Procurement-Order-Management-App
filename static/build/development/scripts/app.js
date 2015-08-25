@@ -45,11 +45,12 @@ angular
     'ui.calendar',
     'angular.filter',
     'localytics.directives',
+    'filters', 
     'authentication',
     'layout',
     'accounts',
     'orders',
-    'messages', 
+    'messages',
   ])
   .run(['$rootScope', '$state', '$stateParams', function($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
@@ -79,10 +80,6 @@ angular
 
       if (requireLogin && !auth) {
         event.preventDefault();
-        console.log('Here in app.js hehe');
-        console.log(requireLogin);
-        console.log(auth);
-        console.log($state.go('core.login'));
         $state.go('core.login');
         return $rootScope;
       }
@@ -144,6 +141,7 @@ angular
       url: '/orders',
       template: '<div ui-view></div>'
     })
+    // list of all orders
     .state('app.orders.all', {
       url: '/all/{filterParam}',
       params: {
@@ -159,7 +157,13 @@ angular
             static_path('scripts/vendor/datatables/Pagination/input.js'),
             static_path('scripts/vendor/datatables/ColumnFilter/jquery.dataTables.columnFilter.js')
           ]);
-        }]
+        }],
+        allOrders: ['Order',
+            function(Order) {
+              var ordrs = Order.getAllSimple();
+              console.log(ordrs);
+            return Order.getAllSimple();
+        }],
       }
     })    
     //request
@@ -312,27 +316,34 @@ angular
       url: '/mail',
       controller: 'MailController',
       controllerAs: 'vm',      
-      templateUrl: static_path('views/messages/mail.html')
+      templateUrl: static_path('views/messages/mail.html'),
     })
     //mail/inbox
-    // .state('app.mail.inbox', {
-    //   url: '/inbox',
-    //   controller: 'InboxController',
-    //   templateUrl: static_path('views/messages/inbox.html')
-    // })
+    .state('app.mail.inbox', {
+      url: '/inbox/{filterParam}',
+      params: {
+        filterParam: {value: ''}
+      },
+      controller: 'InboxController',
+      controllerAs: 'vm',
+      templateUrl: static_path('views/messages/inbox.html')
+    })
     //mail/compose
     .state('app.mail.compose', {
-      url: '/compose',
-      controller: 'MailComposeCtrl',
+      url: '/compose/{filterParam}',
+      params: {
+        filterParam: {value: ''}
+      },
+      controller: 'MailComposeController',
       controllerAs: 'vm',
-      templateUrl: static_path('views/tmpl/mail/compose.html')
+      templateUrl: static_path('views/messages/mail-compose.html')
     })
     //mail/single
     .state('app.mail.single', {
-      url: '/single',
-      controller: 'MailSingleCtrl',
+      url: '/single/:mailId',
+      controller: 'MailSingleController',
       controllerAs: 'vm',
-      templateUrl: static_path('views/tmpl/mail/single.html')
+      templateUrl: static_path('views/messages/mail-single.html')
     })
     //app core pages (errors, login,signup)
     .state('core', {

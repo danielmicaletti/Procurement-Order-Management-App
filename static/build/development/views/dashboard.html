@@ -29,33 +29,33 @@
   <div class="row">
 
     <!-- col -->
-    <div class="card-container col-lg-3 col-sm-6 col-sm-12" ng-repeat="(key, value) in vm.orders | groupBy: 'order_status'">
+    <div class="card-container col-lg-3 col-sm-6 col-sm-12" ng-repeat="order in vm.orders | groupBy:'order_status' | toArray:true | orderBy:vm.dashOrder" ng-if="['PEN', 'OFR', 'APV', 'INV'].indexOf(order.$key)!=-1">
       <div class="card dash">
-        <div class="front" ng-class="statiBg[key];">
+        <div class="front" ng-class="statiBg[order.$key];">
           <!-- row -->
           <div class="row">
             <!-- col -->
             <div class="col-xs-4">
-              <i class="fa fa-4x" ng-class="vm.icon[key];"></i>
+              <i class="fa fa-4x" ng-class="vm.icon[order.$key];"></i>
             </div>
             <!-- /col -->
             <!-- col -->
             <div class="col-xs-8">
-              <p class="text-elg text-strong mb-0">{{value.length}}</p>
-              <span>{{vm.verbiage[key];}}</span>
+              <p class="text-elg text-strong mb-0">{{order.length}}</p>
+              <span>{{vm.verbiage[order.$key];}}</span>
             </div>
             <!-- /col -->
           </div>
           <!-- /row -->
 
         </div>
-        <div class="back" ng-class="statiBg[key];">
+        <div class="back" ng-class="statiBg[order.$key];">
 
           <!-- row -->
           <div class="row">
             <!-- col -->
             <div class="col-xs-6">
-              <a href=javascript:; ui-sref="app.orders.all({filterParam:key})"><i class="fa fa-list fa-2x"></i> View All</a>
+              <a href=javascript:; ui-sref="app.orders.all({filterParam:order.$key})"><i class="fa fa-list fa-2x"></i> View All</a>
             </div>
             <!-- /col -->
             <!-- col -->
@@ -65,14 +65,13 @@
                 <li class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInLeft">
 
                   <div class="panel-heading">
-                    <span>{{vm.verbiage[key];}}</span>
+                    <!-- <span>{{vm.verbiage[order.$key];}}</span> -->
                   </div>
 
                   <ul class="list-group notificaitons">
-
-                    <li class="list-group-item team col-md-12" ng-repeat="item in value | orderBy: '-order_status_change_date'| limitTo : 5 ">
+                  <!-- <p>{{order}}</p> -->
+<!--                     <li class="list-group-item team col-md-12" ng-repeat="item in order | orderBy: '-order_status_change_date'| limitTo : 5 ">
                       <div class="row">
-                        <!-- <span>{{item.order_number}}/v{{item.order_version}}</span> -->
                         <div class="col-md-12 m-10">
                           <p class="text-default">#: {{item.order_number}}/v{{item.order_version}}</p>
                           <h5 class="text-default block">Reference: {{item.reference_number}}</h5>
@@ -81,7 +80,7 @@
                           <h5 class="text-default block"><a ui-sref="app.pages.profile({username:item.order_created_by_username})" ng-if="!item.order_status_change_by_username"> by {{item.order_created_by_first_name}} {{item.order_created_by_last_name}}</a></h5>
                         </div>
                       </div>
-                    </li>
+                    </li> -->
                   </ul>
                 <!-- </div> -->
               </li>
@@ -112,7 +111,7 @@
         <div class="tile-body streamline timeline p-0">
 
           <ul>
-            <li class="heading"><a href="javascript:;" class="btn btn-greensea b-0">Today</a></li>
+            <li class="heading"><a href="javascript:;" class="btn btn-blue b-0">Today</a></li>
 
             <li class="timeline-post" ng-repeat="dash in vm.dashData | orderBy: '-timestamp'">
               <aside>
@@ -122,7 +121,7 @@
               </aside>
               <div class="post-container team">
                 <div class="panel panel-default b-0" ng-click="vm.goToItem(dash);">
-                  <h3 class="custom-font" ng-class="notTextColor[dash.action];">{{ dash.action }}</h3> 
+                  <h3 class="custom-font" ng-class="notTextColor[dash.action];">{{ dash.action | ucfirst }}</h3> 
                   <span class="text-muted time"><i class="fa fa-clock-o"></i>{{ dash.timestamp | date:"d MMM y 'at' h:mm a" }}</span>
                   <span class="text-muted">by <a ui-sref="app.pages.profile({username:dash.user.username})" >{{ dash.user.user_name_full }}</a></span>
                   <p class="mt-10" ng-hide="['comment added'].indexOf(dash.action)!=-1 || ['account', 'company'].indexOf(dash.content_type)!=-1">Status: <span ng-class="stati[dash.extra.order_status]">{{ dash.extra.order_status_full }}</span></p>

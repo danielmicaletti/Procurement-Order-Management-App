@@ -17,35 +17,36 @@
       <!-- left side body -->
       <div class="p-15 hidden-sm hidden-xs" id="mail-nav">
 
-<!--         <ul class="nav nav-pills nav-stacked nav-sm" id="mail-folders">
-          <li ui-sref-active="active"><a ui-sref="app.mail">Inbox <span class="pull-right badge bg-lightred">6</span></a></li>
-
-        </ul> -->
         <div class="clearfix"></div>
         <tabset class="pills" vertical="true" type="pills">
-            <tab ng-repeat="(key,msg) in vm.messages" heading="{{key | uppercase}}" active="msg.active" select="vm.mailType(msg);"><tab-heading>{{key | uppercase}}<span class="pull-right badge bg-lightred">{{msg.length}}</span></tab-heading>
+            <tab  heading="inbox" active="inbox.active" ui-sref="app.mail.inbox({filterParam:'inbox'})">    <tab-heading>Inbox
+                    <span class="pull-right badge bg-lightred">{{msgs.inbox.length}}</span>
+                </tab-heading>
+            </tab>
+            <tab  heading="draft" active="draft.active" ui-sref="app.mail.inbox({filterParam:'draft'})">    <tab-heading>Draft
+                    <span class="pull-right badge bg-lightred">{{msgs.draft.length}}</span>
+                </tab-heading>
+            </tab>
+            <tab  heading="sent" active="sent.active" ui-sref="app.mail.inbox({filterParam:'sent'})">    <tab-heading>Sent
+                    <span class="pull-right badge bg-lightred">{{msgs.sent.length}}</span>
+                </tab-heading>
+            </tab>
+            <tab  heading="trash" active="trash.active" ui-sref="app.mail.inbox({filterParam:'trash'})">    <tab-heading>Trash
+                    <span class="pull-right badge bg-lightred">{{msgs.trash.length}}</span>
+                </tab-heading>
             </tab>
         </tabset>
-<!--         <h5 class="b-b p-10 text-strong">Labels</h5>
-        <ul class="nav nav-pills nav-stacked nav-sm" id="mail-labels">
-          <li><a href="javascript:;"><i class="fa fa-fw fa-circle text-primary"></i>Family</a></li>
-          <li><a href="javascript:;"><i class="fa fa-fw fa-circle text-default"></i>Work</a></li>
-          <li><a href="javascript:;"><i class="fa fa-fw fa-circle text-orange"></i>Shop</a></li>
-          <li><a href="javascript:;"><i class="fa fa-fw fa-circle text-greensea"></i>Themeforest</a></li>
-          <li><a href="javascript:;"><i class="fa fa-fw fa-circle text-lightred"></i>Google</a></li>
-        </ul>
- -->
 
       </div>
       <!-- /left side body -->
 
     </div>
-    <!-- /left side -->
+    <!-- /left side header-->
 
     <!-- right side -->
     <div class="tcol">
       <div ui-view ></div>
-      <inbox msgs="vm.msgs" path="path"></inbox>
+      <!-- <inbox msgs="vm.msgs" path="path"></inbox> -->
     </div>
     <!-- /right side -->
 
