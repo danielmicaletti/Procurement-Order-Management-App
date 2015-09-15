@@ -97,7 +97,8 @@
             console.log(data);
             if(vm.account.id === vm.authAcct.id){
                 vm.account = data;
-                Authentication.setAuthenticatedAccount(data)
+                Authentication.setAuthenticatedAccount(data);
+                $scope.$emit('update_user_info', data);
             }
             if(uploader.queue.length>0){
                 uploader.uploadAll();
@@ -163,6 +164,7 @@
             getCompany();
             if(vm.account.id === vm.authAcct.id){
                 Authentication.setAuthenticatedAccount(response);
+                $scope.$emit('update_user_info', response);
             }
         };
         uploader.onCompleteAll = function() {

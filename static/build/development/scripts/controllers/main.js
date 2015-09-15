@@ -4,7 +4,7 @@ angular.module('minovateApp')
   .controller('MainCtrl', function ($scope, $http) {
 
     $scope.main = {
-      title: 'WeASepp',
+      title: 'WeASe',
       settings: {
         navbarHeaderColor: 'scheme-default',
         sidebarColor: 'scheme-default',

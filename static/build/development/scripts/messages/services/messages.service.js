@@ -66,6 +66,21 @@
                                 console.log('sent');
                                 if(v.mail_draft === false){
                                     Messages.allMessages.sent.push(v);
+                                    if(v.reply_mail.length > 0){
+                                        angular.forEach(v.reply_mail, function (val, key, obj){
+                                            angular.forEach(val.mail_to, function (va, ke, ob){
+                                                console.log(va);
+                                                if(va.username === user.username){
+                                                    console.log('reply');
+                                                    console.log(v);
+                                                    if(!_.contains(Messages.allMessages.inbox, v)){
+                                                        console.log(v);
+                                                        Messages.allMessages.inbox.push(v);
+                                                    }
+                                                }
+                                            })
+                                        })                                         
+                                    }
                                 }
                             }
                             if(v.mail_draft === true){
@@ -80,11 +95,12 @@
                                 console.log(val);
                                 if(val.username === user.username){
                                     console.log('inbox');
-                                    // if(!v.mail_draft){
-                                    Messages.allMessages.inbox.push(v);
-                                    // }
+                                    if(!_.contains(Messages.allMessages.inbox, v)){
+                                        console.log(v);
+                                        Messages.allMessages.inbox.push(v);
+                                    }
                                 }
-                            }) 
+                            })
                         })
                         console.log(Messages.allMessages);
                         return Messages.allMessages;

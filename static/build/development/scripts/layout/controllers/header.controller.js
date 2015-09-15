@@ -12,7 +12,7 @@
         var vm = this;
         vm.logout = logout;
 
-        getNotifications();
+        // getNotifications();
 
         function getNotifications(){
             Messages.getNotifications()
@@ -22,7 +22,7 @@
 
         function getNotificationsSuccess(data){
             console.log(data);
-            vm.notifications = data;
+            $scope.notifications = data;
         }
 
         function getNotificationsError(errorMsg){

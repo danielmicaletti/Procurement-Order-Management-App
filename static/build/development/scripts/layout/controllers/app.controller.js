@@ -5,14 +5,18 @@
         .module('layout.controllers')
         .controller('AppController', AppController);
 
-    AppController.$inject = ['$scope', '$cookies', 'Authentication', 'Order', 'Messages', 'toastr'];
+    AppController.$inject = ['$scope', '$cookies', '$dragon', 'Authentication', 'Order', 'Messages', 'toastr'];
 
-    function AppController($scope, $cookies, Authentication, Order, Messages, toastr) {
+    function AppController($scope, $cookies, $dragon, Authentication, Order, Messages, toastr) {
         var vm = this;
 
         vm.isAuthenticated = Authentication.isAuthenticated();
         console.log(vm.isAuthenticated);
         $scope.au = Authentication.getAuthenticatedAccount();
+
+        $scope.$on("update_user_info", function(event, message){
+            $scope.au = message;
+        });
         console.log($scope.au);
         if($scope.au.access_level >= 8){
             $scope.admin = true;
@@ -61,12 +65,68 @@
         function getAllMailSuccess(data){
             console.log(data);
             $scope.msgs = data;
+            $scope.$broadcast('update_mail', data);
         }
 
         function getAllMailError(errorMsg){
             console.log(errorMsg);
-            toastr.error('There was an issue retreivingn your messages...');
+            toastr.error('There was an issue retreiving your messages...');
         }
+
+        
+        Messages.getNotifications()
+            .then(getNotificationsSuccess)
+            .catch(getNotificationsError);
+    
+
+        function getNotificationsSuccess(data){
+            console.log(data);
+            $scope.notifications = data;
+            $scope.$broadcast('update_dash', data);
+        }
+
+        function getNotificationsError(errorMsg){
+            console.log(errorMsg);
+            vm.msgError = 'There was an issue with notifications';
+        }
+
+        $scope.mailChannel = 'mail';
+        $scope.notChannel = 'notification';
+        $dragon.onReady(function() {
+            $dragon.subscribe('mail', $scope.mailChannel, {}).then(function(response) {
+                // $scope.dataMapper = new DataMapper(response.data);
+                // console.log($scope.dataMapper);
+            });
+            $dragon.subscribe('notification', $scope.notChannel, {}).then(function(response) {
+                // $scope.dataMapper = new DataMapper(response.data);
+                // console.log($scope.dataMapper);
+            });
+        });
+
+        $dragon.onChannelMessage(function(channels, message) {
+            if (indexOf.call(channels, $scope.mailChannel) > -1) {
+                $scope.$apply(function() {
+                    // $scope.dataMapper.mapData(vm.messages, message);
+                    console.log('channel here');
+                    Messages.getAllMail($scope.au)
+                        .then(getAllMailSuccess)
+                        .catch(getAllMailError);
+
+                });
+            }
+            if (indexOf.call(channels, $scope.notChannel) > -1) {
+                $scope.$apply(function() {
+                    // $scope.dataMapper.mapData(vm.messages, message);
+                    console.log('not channel here');
+                    Messages.getNotifications()
+                        .then(getNotificationsSuccess)
+                        .catch(getNotificationsError);
+
+                });
+            }
+        });
+
+
 
         $scope.stati = {
             'WRQ':'text-cyan',

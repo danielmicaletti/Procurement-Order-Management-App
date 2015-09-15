@@ -45,6 +45,7 @@ angular
     'ui.calendar',
     'angular.filter',
     'localytics.directives',
+    'SwampDragonServices',
     'filters', 
     'authentication',
     'layout',

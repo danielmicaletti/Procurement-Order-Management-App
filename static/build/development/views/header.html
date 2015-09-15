@@ -166,7 +166,7 @@
 
         <ul class="list-group">
 
-          <li class="list-group-item" ng-repeat="mail in msgs.inbox">
+          <li class="list-group-item" ng-repeat="mail in msgs.inbox | orderBy: '-mail_created' track by $index">
             <a ui-sref="app.mail.single({mailId:mail.id})" class="media">
               <span class="pull-left media-object thumb thumb-sm">
                 <img ng-src="{{path.static_files}}{{mail.mail_created_by.user_pic}}" alt="" class="img-circle">
@@ -193,28 +193,28 @@
 
       <a href class="dropdown-toggle" dropdown-toggle>
         <fa name="bell"></fa>
-        <span class="badge bg-lightred">{{ vm.notifications.length }}</span>
+        <span class="badge bg-lightred">{{ notifications.length }}</span>
       </a>
 
       <div class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInLeft">
 
         <div class="panel-heading">
-          You have <strong> <span ng-show="vm.notifications.length > 0">{{ vm.notifications.length }}</span><span ng-hide="vm.notifications.length > 0">no</span> </strong> notifications
+          You have <strong> <span ng-show="notifications.length > 0">{{ notifications.length }}</span><span ng-hide="notifications.length > 0">no</span> </strong> notifications
         </div>
 
         <ul class="list-group notificaitons">
 
-          <li class="list-group-item team" ng-repeat="notification in vm.notifications | orderBy: '-timestamp'">
+          <li class="list-group-item team" ng-repeat="notification in notifications | orderBy: '-timestamp'">
             <div class="media" ng-click="vm.goTo(notification.id);">
-              <span class="pull-left media-object media-icon" ng-class="notColor[notification.action];">
-                <i class="fa" ng-class="notIcon[notification.action]"></i>
+              <span class="pull-left media-object media-icon" ng-class="notColor[notification.not_action];">
+                <i class="fa" ng-class="notIcon[notification.not_action]"></i>
               </span>
               <div class="media-body">
-                <p>{{notification.action | uppercase}}</p>
+                <p>{{notification.not_action | uppercase}}</p>
                 <span class="block" ng-if="notification.content_type === 'order'">Number: {{notification.extra.order_number}}</span>
                 <span class="block" ng-if="notification.content_type === 'order'">Status: <span ng-class="stati[notification.extra.order_status]">{{notification.extra.order_status_full}}</span></span>
                 <span class="block text-lightred" ng-show="apvNeeded.indexOf(notification.extra.order_status)!=-1">Management Approval Needed</span>
-                <span class="block" ng-if="notification.action === 'optiz assigned'"><a ui-sref="app.pages.profile({username:notification.extra.optiz_assigned})">{{notification.extra.optiz_assigned_name}}</a></span>
+                <span class="block" ng-if="notification.not_action === 'optiz assigned'"><a ui-sref="app.pages.profile({username:notification.extra.optiz_assigned})">{{notification.extra.optiz_assigned_name}}</a></span>
                 <span class="block" ng-if="notification.content_type === 'company'">{{notification.extra.company_name}}</span>
                 <small class="block">by <a ui-sref="app.pages.profile({username:notification.user.username})">{{notification.user.user_name_full}}</a></small>
                 <small class="text-muted">{{notification.timestamp | date:"d MMM y 'at' h:mm a"}}</small>

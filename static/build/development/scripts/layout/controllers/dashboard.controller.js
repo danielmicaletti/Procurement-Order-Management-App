@@ -20,6 +20,12 @@
             title: 'Dashboard',
         }
 
+        // $scope.dynamicPopover = {
+        //     content: 'Hello, World!',
+        //     templateUrl: static_path('views/messages/chat-window.html'),
+        //     title: 'Title'
+        // };
+
         vm.dashOrder = ['PEN', 'OFR', 'APV', 'INV'];
 
         function getOrderDetails(){
@@ -61,6 +67,10 @@
             console.log(errorMsg);
         }
 
+        $scope.$on("update_dash", function(event, message) {
+            vm.dashData = message;
+        });
+
         function getLogs(){
             Messages.getNotifications()
                 .then(getLogsSuccess)
@@ -78,27 +88,27 @@
 
         vm.getDashInfo = function(dashItem){
             
-            if(dashItem.action === 'comment added'){
+            if(dashItem.not_action === 'comment added'){
                 return 'A comment "'+dashItem.extra.comment+'" was added to #: '
-            }else if(dashItem.action === 'request submitted'){
+            }else if(dashItem.not_action === 'request submitted'){
                 return ' has submitted a new request # '
-            }else if(dashItem.action === 'request created'){
+            }else if(dashItem.not_action === 'request created'){
                 return ' has created a new request # '
-            }else if(dashItem.action === 'request updated'){
+            }else if(dashItem.not_action === 'request updated'){
                 return ' has updated request # '
-            }else if(dashItem.action === 'offer created'){
+            }else if(dashItem.not_action === 'offer created'){
                 return ' has submitted an offer # '
-            }else if(dashItem.action === 'offer created'){
+            }else if(dashItem.not_action === 'offer created'){
                 return ' has submitted an offer # '
-            }else if(dashItem.action === 'order status updated'){
+            }else if(dashItem.not_action === 'order status updated'){
                 return ' has updated order # '
-            }else if(dashItem.action === 'user created'){
+            }else if(dashItem.not_action === 'user created'){
                 return ' has added a user '
-            }else if(dashItem.action === 'company registered'){
+            }else if(dashItem.not_action === 'company registered'){
                 return ' has been registered with WeASe'
-            }else if(dashItem.action === 'optiz assigned'){
+            }else if(dashItem.not_action === 'optiz assigned'){
                 return ' has been assigned to '
-            }else if(dashItem.action === 'company updated'){
+            }else if(dashItem.not_action === 'company updated'){
                 return ' has updated their profile information'
             }else{
                 return 'Click to view!'

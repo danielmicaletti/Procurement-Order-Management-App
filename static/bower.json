@@ -133,6 +133,15 @@
     "oclazyload": {
       "main": "./dist/ocLazyLoad.js"
     },
+    "bootstrap": {
+      "main": "bootstrap.css"
+    },
+    "angular-ui-tree": {
+      "main": "./source/angular-ui-tree.css"
+    },
+    "angular-ui-select": {
+      "main": "select.css"
+    },
     "textAngular": {
       "main": [
         "./src/textAngular.js",

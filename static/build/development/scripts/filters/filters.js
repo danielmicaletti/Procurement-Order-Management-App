@@ -17,7 +17,20 @@
                     console.log(new_sentence);
                     return new_sentence;
                 }
-        });
+        })
+        .filter('parseDate', function (){
+            return function (date){
+                    console.log(date);
+                    return Date.parse(date);
+                }
+        })
+        // .filter('escapeUrl', function (){
+        //     return function (url){
+        //             console.log(url);
+        //             console.log(window.encodeURIComponent(url));
+        //             return window.encodeURIComponent(url);
+        //         }
+        // })
 
 
 }());
