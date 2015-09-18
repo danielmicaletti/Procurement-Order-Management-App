@@ -19,13 +19,7 @@
         $scope.page = {
             title: 'Dashboard',
         }
-
-        // $scope.dynamicPopover = {
-        //     content: 'Hello, World!',
-        //     templateUrl: static_path('views/messages/chat-window.html'),
-        //     title: 'Title'
-        // };
-
+        
         vm.dashOrder = ['PEN', 'OFR', 'APV', 'INV'];
 
         function getOrderDetails(){

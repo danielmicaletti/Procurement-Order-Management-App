@@ -164,7 +164,7 @@
           You have <strong>{{msgs.inbox.length}}</strong> messages
         </div>
 
-        <ul class="list-group">
+        <ul class="list-group" style="max-height: 320px;overflow:auto;" slimscroll="{height: '100%'}">
 
           <li class="list-group-item" ng-repeat="mail in msgs.inbox | orderBy: '-mail_created' track by $index">
             <a ui-sref="app.mail.single({mailId:mail.id})" class="media">
@@ -202,7 +202,7 @@
           You have <strong> <span ng-show="notifications.length > 0">{{ notifications.length }}</span><span ng-hide="notifications.length > 0">no</span> </strong> notifications
         </div>
 
-        <ul class="list-group notificaitons">
+        <ul class="list-group notificaitons" style="max-height: 320px;overflow:auto;" slimscroll="{height: '100%'}">
 
           <li class="list-group-item team" ng-repeat="notification in notifications | orderBy: '-timestamp'">
             <div class="media" ng-click="vm.goTo(notification.id);">

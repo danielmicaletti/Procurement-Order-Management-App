@@ -40,7 +40,7 @@ class AccountViewSet(viewsets.ModelViewSet):
             log(
                 user=user,
                 company=user_company,
-                action='user created',
+                not_action='user created',
                 obj=acct,
                 notification=True,
                 extra={
@@ -58,7 +58,6 @@ class AccountViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def perform_update(self, serializer):
-        print "ACCOUNT SRD --- %s" % self.request.data
         if serializer.is_valid():
             if 'file' in self.request.data:
                 user_pic = self.request.data['file']
@@ -123,11 +122,10 @@ class LoginView(views.APIView):
                 serialized = AccountSerializer(account)
                 user = self.request.user
                 ip = get_ip(request)
-                print "IP --- %s" %ip
                 log(
                     user=user,
                     company=user.user_company,
-                    action='user login',
+                    not_action='user login',
                     obj=user,
                     notification=False,
                     extra={
@@ -137,7 +135,6 @@ class LoginView(views.APIView):
                         'login_ip':ip,
                     }
                 )
-                print "LOG === %s" % log
                 return Response(serialized.data)
             else:
                 return Response({
@@ -160,7 +157,7 @@ class LogoutView(views.APIView):
         log(
             user=user,
             company=user.user_company,
-            action='user logout',
+            not_action='user logout',
             obj=user,
             notification=False,
             extra={

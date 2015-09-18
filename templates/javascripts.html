@@ -5,7 +5,8 @@
 
             <!-- build:js({.tmp,app}) scripts/app.js -->
         <script src="{% static "scripts/app.js" %}"></script>
-        <!-- <script src="{% static "scripts/filters/filters.js" %}"></script> -->
+        <script src="{% static "scripts/filters/filters.module.js" %}"></script>
+        <script src="{% static "scripts/filters/filters.js" %}"></script>
         <!-- authentication -->
         <script src="{% static "scripts/authentication/authentication.module.js" %}"></script>
         <script src="{% static "scripts/authentication/services/authentication.services.js" %}"></script>
@@ -46,7 +47,10 @@
         <script src="{% static "scripts/messages/messages.module.js" %}"></script>
         <script src="{% static "scripts/messages/services/messages.service.js" %}"></script> 
         <script src="{% static "scripts/messages/controllers/mail.controller.js" %}"></script>
-        <script src="{% static "scripts/messages/controllers/inbox.controller.js" %}"></script> 
+        <script src="{% static "scripts/messages/controllers/inbox.controller.js" %}"></script>
+        <script src="{% static "scripts/messages/controllers/mail-single.controller.js" %}"></script>
+        <script src="{% static "scripts/messages/controllers/mail-compose.controller.js" %}"></script>
+        <script src="{% static "scripts/messages/controllers/chat.controller.js" %}"></script>
         <script src="{% static "scripts/messages/directives/inbox.directive.js" %}"></script>   
         <!-- layout -->
         <script src="{% static "scripts/layout/layout.module.js" %}"></script> 
@@ -58,9 +62,9 @@
         <script src="{% static "scripts/layout/controllers/nav.controller.js" %}"></script> 
         <script src="{% static "scripts/layout/controllers/popover.controller.js" %}"></script> 
         <script src="{% static "scripts/layout/directives/nav.directive.js" %}"></script>
+
         <!-- end new ang files -->
         <script src="{% static "scripts/controllers/main.js" %}"></script>
-        
         <script src="{% static "scripts/directives/slimscroll.js" %}"></script>
         <script src="{% static "scripts/controllers/navbar-chart.js" %}"></script>
         <script src="{% static "scripts/directives/sparkline.js" %}"></script>

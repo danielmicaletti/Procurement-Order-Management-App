@@ -4,7 +4,7 @@ from .models import log
 class EventLogMixin(object):
 
     @property
-    def action(self):
+    def not_action(self):
         return "{}_{}".format(
             self.action_kind,
             self.model._meta.verbose_name.upper().replace(" ", "_")
@@ -24,7 +24,7 @@ class EventLogMixin(object):
         log(
             user=self.user,
             company=self.company,
-            action=self.action,
+            not_action=self.not_action,
             extra=self.extra_data,
             obj=self.object
             notification=self.notification

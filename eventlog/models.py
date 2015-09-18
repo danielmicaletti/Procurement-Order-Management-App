@@ -8,9 +8,12 @@ import jsonfield
 from authentication.models import Account, Company
 from .signals import event_logged
 
+from swampdragon.models import SelfPublishModel
+from messaging.dragon_serializers import EventLogSerializer
 
-class Log(models.Model):
 
+class Log(SelfPublishModel, models.Model):
+    
     user = models.ForeignKey(
         getattr(settings, "AUTH_USER_MODEL", "auth.User"),
         null=True,
@@ -18,23 +21,24 @@ class Log(models.Model):
     )
     company = models.ForeignKey(Company, blank=True, null=True)
     timestamp = models.DateTimeField(default=timezone.now, db_index=True)
-    action = models.CharField(max_length=50, db_index=True)
+    not_action = models.CharField(max_length=50, db_index=True)
     content_type = models.ForeignKey(ContentType, null=True)
     object_id = models.PositiveIntegerField(null=True)
     notification = models.BooleanField(default=False)
     # dashboard = models.BooleanField(default=False)
     viewed_by = models.ManyToManyField(Account, related_name='user_viewed', null=True, blank=True)
     extra = jsonfield.JSONField()
+    serializer_class = EventLogSerializer
 
     @property
     def template_fragment_name(self):
-        return "eventlog/{}.html".format(self.action.lower())
+        return "eventlog/{}.html".format(self.not_action.lower())
 
     class Meta:
         ordering = ["-timestamp"]
 
 
-def log(user, company, action, notification, extra=None, obj=None):
+def log(user, company, not_action, notification, extra=None, obj=None):
     if (user is not None and not user.is_authenticated()):
         user = None
     if extra is None:
@@ -50,7 +54,7 @@ def log(user, company, action, notification, extra=None, obj=None):
     event = Log.objects.create(
         user=user,
         company=company,
-        action=action,
+        not_action=not_action,
         extra=extra,
         content_type=content_type,
         object_id=object_id,

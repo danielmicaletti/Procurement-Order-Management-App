@@ -42,7 +42,7 @@ class AddressSerializer(serializers.ModelSerializer):
         log(
             user=user,
             company=comp,
-            action='address created',
+            not_action='address created',
             obj=new_addr,
             notification=False,
             extra={
@@ -87,7 +87,7 @@ class CompanySerializer(serializers.ModelSerializer):
         log(
             user=user,
             company=comp,
-            action='company registered',
+            not_action='company registered',
             obj=comp,
             notification=True,
             extra={
@@ -126,11 +126,11 @@ class CompanySerializer(serializers.ModelSerializer):
                 if not instance.company_assigned_to.all().filter(id=optiz).exists():
                     optiz_user = Account.objects.get(id=optiz)
                     print "OPTIZ ASS === %s" % optiz_user
-                    instance.company_assigned_to.add(optiz_user);
+                    instance.company_assigned_to.add(optiz_user)
                     log(
                         user=user,
                         company=instance,
-                        action='optiz assigned',
+                        not_action='optiz assigned',
                         obj=instance,
                         notification=True,
                         extra={
@@ -144,7 +144,7 @@ class CompanySerializer(serializers.ModelSerializer):
             log(
                 user=user,
                 company=instance,
-                action='company updated',
+                not_action='company updated',
                 obj=instance,
                 notification=True,
                 extra={
@@ -165,6 +165,7 @@ class AccountSerializer(serializers.ModelSerializer):
     user_company_full = serializers.CharField(source='user_company.get_name', read_only=True, required=False)
     user_company = serializers.CharField(source='user_company.id',required=False)
     username = serializers.CharField(required=False)
+    user_name_full = serializers.CharField(source='get_full_name', required=False)
     email = serializers.CharField(required=False)
     password = serializers.CharField(write_only=True, required=False)
     confirm_password = serializers.CharField(write_only=True, required=False)
@@ -174,7 +175,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ('id', 'email', 'username', 'user_created', 'user_created_by', 'user_updated', 'user_updated_by',
+        fields = ('id', 'email', 'username', 'user_name_full', 'user_created', 'user_created_by', 'user_updated', 'user_updated_by',
                   'first_name', 'last_name', 'password','confirm_password', 'optiz', 'lang', 'user_company', 'user_company_full',
                   'position', 'access_level', 'auth_amount', 'street_addr1', 'street_addr2', 'city', 'post_code', 'country',
                   'phone_main', 'phone_mobile', 'user_pic', 'request_email', 'refused_email', 'offer_email', 'order_email',
@@ -230,7 +231,7 @@ class AccountSerializer(serializers.ModelSerializer):
         log(
             user=user,
             company=instance.user_company,
-            action='user updated',
+            not_action='user updated',
             obj=instance,
             notification=False,
             extra={

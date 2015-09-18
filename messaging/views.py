@@ -4,9 +4,10 @@ from rest_framework import permissions, status, viewsets, generics
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.decorators import list_route, api_view, detail_route
+from authentication.models import Account
 from eventlog.models import Log, log
-from messaging.models import Mail
-from messaging.serializers import LogSerializer, MailSerializer
+from messaging.models import Mail, MailReply, Chat, ChatMessage
+from messaging.serializers import LogSerializer, MailSerializer, MailReplySerializer, ChatSerializer, ChatMessageSerializer
 from django.utils import timezone
 from datetime import date
 
@@ -68,13 +69,120 @@ class MailViewSet(viewsets.ModelViewSet):
         return (permissions.IsAuthenticated(),)
 
     def list(self, request, mail=None):
-        queryset = self.queryset.filter(Q(mail_to=self.request.user) | Q(mail_created_by=self.request.user))
-        print "MAILS QS ==== %s" % queryset
+        queryset = self.queryset.filter(Q(mail_to=self.request.user) | Q(mail_created_by=self.request.user) | Q(reply_mail__mail_to=self.request.user)).exclude(Q(mail_draft=True), ~Q(mail_created_by=self.request.user)).distinct()
+        print "MAIL QUERY SET ==== %s" % queryset
         serializer = MailSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, id=None):      
-        queryset = self.queryset.filter(id=id)
-        serializer = MailSerializer(queryset)
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            user = self.request.user
+            mail_to_all = self.request.data.pop('mailTo')
+            print "MTA --- %s" % mail_to_all
+            mail = Mail.objects.create(mail_created_by=user, **self.request.data)
+            for mt in mail_to_all:
+                print "MT --- %s" % mt
+                mail_to_user = Account.objects.get(id=mt)
+                mail.mail_to.add(mail_to_user)
+            mail.save()
+            serializer.save(mail=mail)
+
+    def perform_update(self, serializer):
+        if serializer.is_valid():
+            user = self.request.user
+
+            serializer.save(user=user, **self.request.data)
+
+class MailReplyViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = MailReply.objects.all()
+    serializer_class = MailReplySerializer
+
+    def get_permissions(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return (permissions.AllowAny(),)
+        return (permissions.IsAuthenticated(),)
+
+    def list(self, request, mail_id=None):
+        queryset = self.queryset.filter(orig_mail=mail_id)
+        serializer = MailReplySerializer(queryset, many=True)
         return Response(serializer.data)
+
+    def retrieve(self, request, id=None, mail_id=None):
+        queryset = self.queryset.get(id=id, orig_mail=mail_id)
+        serializer = MailReplySerializer(queryset)
+        return Response(serializer.data)
+
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            user = self.request.user
+            mail_to_all = self.request.data.pop('mail_to')
+            mail_id = self.request.data.pop('id')
+            orig_mail = Mail.objects.get(id=mail_id)
+            reply_mail = MailReply.objects.create(reply_created_by=user, orig_mail=orig_mail)
+            print "MAIL CREATED BY == %s" % self.request.data['mail_created_by']
+            if 'mail_created_by' in self.request.data and user.id != self.request.data['mail_created_by']:
+                print "MAIL CREATED 2 == %s" % self.request.data['mail_created_by']
+                mcb = self.request.data.pop('mail_created_by')
+                mcu = Account.objects.get(id=mcb)
+                reply_mail.mail_to.add(mcu)
+            print "MTA --- %s" % mail_to_all
+            for mt in mail_to_all:
+                print "MT --- %s" % mt
+                if user.id != mt['id']:
+                    mail_to_user = Account.objects.get(id=mt['id'])
+                    reply_mail.mail_to.add(mail_to_user)
+            reply_mail.subject = self.request.data['subject']
+            reply_mail.body = self.request.data['body']
+            reply_mail.save()
+            serializer.save(reply_mail=reply_mail, **self.request.data)
+
+class ChatViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+
+    def list(self, request):
+        queryset = self.queryset.filter(users=self.request.user)
+        serializer = ChatSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, id=None):
+        queryset = self.queryset.get(id=id)
+        serializer = ChatSerializer(queryset)
+        return Response(serializer.data)
+
+class ChatMessageViewSet(viewsets.ModelViewSet):
+    lookup_field = 'id'
+    queryset = ChatMessage.objects.all()
+    serializer_class = ChatMessageSerializer
+
+    def list(self, request):
+        queryset = self.queryset.filter(users=self.request.user)
+        serializer = ChatMessageSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, id=None):
+        queryset = self.queryset.get(id=id)
+        serializer = ChatMessageSerializer(queryset)
+        return Response(serializer.data)
+
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            user = self.request.user
+            print "SELF Chat-- %s" % self.request.data
+            print "SER Chat== %s" % serializer
+            if 'chatid' in self.request.data:
+                chatid = self.request.data.pop('chatid')
+                print 'chat id == %s' %chatid
+                chat = Chat.objects.get(id=chatid)
+            else:
+                chatters = self.request.data.pop('users')
+                chat = Chat.objects.create()
+                for cu_id in chatters:
+                    chat_user = Account.objects.get(id=cu_id)
+                    chat.users.add(chat_user)
+                chat.users.add(user)
+            
+            serializer.save(user=user, chat=chat, chat_message_created=timezone.now(), **self.request.data)
 

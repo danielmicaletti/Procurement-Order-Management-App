@@ -5,7 +5,7 @@ from rest_framework_nested import routers
 from authentication.views import AccountViewSet, CompanyViewSet, AddressViewSet, LoginView, LogoutView, OptizViewSet
 from orders.views import OrderViewSet, OrderSimpleViewSet, OrderApvViewSet, GoodViewSet, DetailViewSet, RequestViewSet, ReqItemViewSet, ReqProductViewSet, ReqFileViewSet, OfferViewSet, OfferItemViewSet
 from wease.views import IndexView
-from messaging.views import OrderActivityViewSet, NotificationViewSet, MailViewSet
+from messaging.views import OrderActivityViewSet, NotificationViewSet, MailViewSet, MailReplyViewSet, ChatViewSet, ChatMessageViewSet
 import settings
 from django.contrib import admin
 
@@ -26,6 +26,8 @@ router.register(r'optiz', OptizViewSet)
 router.register(r'order-activity', OrderActivityViewSet)
 router.register(r'notifications', NotificationViewSet)
 router.register(r'mail', MailViewSet)
+router.register(r'chat', ChatViewSet)
+router.register(r'chat-message', ChatMessageViewSet)
 
 accounts_router = routers.NestedSimpleRouter(
     router, r'accounts', lookup='account',
@@ -64,7 +66,13 @@ notification_router = routers.NestedSimpleRouter(
     router, r'notifications', lookup='id',
 )
 mail_router = routers.NestedSimpleRouter(
-    router, r'mail', lookup='id',
+    router, r'mail', lookup='mail',
+)
+chat_router = routers.NestedSimpleRouter(
+    router, r'chat', lookup='chat',
+)
+chat_message_router = routers.NestedSimpleRouter(
+    router, r'chat-message', lookup='chat_message',
 )
 
 orders_router.register(r'requests', RequestViewSet)
@@ -73,6 +81,7 @@ req_router.register(r'req-prods', ReqProductViewSet)
 req_router.register(r'req-files', ReqFileViewSet)
 offer_router.register(r'item', OfferItemViewSet)
 goods_router.register(r'details', DetailViewSet)
+mail_router.register(r'mail-reply', MailReplyViewSet)
 
 urlpatterns = patterns(
     '',
@@ -88,7 +97,9 @@ urlpatterns = patterns(
     url(r'^api/v1/', include(optiz_router.urls)),
     url(r'^api/v1/', include(order_activity_router.urls)), 
     url(r'^api/v1/', include(notification_router.urls)), 
-    url(r'^api/v1/', include(mail_router.urls)),          
+    url(r'^api/v1/', include(mail_router.urls)),  
+    url(r'^api/v1/', include(chat_router.urls)),        
+    url(r'^api/v1/', include(chat_message_router.urls)),  
     url(r'^api/v1/auth/login/$', LoginView.as_view(), name='login'),
     url(r'^api/v1/auth/logout/$', LogoutView.as_view(), name='logout'),
 

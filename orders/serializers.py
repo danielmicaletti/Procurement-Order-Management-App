@@ -80,7 +80,7 @@ class OfferSerializer(serializers.ModelSerializer):
         log(
             user=user,
             company=order.order_company,
-            action='offer created',
+            not_action='offer created',
             obj=order,
             notification=True,
             extra={
@@ -142,7 +142,7 @@ class ReqItemSerializer(serializers.ModelSerializer):
         log(
             user=user,
             company=order.order_company,
-            action='request item created',
+            not_action='request item created',
             obj=order,
             notification=False,
             extra={
@@ -173,7 +173,7 @@ class ReqItemSerializer(serializers.ModelSerializer):
         log(
             user=user,
             company=order.order_company,
-            action='request item updated',
+            not_action='request item updated',
             obj=order,
             notification=False,
             extra={
@@ -232,6 +232,7 @@ class OrderSerializer(serializers.ModelSerializer):
         read_only_fields = ('order_created', 'modified_date', 'company_approval_by', 'optiz_status_change_by', 'order_status_change_by', 'modified_by',)
     
     def update(self, instance, validated_data):
+        print 'VAL DATA == %s' % validated_data
         user = validated_data.pop('user')
         if 'order_draft' in validated_data:
             if 'False' in validated_data['order_draft']:
@@ -248,7 +249,7 @@ class OrderSerializer(serializers.ModelSerializer):
                     log(
                         user=user,
                         company=instance.order_company,
-                        action='request submitted',
+                        not_action='request submitted',
                         obj=instance,
                         notification=True,
                         extra={
@@ -261,15 +262,15 @@ class OrderSerializer(serializers.ModelSerializer):
                     )
                 else:
                     if instance.company_approval_status == 'APN':
-                        req_action = 'request updated'
+                        req_not_action = 'request updated'
                     else:
                         instance.company_approval_status == 'APN'
                         instance.order_status = 'APN'
-                        req_action = 'request created'
+                        req_not_action = 'request created'
                     log(
                         user=user,
                         company=instance.order_company,
-                        action=req_action,
+                        not_action=req_not_action,
                         obj=instance,
                         notification=True,
                         extra={
@@ -287,10 +288,11 @@ class OrderSerializer(serializers.ModelSerializer):
                 instance.order_status_change_date = timezone.now()
                 if not instance.order_draft:
                     order_status_full = instance.get_order_status_display()
+                    print "Ord Stat F --- %s" % order_status_full
                     log(
                         user=user,
                         company=instance.order_company,
-                        action='order status updated',
+                        not_action='order status updated',
                         obj=instance,
                         notification=True,
                         extra={
@@ -323,7 +325,7 @@ class OrderSerializer(serializers.ModelSerializer):
             log(
                 user=user,
                 company=instance.order_company,
-                action='order delivery address',
+                not_action='order delivery address',
                 obj=instance,
                 notification=False,
                 extra={
@@ -339,13 +341,15 @@ class OrderSerializer(serializers.ModelSerializer):
             log(
                 user=user,
                 company=instance.order_company,
-                action='comment added',
+                not_action='comment added',
                 obj=instance,
                 notification=True,
                 extra={
                     'order_id':instance.id,
                     'order_number':instance.order_number,
                     'order_version':instance.order_version,
+                    'order_status':instance.order_status,
+                    'order_status_full':instance.get_order_status_display(),
                     'comment':comment.body,
                 }
             )
