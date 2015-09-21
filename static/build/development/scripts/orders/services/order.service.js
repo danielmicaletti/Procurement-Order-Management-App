@@ -23,9 +23,6 @@
     return Order;
 
     function generalCallbackSuccess(response){
-      console.log("order")
-      console.log(response.data)
-      console.log(response)
       return response.data;
     }
 

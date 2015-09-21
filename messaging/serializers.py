@@ -99,12 +99,12 @@ class MailSerializer(serializers.ModelSerializer):
 
 class ChatMessageSerializer(serializers.ModelSerializer):
     chat = serializers.StringRelatedField(required=False)
-    # chat = ChatSerializer(required=False)
     user = UserCompanySerializer(required=False)
+    chat_viewed = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = ChatMessage
-        fields = ('id', 'chat', 'user', 'chat_message_created', 'chat_message',)
+        fields = ('id', 'chat', 'user', 'chat_message_created', 'chat_message', 'chat_viewed',)
 
     def create(self, validated_data):
         chat_msg = ChatMessage.objects.create(**validated_data)
@@ -112,10 +112,15 @@ class ChatMessageSerializer(serializers.ModelSerializer):
         print "VALD DATA CHAT ms === %s" %validated_data
         return chat_msg
 
+    def update(self, instance, validated_data):
+        instance.save()
+        return instance
+
 class ChatSerializer(serializers.ModelSerializer):
     users = UserCompanySerializer(many=True)
+    chat_user = serializers.PrimaryKeyRelatedField(source='users', read_only=True, required=False, many=True)
     chat_group = ChatMessageSerializer(many=True)
 
     class Meta:
         model = Chat
-        fields = ('id', 'users', 'chat_group',)
+        fields = ('id', 'users', 'chat_user', 'chat_group',)

@@ -11,6 +11,9 @@ from messaging.serializers import LogSerializer, MailSerializer, MailReplySerial
 from django.utils import timezone
 from datetime import date
 
+from swampdragon.pubsub_providers.data_publisher import publish_data
+
+
 class OrderActivityViewSet(viewsets.ModelViewSet):
     lookup_field = 'object_id'
     queryset = Log.objects.all()
@@ -158,7 +161,7 @@ class ChatMessageViewSet(viewsets.ModelViewSet):
     serializer_class = ChatMessageSerializer
 
     def list(self, request):
-        queryset = self.queryset.filter(users=self.request.user)
+        queryset = self.queryset.filter(user=self.request.user)
         serializer = ChatMessageSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -172,12 +175,13 @@ class ChatMessageViewSet(viewsets.ModelViewSet):
             user = self.request.user
             print "SELF Chat-- %s" % self.request.data
             print "SER Chat== %s" % serializer
+            if 'users' in self.request.data:
+                chatters = self.request.data.pop('users')
             if 'chatid' in self.request.data:
                 chatid = self.request.data.pop('chatid')
                 print 'chat id == %s' %chatid
                 chat = Chat.objects.get(id=chatid)
             else:
-                chatters = self.request.data.pop('users')
                 chat = Chat.objects.create()
                 for cu_id in chatters:
                     chat_user = Account.objects.get(id=cu_id)
@@ -185,4 +189,19 @@ class ChatMessageViewSet(viewsets.ModelViewSet):
                 chat.users.add(user)
             
             serializer.save(user=user, chat=chat, chat_message_created=timezone.now(), **self.request.data)
+
+    def perform_update(self, serializer):
+        if serializer.is_valid():
+            if 'chat_viewed' in self.request.data:
+                # chat_viewed_user = self.request.data.pop('chat_viewed')
+                cv = self.request.data.pop('chat_viewed')
+                chatid = self.request.data.pop('chatid')
+                chat_msg = ChatMessage.objects.get(id=chatid)
+                chat_msg.chat_viewed.add(self.request.user)
+
+                serializer.save()
+
+
+
+
 

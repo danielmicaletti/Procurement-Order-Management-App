@@ -60,6 +60,7 @@ class ChatMessage(SelfPublishModel, models.Model):
     user = models.ForeignKey(Account, related_name='chat_user')
     chat_message_created = models.DateTimeField(auto_now_add=True)
     chat_message = models.TextField(blank=True, null=True)
+    chat_viewed = models.ManyToManyField(Account, related_name='chat_viewed')
     serializer_class = ChatMessageSerializer
 
     class Meta:

@@ -29,7 +29,6 @@
         }
 
         function getOrderDetailsSuccess(data){
-            console.log(data);
             vm.orders = data;
             vm.icon = {
                 'WRQ': 'fa-compass',

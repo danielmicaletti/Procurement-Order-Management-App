@@ -23,26 +23,6 @@
       left: 0;
       z-index: 11;
 
-      @include transform(rotateX(0deg) rotateY(0deg));
-
-      @include transform-style(preserve-3d);
-
-      @include backface-visibility(hidden);
-
-      /* -- transition is the magic sauce for animation -- */
-      @include transition(all .4s ease-in-out);
-    }
-
-    &:hover {
-      .front {
-        z-index: 11;
-        @include transform(rotateY(180deg));
-      }
-
-      .back {
-        z-index: 12;
-        @include transform(rotateX(0deg) rotateY(0deg));
-      }
     }
 
     .back {

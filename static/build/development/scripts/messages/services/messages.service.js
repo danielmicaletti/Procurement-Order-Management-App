@@ -21,6 +21,7 @@
             replyMessage: replyMessage,
             getChats:getChats,
             sendChat:sendChat,
+            chatViewed:chatViewed,
         };
 
         return Messages;
@@ -137,6 +138,12 @@
 
         function sendChat(chat){
             return $http.post('api/v1/chat-message/', chat)
+                .then(generalCallbackSuccess)
+                .catch(generalCallbackError);
+        }
+
+        function chatViewed(chatid, chat){
+            return $http.put('api/v1/chat-message/'+chatid+'/', chat)
                 .then(generalCallbackSuccess)
                 .catch(generalCallbackError);
         }

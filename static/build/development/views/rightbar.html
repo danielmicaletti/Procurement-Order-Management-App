@@ -174,16 +174,8 @@
       </tab-heading>
 
         <h6><strong>Chat</strong> History</h6>
-<!--         <div class="dropdown nav-profile" dropdown auto-close="disabled">
-          <div class="mb-20">
-            <a href="javascript:void(0)" class="dropdown-toggle btn btn-rounded btn-sm btn-lightred lt" dropdown-toggle ng-click="vm.getConv();">
-            new chat
-            </a>
-          </div>
-          <div class="dropdown-menu" template-url="chat-window.html"></div>
-        </div> -->
 
-        <div class="dropdown nav-profile" dropdown auto-close="disabled">
+        <div class="dropdown nav-profile" dropdown auto-close="outsideClick">
           <div class="mb-20">
             <a href="javascript:void(0)" class="dropdown-toggle btn btn-rounded btn-sm btn-lightred lt" dropdown-toggle ng-click="vm.getConv();">
             new chat
@@ -191,18 +183,21 @@
           </div>
           <div class="dropdown-menu" template-url="chat-window.html"></div>
         </div>
-
-      <ul>
-        <li class="online b-t dropdown" ng-repeat="chats in vm.chats | orderBy: '-id' track by $index" dropdown auto-close="outsideClick" on-toggle="toggled(open)">
-          <div class="dropdown-menu" template-url="chat-window.html"></div>
-          <div class="media"><a href="javascript:void(0)" class="dropdown-toggle" dropdown-toggle ng-click="vm.getConv(chats.id);">
-            <div class="media-body">
-              <span class="media-heading"><span ng-repeat="chatUser in chats.users"> {{chatUser.first_name}} <strong>{{chatUser.last_name}} </strong> </span></span>
-              <small>{{ chats.chat_group[0].chat_message | limitTo: 80 }}{{chats.chat_group[chats.chat_group.length-1].chat_message > 80 ? '...' : ''}}</small>
-              <small>{{chats.chat_group[chats.chat_group.length-1].chat_message_created | parseDate | date:"d MMM y 'at' h:mm a"}}</small>
-            </div>
-          </a></div>
-        </li>
+        <input type="text" ng-model="query" placeholder="search chats">
+      <div>
+      <ul slimscroll="{height:'100px'}">
+        <li class="online b-t dropdown" ng-repeat="chats in vm.chats | orderBy: '-chat_group[0].chat_message_created' | filter:query track by $index" dropdown auto-close="outsideClick" on-toggle="toggled(open)">
+            <div class="dropdown-menu" template-url="chat-window.html"></div>
+            <div class="media"><a href="javascript:void(0)" class="dropdown-toggle" dropdown-toggle ng-click="vm.getConv(chats);">
+              <div class="media-body">
+                <span class="media-heading"><span ng-repeat="chatUser in chats.users"> {{chatUser.first_name}} <strong>{{chatUser.last_name}}{{$last ? '' : ', '}} </strong> </span></span>
+                <small>{{ chats.chat_group[0].chat_message | limitTo: 80 }}{{chats.chat_group[0].chat_message > 80 ? '...' : ''}}</small>
+                <span class="label bg-lightred" ng-if="chats.chat_group[0].chat_viewed.indexOf($scope.au.id)!=-1">new chat</span><small>{{chats.chat_group[0].chat_message_created | parseDate | date:"d MMM y 'at' h:mm a"}}</small>
+              </div>
+            </a></div>
+          </li>
+        </ul>
+      </div>
 <!-- 
         <li class="offline">
           <div class="media">
@@ -216,8 +211,6 @@
             </div>
           </div>
         </li> -->
-
-      </ul>
     </tab>
 
   <!--   <tab>
@@ -319,15 +312,16 @@
 <script type="text/ng-template" id="chat-window.html">
         <div class="dropdown-menu pull-left animated littleFadeInLeft">
           <!-- tile -->
+          <form class="form-validation" name="chatForm" ng-submit="vm.sendChat(vm.chat, vm.convos.id);" novalidate>
           <section class="tile widget-chat" fullscreen="isFullscreen09">
 
             <!-- tile header -->
             <div class="tile-header dvd dvd-btm">
 
               <div class="row">
-                <h1 class="custom-font col-sm-2 ml-10">Chat</h1>
+                <h1 class="custom-font ml-5 col-sm-2">Chat</h1>
                   <div class="b-l col-sm-10">
-                    <span ng-if="vm.convos.id" ng-repeat="chat_user in vm.convos.users"> <a ui-sref="app.pages.profile({username:chat_user.username})"> {{chat_user.user_name_full}} </a> </span>
+                    <span ng-if="vm.convos.id" ng-repeat="chat_user in vm.convos.users"> <a ui-sref="app.pages.profile({username:chat_user.username})"> {{chat_user.user_name_full}}{{$last ? '' : ', '}}</a> </span>
                     <select chosen multiple 
                             width="'100%'" 
                             name="toUser"
@@ -344,9 +338,9 @@
                 <!-- /tile header -->
 
                 <!-- tile body -->
-                <div class="tile-body" style="max-height: 320px;overflow:auto;" slimscroll="{height: '100%'}">
+                <div class="tile-body" style="max-height: 320px;overflow:auto;"slimscroll="{height: 'auto', start:'bottom',}">
                   <ul class="chats p-0">
-                    <li ng-repeat="convo in vm.convos.chat_group track by $index" ng-class-odd="'in'" ng-class-even="'out'">
+                    <li ng-repeat="convo in vm.convos.chat_group | orderBy:'id' track by $index" ng-class-odd="'in'" ng-class-even="'out'">
                       <div class="media">
                         <div class="thumb thumb-sm" ng-class-odd="'pull-left'" ng-class-even="'pull-right'">
                           <img class="media-object img-circle" ng-src="{{ path.static_files }}{{convo.user.user_pic}}" alt="">
@@ -368,7 +362,7 @@
                     <div class="input-group">
                       <input type="text" class="form-control" placeholder="Type your message here..."ng-model="vm.chat.chat_message">
                       <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" ng-click="vm.sendChat(vm.chat, vm.convos.id);"><i class="fa fa-chevron-right"></i></button>
+                        <button class="btn btn-default" type="submit"><i class="fa fa-chevron-right"></i></button>
                       </span>
                     </div>
                   </div>
@@ -377,6 +371,7 @@
 
               </section>
               <!-- /tile -->
+              </form>
             </div>
 </script>
 </div>

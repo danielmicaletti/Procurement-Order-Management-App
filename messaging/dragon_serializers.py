@@ -36,30 +36,26 @@ class EventLogSerializer(ModelSerializer):
 
 class ChatSerializer(ModelSerializer):
     users = UserSerializer
-    # chat_message_user = UserSerializer
 
-    # def serialize_chat_group(self, obj):
-    #     print "cm dr self == %s" %self
-    #     print "cm dr obj == %s" %obj
-    #     return '{}'.format(obj.users)
+    def serialize_chat_user(self, obj):
+        print "cm dr self == %s" %self
+        print "cm dr obj == %s" %obj
+        chat_usr = []
+        for usr in obj.users.all():
+            chat_usr.append(usr.id)
+        print "chat usr --- %s" %chat_usr
+        return chat_usr
 
     class Meta:
         model = 'messaging.Chat'
-        publish_fields = ('id', 'users',)
+        publish_fields = ('id', 'users', 'chat_user',)
 
 class ChatMessageSerializer(ModelSerializer):
-    # chat_group = 'ChatSerializer'
-    # chat_users = 'ChatSerializer'
+
     chat = ChatSerializer
     user = UserSerializer
 
-    # def serialize_chat(self, obj, serializer):
-    #     print "cm dr self == %s" %self
-    #     print "cm dr obj == %s" %obj
-    #     print "cm dr serializer == %s" %serializer
-    #     return '{} {}'.format(obj.id, obj.users)
-
     class Meta:
         model = 'messaging.ChatMessage'
-        publish_fields = ('id', 'chat', 'user', 'chat_message','chat_message_created',)
+        publish_fields = ('id', 'chat', 'user', 'chat_message','chat_message_created', 'chat_viewed',)
 
