@@ -73,7 +73,6 @@ class MailViewSet(viewsets.ModelViewSet):
 
     def list(self, request, mail=None):
         queryset = self.queryset.filter(Q(mail_to=self.request.user) | Q(mail_created_by=self.request.user) | Q(reply_mail__mail_to=self.request.user)).exclude(Q(mail_draft=True), ~Q(mail_created_by=self.request.user)).distinct()
-        print "MAIL QUERY SET ==== %s" % queryset
         serializer = MailSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -81,10 +80,8 @@ class MailViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             user = self.request.user
             mail_to_all = self.request.data.pop('mailTo')
-            print "MTA --- %s" % mail_to_all
             mail = Mail.objects.create(mail_created_by=user, **self.request.data)
             for mt in mail_to_all:
-                print "MT --- %s" % mt
                 mail_to_user = Account.objects.get(id=mt)
                 mail.mail_to.add(mail_to_user)
             mail.save()
@@ -93,7 +90,6 @@ class MailViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         if serializer.is_valid():
             user = self.request.user
-
             serializer.save(user=user, **self.request.data)
 
 class MailReplyViewSet(viewsets.ModelViewSet):
@@ -123,15 +119,11 @@ class MailReplyViewSet(viewsets.ModelViewSet):
             mail_id = self.request.data.pop('id')
             orig_mail = Mail.objects.get(id=mail_id)
             reply_mail = MailReply.objects.create(reply_created_by=user, orig_mail=orig_mail)
-            print "MAIL CREATED BY == %s" % self.request.data['mail_created_by']
             if 'mail_created_by' in self.request.data and user.id != self.request.data['mail_created_by']:
-                print "MAIL CREATED 2 == %s" % self.request.data['mail_created_by']
                 mcb = self.request.data.pop('mail_created_by')
                 mcu = Account.objects.get(id=mcb)
                 reply_mail.mail_to.add(mcu)
-            print "MTA --- %s" % mail_to_all
             for mt in mail_to_all:
-                print "MT --- %s" % mt
                 if user.id != mt['id']:
                     mail_to_user = Account.objects.get(id=mt['id'])
                     reply_mail.mail_to.add(mail_to_user)
@@ -173,13 +165,10 @@ class ChatMessageViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         if serializer.is_valid():
             user = self.request.user
-            print "SELF Chat-- %s" % self.request.data
-            print "SER Chat== %s" % serializer
             if 'users' in self.request.data:
                 chatters = self.request.data.pop('users')
             if 'chatid' in self.request.data:
                 chatid = self.request.data.pop('chatid')
-                print 'chat id == %s' %chatid
                 chat = Chat.objects.get(id=chatid)
             else:
                 chat = Chat.objects.create()
@@ -193,7 +182,6 @@ class ChatMessageViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         if serializer.is_valid():
             if 'chat_viewed' in self.request.data:
-                # chat_viewed_user = self.request.data.pop('chat_viewed')
                 cv = self.request.data.pop('chat_viewed')
                 chatid = self.request.data.pop('chatid')
                 chat_msg = ChatMessage.objects.get(id=chatid)

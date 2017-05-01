@@ -99,7 +99,6 @@ class ReqItemViewSet(viewsets.ModelViewSet):
 
             order.save()
             serializer.save(order=order, user=user, **self.request.data)
-            # return super(ReqItemViewSet, self).perform_create(serializer)
 
     def perform_update(self, serializer):
         if serializer.is_valid(raise_exception=True):

@@ -1,14 +1,3 @@
-"""
-Django settings for wease project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.7/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.7/ref/settings/
-"""
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 # import pytz
 # from pytz import timezone
 import dj_database_url
@@ -19,20 +8,11 @@ ADMINS = (
     ('Daniel Micaletti', 'danielmicaletti@gmail.com'),
 )
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'rew3_(v$_+n5h9l#0he!lu_r#6o&@yw=urartcqxikm-y5fas='
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 TEMPLATE_DEBUG = True
-
-# ALLOWED_HOSTS = []
-
-# Application definition
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -78,10 +58,6 @@ ROOT_URLCONF = 'wease.urls'
 
 WSGI_APPLICATION = 'wease.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -92,9 +68,6 @@ WSGI_APPLICATION = 'wease.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config()
 }
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -107,9 +80,6 @@ USE_L10N = True
 USE_TZ = True
 
 SITE_ID = 1
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 
@@ -164,14 +134,12 @@ if not DEBUG:
     STATIC_URL = S3_URL
     MEDIA_URL = S3_URL+'uploads/'
 
-# from .email_info import EMAIL_USE_TLS, EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_PORT
-# For gmail and google apps
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = os.environ.get('EMAIL_PORT')
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS')
+    EMAIL_HOST = os.environ.get('EMAIL_HOST')
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    EMAIL_PORT = os.environ.get('EMAIL_PORT')
 
-# SwampDragon settings
-SWAMP_DRAGON_CONNECTION = ('swampdragon.connections.sockjs_connection.DjangoSubscriberConnection', '/data')
-DRAGON_URL = 'http://localhost:9999/'
+    # SwampDragon settings
+    SWAMP_DRAGON_CONNECTION = ('swampdragon.connections.sockjs_connection.DjangoSubscriberConnection', '/data')
+    DRAGON_URL = 'http://localhost:9999/'
